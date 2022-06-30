@@ -18,6 +18,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
+Plug 'alvan/vim-closetag'
 
 " File browser with git indicators
 Plug 'preservim/nerdtree'
@@ -67,11 +68,14 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'qpkorr/vim-bufkill'
 
 " Snippets
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 
+" Debugger 
+Plug 'puremourning/vimspector'
 
 " Nicer LSP UI
 Plug 'glepnir/lspsaga.nvim'
@@ -82,6 +86,7 @@ Plug 'dense-analysis/ale'
 " Rust
 Plug 'simrat39/rust-tools.nvim'
 Plug 'mfussenegger/nvim-dap'
+
 call plug#end()
 
 
@@ -145,7 +150,8 @@ set noswapfile
 set wildmenu
 
 " sane text files
-set fileformat=dos
+set fileformat=unix
+set fileformats=unix,dos
 set encoding=utf-8
 set fileencoding=utf-8
 
@@ -318,7 +324,6 @@ nnoremap <leader>tt :NERDTreeToggle<CR>
 " From https://neovim.io/news/2021/07
 " au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
 
-
 " Nicer LSP UI
 lua << EOF
 local saga = require 'lspsaga'
@@ -341,10 +346,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  --Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -377,6 +378,8 @@ local feedkey = function(key, mode)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
 
+
+
 -- Setup nvim-cmp.
 local cmp = require'cmp'
 
@@ -394,7 +397,7 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-L>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     ["<Tab>"] = cmp.mapping(function(fallback)
@@ -455,7 +458,7 @@ cmp.setup.cmdline(':', {
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 ---- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local kybindings when the language server attaches
-local servers = { 'angularls', 'rust_analyzer' } 
+local servers = { 'tsserver', 'angularls', 'rust_analyzer', 'jsonls', 'cssls' } 
 for _, server in pairs(servers) do
   require'lspconfig'[server].setup{
   capabilities = capabilities,
@@ -477,7 +480,9 @@ require("nvim-lsp-installer").setup({
   }
 })
 
-
+-- Setup rust tools
+require('rust-tools').setup()
+require('rust-tools.inlay_hints').set_inlay_hints()
 
 EOF
 
@@ -501,15 +506,7 @@ set updatetime=300
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("nvim-0.5.0") || has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=yes
 
 "*****************************************************************************
 "" Mappings
@@ -545,7 +542,7 @@ nmap <leader><Right> :wincmd l<CR>
 nmap <leader>[ :bp!<CR>
 nmap <leader>] :bn!<CR>
 nmap <leader>x :bd<CR>
-nmap <leader>q :q<CR>
+map <leader>X :BD<CR>
 
 " copy, cut and paste
 vmap <C-c> "+y
@@ -574,7 +571,7 @@ noremap <silent> <leader>n :call ChangeLineNumbering()<CR>
 nnoremap V V$h
 
 " Map auto complete to ctrl + space
-inoremap <C-L> <C-x><C-o>
+" inoremap <C-L> <C-x><C-o>
 
 " Harpoon
 nnoremap <silent><leader>ha :lua require("harpoon.mark").add_file()<CR>
@@ -585,6 +582,29 @@ nnoremap <silent><C-h> :lua require("harpoon.ui").nav_file(1)<CR>
 nnoremap <silent><C-j> :lua require("harpoon.ui").nav_file(2)<CR>
 nnoremap <silent><C-k> :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <silent><C-l> :lua require("harpoon.ui").nav_file(4)<CR>
+
+" Debugger mappings
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB', 'delve' ]
+nmap <Leader>di <Plug>VimspectorBalloonEval
+" for visual mode, the visually selected text
+xmap <Leader>di <Plug>VimspectorBalloonEval
+nnoremap <Leader>dd :call vimspector#Launch()<CR>
+nnoremap <Leader>de :call vimspector#Reset()<CR>
+nnoremap <Leader>dc :call vimspector#Continue()<CR>
+
+nnoremap <Leader>dt :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <Leader>dT :call vimspector#ClearBreakpoints()<CR>
+
+nmap <Leader>dk <Plug>VimspectorRestart
+nmap <Leader>dh <Plug>VimspectorStepOut
+nmap <Leader>dl <Plug>VimspectorStepInto
+nmap <Leader>dj <Plug>VimspectorStepOver
+
+
+"*****************************************************************************
+"" Commands
+"*****************************************************************************
+command! BufOnly silent! execute "%bd|e#|bd#"
 
 "*****************************************************************************
 "" Convenience variables
@@ -685,7 +705,7 @@ augroup go
   au FileType go nmap <leader>r  <Plug>(go-run)
   au FileType go nmap <leader>t  <Plug>(go-test)
   au FileType go nmap <Leader>gt <Plug>(go-coverage-toggle)
-  au FileType go nmap <Leader>i <Plug>(go-info)
+  au FileType go nmap <Leader>i <Plug>(go-info
   au FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
   au FileType go nmap <C-g> :GoDecls<cr>
   au FileType go nmap <leader>dr :GoDeclsDir<cr>
@@ -696,19 +716,54 @@ augroup go
 augroup END
 
 " ale
-:call extend(g:ale_linters, {
+let g:ale_linters = {
     \"go": ['golint', 'go vet'], 
     \"typescript": ['eslint', 'tsserver'],
-    \"rust": ['cargo','rls']})
+    \"rust": ['cargo','rls']}
 
+let g:ale_fixers = {
+    \'typescript': ['prettier', 'eslint'],
+    \"rust": ['rustfmt'],
+    \"json": ['prettier', 'jq']}
 
 " html
 " for html files, 2 spaces
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
 
 
-" typescript
+" Webdev
 let g:yats_host_keyword = 1
+" filenames like *.xml, *.html, *.xhtml, ...
+" These are the file extensions where this plugin is enabled.
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
 
-" rust
+" filenames like *.xml, *.xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 
+" filetypes like xml, html, xhtml, ...
+" These are the file types where this plugin is enabled.
+let g:closetag_filetypes = 'html,xhtml,phtml'
+
+" filetypes like xml, xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+
+" integer value [0|1]
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+let g:closetag_emptyTags_caseSensitive = 1
+
+" dict
+" Disables auto-close if not in a "valid" region (based on filetype)
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ 'typescriptreact': 'jsxRegion,tsxRegion',
+    \ 'javascriptreact': 'jsxRegion',
+    \ }
+
+" Shortcut for closing tags, default is '>'
+let g:closetag_shortcut = '>'
+
+" Add > at current position without closing the current tag, default is ''
+let g:closetag_close_shortcut = '<leader>>'
