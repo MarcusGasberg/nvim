@@ -14,11 +14,15 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/ReplaceWithRegister'
 
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-line'
+
+Plug 'psliwka/vim-smoothie'
+
 
 call plug#end()
 
@@ -28,3 +32,10 @@ if need_to_install_plugins == 1
     echo "Done!"
     q
 endif
+
+nnoremap <leader>f <Cmd>call VSCodeNotify('workbench.action.quickOpen')<CR>
+nnoremap <leader>tt <Cmd>call VSCodeNotify('workbench.explorer.openEditorsView.toggleVisibility')<CR>
+nnoremap <leader>tf <Cmd>call VSCodeNotify('workbench.view.explorer')<CR>
+nnoremap gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
+nnoremap gI <Cmd>call VSCodeNotify('editor.action.peekImplementation')<CR>
+

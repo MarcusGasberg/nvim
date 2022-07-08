@@ -87,6 +87,11 @@ Plug 'dense-analysis/ale'
 Plug 'simrat39/rust-tools.nvim'
 Plug 'mfussenegger/nvim-dap'
 
+" Sessions
+Plug 'rmagatti/auto-session'
+
+" C#
+" Plug 'OmniSharp/omnisharp-vim'
 call plug#end()
 
 
@@ -122,10 +127,6 @@ set titlestring=%F
 
 set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 
-" Search mappings: These will make it so that going to the next one in a
-" search will center on the line it's found in.
-nnoremap n nzzzv
-nnoremap N Nzzzv
 
 if exists("*fugitive#statusline")
   set statusline+=%{fugitive#statusline()}
@@ -189,10 +190,37 @@ endif
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>bd :BuffersDelete<CR>
 nnoremap <silent> <leader>f :Files<CR>
 nnoremap <silent> <leader>g :GFiles<CR>
-"Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
+
+function! s:delete_buffers(lines)
+  execute 'bwipeout' join(map(a:lines, {_, line -> split(line)[0]}))
+endfunction
+
+" let g:fzf_action = {
+"   \ 'ctrl-d': function('s:delete_buffers'),
+"   \ 'ctrl-t': 'tab split',
+"   \ 'ctrl-x': 'split',
+"   \ 'ctrl-v': 'vsplit' }
+function! s:list_buffers()
+  redir => list
+  silent ls
+  redir END
+  return split(list, "\n")
+endfunction
+
+command! BuffersDelete call fzf#run(fzf#wrap({
+  \ 'source': s:list_buffers(),
+  \ 'sink*': { lines -> s:delete_buffers(lines) },
+  \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+\ }))
+" " Telescope shortcut
+" nnoremap <leader>b <cmd>Telescope buffers<cr>
+" nnoremap <leader>f <cmd>Telescope find_files<cr>
+" nnoremap <leader>g <cmd>Telescope git_files<cr>
+"Recovery commands from history through FZF
 
 " mouse
 set mouse=a
@@ -283,16 +311,6 @@ endfunction
 "" Abbreviations
 "*****************************************************************************
 "" no one is really happy until you have this shortcuts
-cnoreabbrev W! w!
-cnoreabbrev Q! q!
-cnoreabbrev Qall! qall!
-cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-cnoreabbrev wQ wq
-cnoreabbrev WQ wq
-cnoreabbrev W w
-cnoreabbrev Q q
-cnoreabbrev Qall qall
 
 
 " auto change dir
@@ -327,6 +345,36 @@ nnoremap <leader>tt :NERDTreeToggle<CR>
 " Nicer LSP UI
 lua << EOF
 local saga = require 'lspsaga'
+local opts = {
+  log_level = 'info',
+  auto_session_enable_last_session = false,
+  auto_session_root_dir = vim.fn.stdpath('data').."/sessions/",
+  auto_session_enabled = true,
+  auto_save_enabled = true,
+  auto_restore_enabled = true,
+  auto_session_suppress_dirs = nil,
+  auto_session_use_git_branch = nil,
+  -- the configs below are lua only
+  bypass_session_save_file_types = nil
+}
+
+require('auto-session').setup(opts)
+
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"
+  ensure_installed = { "rust", "c_sharp", "scss", "html", "typescript", "lua" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
 EOF
 
 " Configure language server
@@ -367,6 +415,15 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>fo', vim.lsp.buf.formatting, bufopts)
 end
 
+local tsserver_on_attach = function(client, bufnr) 
+  local clients = vim.lsp.get_active_clients()
+
+  for index, value in ipairs(clients) do
+    if value.name == 'angularls' then
+      client.server_capabilities.renameProvider  = false
+    end
+  end
+end
 
 
 local has_words_before = function()
@@ -454,20 +511,6 @@ cmp.setup.cmdline(':', {
   })
 })
 
--- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
----- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local kybindings when the language server attaches
-local servers = { 'tsserver', 'angularls', 'rust_analyzer', 'jsonls', 'cssls' } 
-for _, server in pairs(servers) do
-  require'lspconfig'[server].setup{
-  capabilities = capabilities,
-  on_attach = on_attach,
-  flags = {
-    debounce_text_changes = 150,
-  }
-}
-end
 
 require("nvim-lsp-installer").setup({
   automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
@@ -479,6 +522,26 @@ require("nvim-lsp-installer").setup({
       }
   }
 })
+
+-- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+---- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local kybindings when the language server attaches
+local servers = { 'tsserver', 'angularls', 'rust_analyzer', 'jsonls', 'cssls', 'omnisharp' } 
+for _, server in pairs(servers) do
+  require'lspconfig'[server].setup{
+  capabilities = capabilities,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  on_attach = function(client, bufnr)
+    if client.name == 'tsserver' then
+      tsserver_on_attach(client, bufnr)
+    end
+    on_attach(client, bufnr)
+  end
+}
+end
 
 -- Setup rust tools
 require('rust-tools').setup()
@@ -512,56 +575,8 @@ set signcolumn=yes
 "" Mappings
 "*****************************************************************************
 
-"" Split
-noremap <Leader>h :<C-u>split<CR>
-noremap <Leader>v :<C-u>vsplit<CR>
-
-"" Git
-noremap <Leader>ga :Gwrite<CR>
-noremap <Leader>gc :Git commit --verbose<CR>
-noremap <Leader>gsh :Git push<CR>
-noremap <Leader>gll :Git pull<CR>
-noremap <Leader>gs :Git<CR>
-noremap <Leader>gb :Git blame<CR>
-noremap <Leader>gd :Gvdiffsplit<CR>
-noremap <Leader>gr :GRemove<CR>
-
-" session management
-nnoremap <leader>so :OpenSession<Space>
-nnoremap <leader>ss :SaveSession<Space>
-nnoremap <leader>sd :DeleteSession<CR>
-nnoremap <leader>sc :CloseSession<CR>
-
-" move through split windows
-nmap <leader><Up> :wincmd k<CR>
-nmap <leader><Down> :wincmd j<CR>
-nmap <leader><Left> :wincmd h<CR>
-nmap <leader><Right> :wincmd l<CR>
-
-" move through buffers
-nmap <leader>[ :bp!<CR>
-nmap <leader>] :bn!<CR>
-nmap <leader>x :bd<CR>
-map <leader>X :BD<CR>
-
-" copy, cut and paste
-vmap <C-c> "+y
-vmap <C-x> "+c
-vmap <C-v> c<ESC>"+p
-imap <C-v> <ESC>"+pa
-
-" search
-nnoremap <C-n> :nohl<CR>
-"
-" terminal emulation
-nnoremap <silent> <leader>sh :terminal<CR>
-
-" " Telescope shortcut
-" nnoremap <leader>f <cmd>Telescope find_files<cr>
-" nnoremap <leader>g <cmd>Telescope git_files<cr>
-
 " turn on line numbering
-set number
+set relativenumber
 function! ChangeLineNumbering()
     setlocal relativenumber!
 endfunction
@@ -584,7 +599,8 @@ nnoremap <silent><C-k> :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <silent><C-l> :lua require("harpoon.ui").nav_file(4)<CR>
 
 " Debugger mappings
-let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB', 'delve' ]
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB', 'delve', 'netcoredbg' ]
+" let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 nmap <Leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <Leader>di <Plug>VimspectorBalloonEval
@@ -595,10 +611,10 @@ nnoremap <Leader>dc :call vimspector#Continue()<CR>
 nnoremap <Leader>dt :call vimspector#ToggleBreakpoint()<CR>
 nnoremap <Leader>dT :call vimspector#ClearBreakpoints()<CR>
 
-nmap <Leader>dk <Plug>VimspectorRestart
 nmap <Leader>dh <Plug>VimspectorStepOut
-nmap <Leader>dl <Plug>VimspectorStepInto
+nmap <Leader>dk <Plug>VimspectorStepInto
 nmap <Leader>dj <Plug>VimspectorStepOver
+nmap <Leader>dl <Plug>VimspectorRestart
 
 
 "*****************************************************************************
@@ -719,6 +735,7 @@ augroup END
 let g:ale_linters = {
     \"go": ['golint', 'go vet'], 
     \"typescript": ['eslint', 'tsserver'],
+    \ 'cs': ['OmniSharp'],
     \"rust": ['cargo','rls']}
 
 let g:ale_fixers = {
@@ -767,3 +784,49 @@ let g:closetag_shortcut = '>'
 
 " Add > at current position without closing the current tag, default is ''
 let g:closetag_close_shortcut = '<leader>>'
+
+" C#
+" let g:OmniSharp_server_use_net6 = 1
+" let g:OmniSharp_selector_ui = 'fzf'    " Use fzf
+
+" augroup omnisharp_commands
+"   autocmd!
+
+"   " Show type information automatically when the cursor stops moving.
+"   " Note that the type is echoed to the Vim command line, and will overwrite
+"   " any other messages in this space including e.g. ALE linting messages.
+"   autocmd CursorHold *.cs OmniSharpTypeLookup
+
+"   " The following commands are contextual, based on the cursor position.
+"   autocmd FileType cs nmap: <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osfu <Plug>(omnisharp_find_usages)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osfi <Plug>(omnisharp_find_implementations)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>ospd <Plug>(omnisharp_preview_definition)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>ospi <Plug>(omnisharp_preview_implementations)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>ost <Plug>(omnisharp_type_lookup)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osd <Plug>(omnisharp_documentation)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osfs <Plug>(omnisharp_find_symbol)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osfx <Plug>(omnisharp_fix_usings)
+"   autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+"   autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+
+"   " Navigate up and down by method/property/field
+"   autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
+"   autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
+"   " Find all code errors/warnings for the current solution and populate the quickfix window
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osgcc <Plug>(omnisharp_global_code_check)
+"   " Contextual code actions (uses fzf, vim-clap, CtrlP or unite.vim selector when available)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_actions)
+"   autocmd FileType cs xmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_actions)
+"   " Repeat the last code action performed (does not use a selector)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
+"   autocmd FileType cs xmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
+
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>os= <Plug>(omnisharp_code_format)
+
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osnm <Plug>(omnisharp_rename)
+
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osre <Plug>(omnisharp_restart_server)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>osst <Plug>(omnisharp_start_server)
+"   autocmd FileType cs nmap <silent> <buffer> <Leader>ossp <Plug>(omnisharp_stop_server)
+" augroup END
