@@ -81,7 +81,7 @@ Plug 'puremourning/vimspector'
 Plug 'glepnir/lspsaga.nvim'
 
 " Linter
-Plug 'dense-analysis/ale'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " Rust
 Plug 'simrat39/rust-tools.nvim'
@@ -135,7 +135,6 @@ endif
 " vim-airline
 let g:airline_theme = 'powerlineish'
 let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
@@ -189,11 +188,17 @@ if executable('rg')
 endif
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-nnoremap <silent> <leader>b :Buffers<CR>
+" nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>bd :BuffersDelete<CR>
-nnoremap <silent> <leader>f :Files<CR>
-nnoremap <silent> <leader>g :GFiles<CR>
+" nnoremap <silent> <leader>f :Files<CR>
+" nnoremap <silent> <leader>g :GFiles<CR>
+"Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
+
+" " Telescope shortcut
+nnoremap <leader>b <cmd>Telescope buffers<cr>
+nnoremap <leader>f <cmd>Telescope find_files<cr>
+nnoremap <leader>g <cmd>Telescope git_files<cr>
 
 function! s:delete_buffers(lines)
   execute 'bwipeout' join(map(a:lines, {_, line -> split(line)[0]}))
@@ -216,11 +221,6 @@ command! BuffersDelete call fzf#run(fzf#wrap({
   \ 'sink*': { lines -> s:delete_buffers(lines) },
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
-" " Telescope shortcut
-" nnoremap <leader>b <cmd>Telescope buffers<cr>
-" nnoremap <leader>f <cmd>Telescope find_files<cr>
-" nnoremap <leader>g <cmd>Telescope git_files<cr>
-"Recovery commands from history through FZF
 
 " mouse
 set mouse=a
@@ -375,6 +375,55 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+require("null-ls").setup({
+    sources = {
+        require("null-ls").builtins.formatting.prettier,
+        require("null-ls").builtins.diagnostics.eslint_d,
+        require("null-ls").builtins.code_actions.eslint_d,
+    },
+})
+
+local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
+local custom_actions = {}
+
+function custom_actions.fzf_multi_select(prompt_bufnr)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local num_selections = table.getn(picker:get_multi_selection())
+
+  if num_selections > 1 then
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    for _, entry in ipairs(picker:get_multi_selection()) do
+      vim.cmd(string.format("%s %s", ":e!", entry.value))
+    end
+    vim.cmd('stopinsert')
+  else
+    actions.file_edit(prompt_bufnr)
+  end
+end
+
+require('telescope').setup {
+  defaults = {
+    file_ignore_patterns = { "node_modules", ".git" },
+    mappings = { 
+      i = {
+        ['<esc>'] = actions.close,
+        ['<C-j>'] = actions.move_selection_next,
+        ['<C-k>'] = actions.move_selection_previous,
+        ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
+        ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
+        ['<cr>'] = custom_actions.fzf_multi_select,
+      },
+      n = {
+        ['<esc>'] = actions.close,
+        ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
+        ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
+        ['<cr>'] = custom_actions.fzf_multi_select
+      }
+    },
+  }
+}
 EOF
 
 " Configure language server
@@ -419,6 +468,7 @@ local tsserver_on_attach = function(client, bufnr)
   local clients = vim.lsp.get_active_clients()
 
   for index, value in ipairs(clients) do
+    print(value.name)
     if value.name == 'angularls' then
       client.server_capabilities.renameProvider  = false
     end
@@ -527,8 +577,19 @@ require("nvim-lsp-installer").setup({
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 ---- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local kybindings when the language server attaches
-local servers = { 'tsserver', 'angularls', 'rust_analyzer', 'jsonls', 'cssls', 'omnisharp' } 
+local servers = { 'tsserver', 'angularls', 'rust_analyzer', 'jsonls', 'cssls', 'omnisharp', "sumneko_lua" } 
 for _, server in pairs(servers) do
+  local settings = {}
+if server == 'sumneko_lua' then 
+      settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'vim' }
+            }
+        }
+      }
+    end
+
   require'lspconfig'[server].setup{
   capabilities = capabilities,
   flags = {
@@ -538,6 +599,7 @@ for _, server in pairs(servers) do
     if client.name == 'tsserver' then
       tsserver_on_attach(client, bufnr)
     end
+    
     on_attach(client, bufnr)
   end
 }
@@ -665,9 +727,6 @@ endif
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
-" ale
-let g:ale_linters = {}
-
 " go
 " vim-go
 " run :GoBuild or :GoTestCompile based on the go file
@@ -730,18 +789,6 @@ augroup go
   au FileType go nmap <leader>rb :<C-u>call <SID>build_go_files()<CR>
 
 augroup END
-
-" ale
-let g:ale_linters = {
-    \"go": ['golint', 'go vet'], 
-    \"typescript": ['eslint', 'tsserver'],
-    \ 'cs': ['OmniSharp'],
-    \"rust": ['cargo','rls']}
-
-let g:ale_fixers = {
-    \'typescript': ['prettier', 'eslint'],
-    \"rust": ['rustfmt'],
-    \"json": ['prettier', 'jq']}
 
 " html
 " for html files, 2 spaces
