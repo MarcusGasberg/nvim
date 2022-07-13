@@ -172,6 +172,25 @@ local function CopyCommitHash(prompt_bufnr)
 	actions.close(prompt_bufnr)
 end
 
+local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
+local custom_actions = {}
+
+function custom_actions.fzf_multi_select(prompt_bufnr)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local num_selections = table.getn(picker:get_multi_selection())
+
+  if num_selections > 1 then
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    for _, entry in ipairs(picker:get_multi_selection()) do
+      vim.cmd(string.format("%s %s", ":e!", entry.value))
+    end
+    vim.cmd('stopinsert')
+  else
+    actions.file_edit(prompt_bufnr)
+  end
+end
+
 local telescope = require("telescope")
 telescope.setup({
 	defaults = {
@@ -189,7 +208,16 @@ telescope.setup({
 				["<esc>"] = actions.close,
 				["<C-j>"] = actions.cycle_history_next,
 				["<C-k>"] = actions.cycle_history_prev,
-			},
+        ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
+        ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
+        ['<cr>'] = custom_actions.fzf_multi_select,
+      },
+      n = {
+        ['<esc>'] = actions.close,
+        ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
+        ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
+        ['<cr>'] = custom_actions.fzf_multi_select
+      }
 		},
 	},
 	pickers = {
@@ -237,8 +265,8 @@ telescope.setup({
 		},
 	},
 })
-
-telescope.load_extension("fzf")
+-- TODO: Fix fzf
+-- telescope.load_extension("fzf")
 
 vim.keymap.set("n", "<C-f>", live_grep, {})
 vim.keymap.set("n", "<C-c>", current_buffer_fuzzy_find, {})

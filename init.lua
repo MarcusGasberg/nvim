@@ -10,9 +10,9 @@ require("lsp")
 -- Other Mappings and Settings
 require("colors")
 require("mappings")
--- require("functions")
--- require("autocommands")
--- require("commands")
+require("functions")
+require("autocommands")
+require("commands")
 
 -- Packer plugins
 require("plugins")

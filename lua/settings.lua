@@ -1,3 +1,4 @@
+-- vim.api.nvim_exec('language en_US')
 -- set.leader to comma/space key
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","

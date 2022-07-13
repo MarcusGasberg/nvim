@@ -49,13 +49,13 @@ packer.startup(function(use)
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-cmdline")
 	use("nvim-lua/plenary.nvim")
-	use("ellisonleao/gruvbox.nvim") -- In colors.lua file
+	use("rebelot/kanagawa.nvim") -- In colors.lua file
 	use({
 		"quangnguyen30192/cmp-nvim-ultisnips",
 		config = setup("plugins.ultisnips"),
 	})
 	use({ "jose-elias-alvarez/null-ls.nvim", config = setup("plugins.null", "null-ls") })
-	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+--	use({ "nvim-telescope/telescope-fzf-native.nvim", requires={ { "nvim-telescope/telescope.nvim" } }, run = "make" })
 	use({
 		"nvim-telescope/telescope.nvim",
 		requires = { { "nvim-lua/plenary.nvim" } },
@@ -65,7 +65,7 @@ packer.startup(function(use)
 	use("tpope/vim-repeat")
 	use("tpope/vim-surround")
 	use("tpope/vim-unimpaired")
-	use({ "kevinhwang91/nvim-bqf", requires = "junegunn/fzf.vim", config = setup("plugins.bqf", "bqf") })
+	use({ "kevinhwang91/nvim-bqf", requires = "junegunn/fzf", config = setup("plugins.bqf", "bqf") })
 	use({
 		"junegunn/fzf",
 		run = function()
