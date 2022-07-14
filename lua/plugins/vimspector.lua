@@ -1,8 +1,4 @@
-local vimspector = require("vimspector")
-
 vim.g.vimspector_install_gadgets = { 'debugpy', 'vscode-cpptools', 'CodeLLDB', 'delve', 'netcoredbg' }
-
-vimspector.setup()
 
 vim.keymap.set("n", "<Leader>dd", ":call vimspector#Launch()<CR>")
 vim.keymap.set("n", "<Leader>de", ":call vimspector#Reset()<CR>")

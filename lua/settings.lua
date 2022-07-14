@@ -54,3 +54,9 @@ vim.opt.smartindent = true
 vim.opt.cindent = true
 vim.opt.tabstop = 2
 vim.opt.expandtab = true
+
+-- filenames
+vim.opt.fileformat="unix"
+vim.opt.fileformats="unix,dos"
+vim.opt.encoding="utf-8"
+vim.opt.fileencoding="utf-8"

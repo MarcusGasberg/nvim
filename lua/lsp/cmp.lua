@@ -1,10 +1,12 @@
 local cmp_status_ok, cmp = pcall(require, "cmp")
 local lspkind_status_ok, lspkind = pcall(require, "lspkind")
+local cmp_ultisnips_status_ok, cmp_ultisnips_mappings = pcall(require, "cmp_nvim_ultisnips.mappings")
 
-if not (cmp_status_ok and lspkind_status_ok) then
+if not (cmp_status_ok and cmp_ultisnips_status_ok and lspkind_status_ok) then
   print("CMP dependencies not yet installed!")
   return
 end
+
 
 -- Setup completion engine
 if cmp_status_ok then
@@ -27,56 +29,18 @@ if cmp_status_ok then
       ["<C-L>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
       ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i', 'c'}),
       ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), {'i', 'c'}),
-      ["<Tab>"] = cmp.mapping({
-        c = function()
-          if cmp.visible() then
-            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-          else
-            cmp.complete()
-          end
-        end,
-        i = function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-          elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-            vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_forward)"), 'm', true)
-          else
-            fallback()
-          end
-        end,
-        s = function(fallback)
-          if vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-            vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_forward)"), 'm', true)
-          else
-            fallback()
-          end
-        end
-      }),
-      ["<S-Tab>"] = cmp.mapping({
-        c = function()
-          if cmp.visible() then
-            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
-          else
-            cmp.complete()
-          end
-        end,
-        i = function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
-          elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-            return vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_backward)"), 'm', true)
-          else
-            fallback()
-          end
-        end,
-        s = function(fallback)
-          if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-            return vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_backward)"), 'm', true)
-          else
-            fallback()
-          end
-        end
-      })
+      ["<Tab>"] = cmp.mapping(
+          function(fallback)
+            cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+          end,
+          { "i", "s", "c" }
+        ),
+        ["<S-Tab>"] = cmp.mapping(
+          function(fallback)
+            cmp_ultisnips_mappings.jump_backwards(fallback)
+          end,
+          { "i", "s", "c" }
+        ),
     },
     sources = cmp.config.sources({
       { name = "nvim_lsp", max_item_count = 5 },

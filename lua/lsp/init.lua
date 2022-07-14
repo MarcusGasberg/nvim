@@ -18,7 +18,7 @@ local on_attach = function(client, bufnr)
 	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	-- Debounce by 300ms by default
-	client.config.flags.debounce_text_changes = 150
+	client.config.flags.debounce_text_changes = 300
 	client.server_capabilities.documentFormattingProvider = false
 
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
@@ -29,7 +29,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
   vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, {})
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, {})
-  vim.keymap.set('n', '<leader>fo', vim.lsp.buf.formatting, {})
+  vim.keymap.set('n', '<leader>fo', vim.lsp.buf.format, {})
 	vim.keymap.set("n", "]d", function()
 		vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
 	end)

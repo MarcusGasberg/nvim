@@ -19,9 +19,9 @@ vim.keymap.set("n", "<leader><Right>", ":wincmd l<CR>")
 
 -- no one is really happy until you have this shortcuts
 local function cabbrev(input, replace)
-  local cmd = 'cnoreabbrev <expr> %s v:lua.dotfiles.abbrev.command("%s", "%s")'
+  local cmd = 'cnoreabbrev %s %s'
 
-  vim.cmd(cmd:format(input, input, replace))
+  vim.cmd(cmd:format(input, replace))
 end
 cabbrev("W!", "w!")
 cabbrev("Q!", "q!")
@@ -39,14 +39,7 @@ cabbrev("Qall", "qall")
 vim.keymap.set("n", "n",  "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
-
-
--- session management
-vim.keymap.set("n", "<leader>so", ":OpenSession<Space>")
-vim.keymap.set("n", "<leader>ss", ":SaveSession<Space>")
-vim.keymap.set("n", "<leader>sd", ":DeleteSession<CR>")
-vim.keymap.set("n", "<leader>sc", ":CloseSession<CR>")
-
+vim.keymap.set("n", "gx", "!open <c-r><c-a>")
 
 -- move through buffers
 vim.keymap.set("n", "<leader>[", ":bp!<CR>")
@@ -62,9 +55,6 @@ vim.keymap.set("i", "<C-v>", "<ESC>\"+pa")
 
 -- search
 vim.keymap.set("n", "<C-n>", ":nohl<CR>")
-
--- terminal emulation
-vim.keymap.set("n", "<silent>", "<leader>sh :terminal<CR>")
 
 -- Allows numbered jumps to be saved to the jumplist, for use w/ C-o and C-i
 vim.api.nvim_exec("nnoremap <expr> k (v:count > 1 ? \"m'\" . v:count : '') . 'k'", false)
