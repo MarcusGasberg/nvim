@@ -72,8 +72,11 @@ packer.startup(function(use)
 			vim.fn["fzf#install"]()
 		end,
 	})
+  use('ap/vim-buftabline')
 	use("tpope/vim-eunuch")
 	use("tpope/vim-obsession")
+  use({ "puremourning/vimspector", config = setup("plugins.vimspector", "vimspector") })
+  use("qpkorr/vim-bufkill")
 	use({ "tpope/vim-sexp-mappings-for-regular-people", ft = { "clojure" } })
 	use({ "guns/vim-sexp", ft = { "clojure" } })
 	use({ "numToStr/Comment.nvim", config = no_setup("Comment") })
@@ -115,6 +118,7 @@ packer.startup(function(use)
 	use({ "karb94/neoscroll.nvim", config = setup("plugins.neoscroll", "neoscroll") })
 	use("itchyny/vim-gitbranch")
 	use({ "harrisoncramer/jump-tag", config = setup("plugins.jump-tag", "jump-tag") })
+  use({ "phaazon/hop.nvim", config = setup("plugins.hop", "hop")})
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
