@@ -18,7 +18,7 @@ local on_attach = function(client, bufnr)
 	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	-- Debounce by 300ms by default
-	client.config.flags.debounce_text_changes = 300
+	client.config.flags.debounce_text_changes = 150
 	client.server_capabilities.documentFormattingProvider = false
 
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
