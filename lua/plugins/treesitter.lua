@@ -16,9 +16,9 @@ local disable_function = function(lang, bufnr)
 end
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = "all",
+	ensure_installed = {"lua", "css", "javascript", "typescript", "go", "rust", "c_sharp", "scss", "json", "yaml", "html", "markdown" },
 	sync_install = false,
-	ignore_install = { "haskell", "phpdoc" },
+	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },
 	highlight = {
 		enable = true, -- false will disable the whole extension
 		disable = disable_function,
@@ -41,23 +41,5 @@ require("nvim-treesitter.configs").setup({
 	matchup = {
 		enable = true,
 		disable = { "json", "csv" },
-	},
-	playground = {
-		enable = true,
-		disable = {},
-		updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-		persist_queries = false, -- Whether the query persists across vim sessions
-		keybindings = {
-			toggle_query_editor = "o",
-			toggle_hl_groups = "i",
-			toggle_injected_languages = "t",
-			toggle_anonymous_nodes = "a",
-			toggle_language_display = "I",
-			focus_language = "f",
-			unfocus_language = "F",
-			update = "R",
-			goto_node = "<cr>",
-			show_help = "?",
-		},
 	},
 })

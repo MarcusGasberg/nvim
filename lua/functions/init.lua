@@ -113,15 +113,6 @@ return {
 		f:close()
 		return output
 	end,
-	share_screen = function(is_sharing)
-		vim.cmd("set relativenumber!")
-		if is_sharing then
-			vim.cmd("colorscheme kanagawa")
-		else
-			vim.cmd("colorscheme codedark")
-		end
-		require("functions").run_script("share_screen", is_sharing)
-	end,
 	stash = function(name)
 		vim.fn.system("git stash -u -m " .. name)
 	end,

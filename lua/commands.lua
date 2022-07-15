@@ -37,12 +37,6 @@ vim.api.nvim_create_user_command("Filesystem", function()
 	require("functions").run_script("open_filesystem")
 end, { nargs = 0 })
 
-local is_sharing = false
-vim.api.nvim_create_user_command("Share", function()
-	require("functions").share_screen(is_sharing)
-	is_sharing = not is_sharing
-end, { nargs = 0 })
-
 vim.api.nvim_create_user_command("Diff", function(opts)
 	local branch = opts.args ~= "" and opts.args or "develop"
 	vim.api.nvim_feedkeys(":Gvdiffsplit " .. branch .. ":%", "n", false)

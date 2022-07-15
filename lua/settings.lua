@@ -8,7 +8,7 @@ vim.g.wildmenu = true
 -- vim.g.wildmode = 'list:longest'
 vim.g.wildignore = "**/node_modules/**"
 -- update time for plugins (speed when they act)
-vim.opt.updatetime = 300
+vim.opt.updatetime = 150
 --Mouse support active. Alt click
 vim.opt.mouse = "a"
 -- set.relative line numbers for jumping
@@ -60,3 +60,7 @@ vim.opt.fileformat="unix"
 vim.opt.fileformats="unix,dos"
 vim.opt.encoding="utf-8"
 vim.opt.fileencoding="utf-8"
+
+
+vim.g.t_Co=256
+vim.g.t_ut=nil
