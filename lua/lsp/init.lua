@@ -18,7 +18,7 @@ local on_attach = function(client, bufnr)
 	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	-- Debounce by 300ms by default
-	client.config.flags.debounce_text_changes = 150
+	client.config.flags.debounce_text_changes = 100
 	client.server_capabilities.documentFormattingProvider = false
 
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
@@ -46,10 +46,10 @@ end
 local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
 
 -- From nvim-ufo
-normal_capabilities.textDocument.foldingRange = {
-	dynamicRegistration = false,
-	lineFoldingOnly = true,
-}
+-- normal_capabilities.textDocument.foldingRange = {
+-- 	dynamicRegistration = false,
+-- 	lineFoldingOnly = true,
+-- }
 
 local capabilities = cmp_nvim_lsp.update_capabilities(normal_capabilities)
 

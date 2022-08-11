@@ -9,6 +9,7 @@ local sources = {
   formatting.prettierd,
 	formatting.eslint_d,
 	formatting.stylua,
+  formatting.csharpier,
   diagnostics.eslint_d,
   code_actions.eslint_d
 }
@@ -16,4 +17,5 @@ local sources = {
 null_ls.setup({
 	debug = false,
 	sources = sources,
+  timeout = 5000
 })

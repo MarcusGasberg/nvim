@@ -67,7 +67,7 @@ return {
 				ignore_ft_on_setup = {},
 				open_on_tab = false,
 				hijack_cursor = false,
-				update_cwd = false,
+				update_cwd = true,
 				git = {
 					enable = true,
 					ignore = false,
