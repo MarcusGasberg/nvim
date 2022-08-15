@@ -16,7 +16,7 @@ local disable_function = function(lang, bufnr)
 end
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = {"lua", "css", "javascript", "typescript", "go", "rust", "c_sharp", "scss", "json", "yaml", "html", "markdown" },
+	ensure_installed = { "lua", "css", "javascript", "typescript", "go", "rust", "c_sharp", "scss", "json", "yaml", "html", "markdown" },
 	sync_install = false,
 	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },
 	highlight = {
@@ -26,7 +26,7 @@ require("nvim-treesitter.configs").setup({
 	},
 	-- Rainbow parens plugin
 	rainbow = {
-		enable = true,
+		enable = false,
 		-- Enable only for lisp like languages
 		disable = vim.tbl_filter(function(p)
 			local disable = true

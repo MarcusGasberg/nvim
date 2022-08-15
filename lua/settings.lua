@@ -8,7 +8,7 @@ vim.g.wildmenu = true
 -- vim.g.wildmode = 'list:longest'
 vim.g.wildignore = "**/node_modules/**"
 -- update time for plugins (speed when they act)
-vim.opt.updatetime = 150
+vim.opt.updatetime = 100
 --Mouse support active. Alt click
 vim.opt.mouse = "a"
 -- set.relative line numbers for jumping
@@ -16,7 +16,7 @@ vim.opt.relativenumber = true
 -- Number of current line
 vim.opt.number = true
 -- Turn on clipboard across panes for tmux
-vim.opt.regexpengine = 1
+vim.opt.regexpengine = 0
 -- Let treesitter handle styling
 -- vim.opt.clipboard += 'unnamedplus'
 -- set substitute/replace command to automatically use global flag
