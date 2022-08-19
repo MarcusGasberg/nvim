@@ -1,7 +1,9 @@
 local cmp_nvim_lsp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-local lsp_installer_status_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
+local mason_config_ok, mason_config = pcall(require, "mason-lspconfig")
+local mason_ok, mason = pcall(require, "mason")
+local lsp_config_ok, lsp_config = pcall(require, "lspconfig")
 
-if not (cmp_nvim_lsp_status_ok and lsp_installer_status_ok) then
+if not (lsp_config_ok and cmp_nvim_lsp_status_ok and mason_ok and mason_config_ok) then
 	print("LSPConfig, CMP_LSP, and/or LSPInstaller not installed!")
 	return
 end
@@ -25,11 +27,11 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
 	vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help)
-  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, {})
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
-  vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, {})
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, {})
-  vim.keymap.set('n', '<leader>fo', vim.lsp.buf.format, {})
+	vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, {})
+	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
+	vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
+	vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
+	vim.keymap.set("n", "<leader>fo", vim.lsp.buf.format, {})
 	vim.keymap.set("n", "]d", function()
 		vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
 	end)
@@ -53,18 +55,47 @@ local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local capabilities = cmp_nvim_lsp.update_capabilities(normal_capabilities)
 
-lsp_installer.on_server_ready(function(server)
-	local server_status_ok, server_config = pcall(require, "lsp.servers." .. server.name)
-	if not server_status_ok then
-		print("The LSP '" .. server.name .. "' does not have a config.")
-		server:setup({
-			on_attach = on_attach,
+mason.setup()
+mason_config.setup({
+	ensure_installed = { "sumneko_lua", "angularls", "tsserver", "eslint", "omnisharp", "cssls", "html", "rust_analyzer" },
+})
+
+mason_config.setup_handlers({
+	-- The first entry (without a key) will be the default handler
+	-- and will be called for each installed server that doesn't have
+	-- a dedicated handler.
+	function(server_name) -- default handler (optional)
+		local server = lsp_config[server_name]
+		local server_status_ok, server_config = pcall(require, "lsp.servers." .. server.name)
+		if not server_status_ok then
+			print("The LSP '" .. server.name .. "' does not have a config.")
+			server.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
+		else
+			server_config.setup(on_attach, capabilities, server)
+		end
+	end,
+	-- Next, you can provide targeted overrides for specific servers.
+	-- For example, a handler override for the `rust_analyzer`:
+	["rust_analyzer"] = function()
+		local rt = require("rust-tools")
+
+		rt.setup({
 			capabilities = capabilities,
+			server = {
+				on_attach = function(client, bufnr)
+					on_attach(client, bufnr)
+					-- Hover actions
+					vim.keymap.set("n", "<C-L>", rt.hover_actions.hover_actions, { buffer = bufnr })
+					-- Code action groups
+					vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+				end,
+			},
 		})
-	else
-		server_config.setup(on_attach, capabilities, server)
-	end
-end)
+	end,
+})
 
 -- Global diagnostic settings
 vim.diagnostic.config({

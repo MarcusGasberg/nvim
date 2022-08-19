@@ -39,7 +39,7 @@ cabbrev("Qall", "qall")
 vim.keymap.set("n", "n",  "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
-vim.keymap.set("n", "gx", "!open <c-r><c-a>")
+-- vim.keymap.set("n", "gx", "!start <c-r><c-a>")
 
 -- move through buffers
 vim.keymap.set("n", "<leader>[", ":bp!<CR>")

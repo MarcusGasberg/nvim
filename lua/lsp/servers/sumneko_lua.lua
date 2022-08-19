@@ -1,6 +1,6 @@
 return {
 	setup = function(on_attach, capabilities, server)
-		server:setup({
+		server.setup({
 			on_attach = on_attach,
 			capabilities = capabilities,
 			settings = {
