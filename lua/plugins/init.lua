@@ -51,6 +51,7 @@ packer.startup(function(use)
 	use("hrsh7th/cmp-cmdline")
 	use("nvim-lua/plenary.nvim")
 	use("rebelot/kanagawa.nvim") -- In colors.lua file
+	use({ "stevearc/aerial.nvim", config = setup("plugins.aerial") })
 	use({
 		"L3MON4D3/LuaSnip",
 		config = setup("plugins.luasnip"),

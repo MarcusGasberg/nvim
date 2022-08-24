@@ -6,16 +6,16 @@ local diagnostics = null_ls.builtins.diagnostics
 local code_actions = null_ls.builtins.code_actions
 
 local sources = {
-  formatting.prettierd,
+	formatting.prettierd,
 	formatting.eslint_d,
 	formatting.stylua,
-  formatting.csharpier,
-  diagnostics.eslint_d,
-  code_actions.eslint_d
+	formatting.csharpier,
+	diagnostics.eslint_d,
+	code_actions.eslint_d,
 }
 
 null_ls.setup({
 	debug = false,
 	sources = sources,
-  timeout = 5000
+	timeout = 5000,
 })

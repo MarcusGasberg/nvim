@@ -43,6 +43,8 @@ local on_attach = function(client, bufnr)
 	if client.server_capabilities.colorProvider then
 		require("lsp/colorizer").buf_attach(bufnr, { single_column = false, debounce = 500 })
 	end
+
+	require("aerial").on_attach(client, bufnr)
 end
 
 local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -54,10 +56,12 @@ local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
 -- }
 
 local capabilities = cmp_nvim_lsp.update_capabilities(normal_capabilities)
+local function common_attach(client, bufnr) 
+end
 
 mason.setup()
 mason_config.setup({
-	ensure_installed = { "sumneko_lua", "angularls", "tsserver", "eslint", "omnisharp", "cssls", "html", "rust_analyzer" },
+	ensure_installed = { "sumneko_lua", "angularls", "tsserver", "omnisharp", "cssls", "html", "rust_analyzer" },
 })
 
 mason_config.setup_handlers({
@@ -80,7 +84,10 @@ mason_config.setup_handlers({
 	-- Next, you can provide targeted overrides for specific servers.
 	-- For example, a handler override for the `rust_analyzer`:
 	["rust_analyzer"] = function()
-		local rt = require("rust-tools")
+		local rt_ok, rt = pcall(require, "rust-tools")
+		if not rt_ok then
+			return
+		end
 
 		rt.setup({
 			capabilities = capabilities,
