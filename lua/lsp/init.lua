@@ -31,12 +31,13 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
 	vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
 	vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
-	vim.keymap.set("n", "<leader>fo", vim.lsp.buf.format, {})
+	-- TODO: Change to vim.lsp.buf.format
+	vim.keymap.set("n", "<leader>fo", vim.lsp.buf.formatting, {})
 	vim.keymap.set("n", "]d", function()
-		vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+		vim.diagnostic.goto_next()
 	end)
 	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+		vim.diagnostic.goto_next()
 	end)
 
 	-- This is ripped off from https://github.com/kabouzeid/dotfiles, it's for tailwind preview support
@@ -56,8 +57,6 @@ local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
 -- }
 
 local capabilities = cmp_nvim_lsp.update_capabilities(normal_capabilities)
-local function common_attach(client, bufnr) 
-end
 
 mason.setup()
 mason_config.setup({

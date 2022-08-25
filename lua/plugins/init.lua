@@ -75,6 +75,7 @@ packer.startup(function(use)
 			vim.fn["fzf#install"]()
 		end,
 	})
+	use({ "rmagatti/auto-session", config = setup("plugins.auto-session") })
 	use("ap/vim-buftabline")
 	use("tpope/vim-eunuch")
 	use("tpope/vim-obsession")
