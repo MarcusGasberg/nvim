@@ -2,7 +2,7 @@ local util = require("lspconfig").util
 
 return {
 	setup = function(on_attach, capabilities, server)
-		server:setup({
+		server.setup({
 			capabilities = capabilities,
 			on_attach = function(client, bufnr)
 				require('dap.ext.vscode').load_launchjs()

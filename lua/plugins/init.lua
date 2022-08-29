@@ -52,6 +52,7 @@ packer.startup(function(use)
 	use("nvim-lua/plenary.nvim")
 	use("rebelot/kanagawa.nvim") -- In colors.lua file
 	use({ "stevearc/aerial.nvim", config = setup("plugins.aerial") })
+	use("saadparwaiz1/cmp_luasnip")
 	use({
 		"L3MON4D3/LuaSnip",
 		config = setup("plugins.luasnip"),
@@ -76,6 +77,8 @@ packer.startup(function(use)
 		end,
 	})
 	use({ "rmagatti/auto-session", config = setup("plugins.auto-session") })
+	-- TODO: Make startup and luatab work together
+	-- use({ "startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "alvarosevilla95/luatab.nvim"}, config = setup("plugins.startup") })
 	use("ap/vim-buftabline")
 	use("tpope/vim-eunuch")
 	use("tpope/vim-obsession")
