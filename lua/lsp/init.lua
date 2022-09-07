@@ -4,9 +4,10 @@ local mason_ok, mason = pcall(require, "mason")
 local lsp_config_ok, lsp_config = pcall(require, "lspconfig")
 
 if not (lsp_config_ok and cmp_nvim_lsp_status_ok and mason_ok and mason_config_ok) then
-	print("LSPConfig, CMP_LSP, and/or LSPInstaller not installed!")
+	print("LSPConfig, CMP_LSP, and/or Mason not installed!")
 	return
 end
+
 
 -- Configure CMP
 require("lsp.cmp")
@@ -37,7 +38,7 @@ local on_attach = function(client, bufnr)
 		vim.diagnostic.goto_next()
 	end)
 	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_next()
+		vim.diagnostic.goto_prev()
 	end)
 
 	-- This is ripped off from https://github.com/kabouzeid/dotfiles, it's for tailwind preview support

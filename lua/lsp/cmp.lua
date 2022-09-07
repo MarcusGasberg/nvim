@@ -31,8 +31,8 @@ if cmp_status_ok then
 			["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
 			["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
 			["<C-L>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-			["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-			["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+			["<C-y>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+			["<C-e>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
 			["<Tab>"] = cmp.mapping(function(fallback)
 				if cmp.visible() then
 					cmp.select_next_item()
