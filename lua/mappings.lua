@@ -1,9 +1,7 @@
-
 vim.keymap.set("n","<Leader>sv", ":source $MYVIMRC<CR>")
 
 -- Splits
 vim.keymap.set("n", "ss", ":split<Return><C-w>w")
-
 vim.keymap.set("n", "sv", ":vsplit<Return><C-w>w")
 vim.keymap.set("n", "sh", "<C-w>h")
 vim.keymap.set("n", "sj", "<C-w>j")
@@ -11,11 +9,6 @@ vim.keymap.set("n", "sk", "<C-w>k")
 vim.keymap.set("n", "sl", "<C-w>l")
 vim.keymap.set("n", "sq", "<C-w>q")
 vim.keymap.set("n", "sp", "<C-w><C-p>")
-
-vim.keymap.set("n", "<leader><Up>", ":wincmd k<CR>")
-vim.keymap.set("n", "<leader><Down>", ":wincmd j<CR>")
-vim.keymap.set("n", "<leader><Left>", ":wincmd h<CR>")
-vim.keymap.set("n", "<leader><Right>", ":wincmd l<CR>")
 
 -- no one is really happy until you have this shortcuts
 local function cabbrev(input, replace)
@@ -40,6 +33,8 @@ vim.keymap.set("n", "n",  "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 -- vim.keymap.set("n", "gx", "!start <c-r><c-a>")
+
+vim.keymap.set("n", "<leader><leader>", "ci")
 
 -- move through buffers
 vim.keymap.set("n", "<leader>[", ":bp!<CR>")
