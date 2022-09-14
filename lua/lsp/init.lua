@@ -8,7 +8,6 @@ if not (lsp_config_ok and cmp_nvim_lsp_status_ok and mason_ok and mason_config_o
 	return
 end
 
-
 -- Configure CMP
 require("lsp.cmp")
 
@@ -86,6 +85,11 @@ mason_config.setup_handlers({
 	["rust_analyzer"] = function()
 		local rt_ok, rt = pcall(require, "rust-tools")
 		if not rt_ok then
+			local server = lsp_config["rust_analyzer"]
+			server.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
 			return
 		end
 

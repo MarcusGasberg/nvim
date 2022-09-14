@@ -69,7 +69,8 @@ packer.startup(function(use)
 	use("tpope/vim-sleuth")
 	use("tpope/vim-surround")
 	use("tpope/vim-unimpaired")
-	use({ "kevinhwang91/nvim-bqf", requires = "junegunn/fzf", config = setup("plugins.bqf", "bqf") })
+	-- Maybe freezes nvim?
+	-- use({ "kevinhwang91/nvim-bqf", requires = "junegunn/fzf", config = setup("plugins.bqf", "bqf") })
 	use({
 		"junegunn/fzf",
 		run = function()
@@ -134,5 +135,5 @@ packer.startup(function(use)
 	use("AndrewRadev/tagalong.vim")
 	use("alvan/vim-closetag")
 	use({ "vim-test/vim-test", config = setup("plugins.vim-test") })
-	use('simrat38/rust-tools.nvim')
+	use('simrat39/rust-tools.nvim')
 end)

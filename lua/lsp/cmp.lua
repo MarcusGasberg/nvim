@@ -20,11 +20,23 @@ if cmp_status_ok then
 				luasnip.lsp_expand(args.body)
 			end,
 		},
+		window = {
+			completion = {
+				winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+				col_offset = -3,
+				side_padding = 0,
+			},
+		},
 		formatting = {
-			format = lspkind.cmp_format({
-				with_text = false, -- do not show text alongside icons
-				maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-			}),
+			fields = { "kind", "abbr", "menu" },
+			format = function(entry, vim_item)
+				local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+				local strings = vim.split(kind.kind, "%s", { trimempty = true })
+				kind.kind = " " .. strings[1] .. " "
+				kind.menu = "    (" .. strings[2] .. ")"
+
+				return kind
+			end,
 		},
 		mapping = {
 			["<CR>"] = cmp.mapping.confirm({ select = true }),
@@ -55,9 +67,9 @@ if cmp_status_ok then
 			end, { "i", "s", "c" }),
 		},
 		sources = cmp.config.sources({
-			{ name = "nvim_lsp", max_item_count = 10 },
-			{ name = "nvim_lua", max_item_count = 10 },
-			{ name = "luasnip", max_item_count = 10 },
+			{ name = "nvim_lsp" },
+			{ name = "nvim_lua" },
+			{ name = "luasnip" },
 		}),
 	})
 end
