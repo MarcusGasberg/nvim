@@ -14,3 +14,12 @@ vim.cmd([[
 " Position the (global) quickfix window at the very bottom of the window https://github.com/fatih/vim-go/issues/1757
   autocmd FileType qf if (getwininfo(win_getid())[0].loclist != 1) | wincmd J | endif
 ]])
+
+vim.cmd([[
+" trigger `autoread` when files changes on disk
+  set autoread
+  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+" notification after file change
+  autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+]])

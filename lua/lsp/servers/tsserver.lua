@@ -14,7 +14,7 @@ return {
     server.setup({
       capabilities = capabilities,
       on_attach = function(client, bufnr)
-	      -- tsserver_on_attach(client, bufnr)
+	      tsserver_on_attach(client, bufnr)
 	      on_attach(client, bufnr)
       end,
     })

@@ -44,19 +44,11 @@ local on_attach = function(client, bufnr)
 	if client.server_capabilities.colorProvider then
 		require("lsp/colorizer").buf_attach(bufnr, { single_column = false, debounce = 500 })
 	end
-
-	require("aerial").on_attach(client, bufnr)
 end
 
 local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
 
--- From nvim-ufo
--- normal_capabilities.textDocument.foldingRange = {
--- 	dynamicRegistration = false,
--- 	lineFoldingOnly = true,
--- }
-
-local capabilities = cmp_nvim_lsp.update_capabilities(normal_capabilities)
+local capabilities = cmp_nvim_lsp.default_capabilities(normal_capabilities)
 
 mason.setup()
 mason_config.setup({
@@ -84,14 +76,13 @@ mason_config.setup_handlers({
 	-- For example, a handler override for the `rust_analyzer`:
 	["rust_analyzer"] = function()
 		local rt_ok, rt = pcall(require, "rust-tools")
-		if not rt_ok then
-			local server = lsp_config["rust_analyzer"]
-			server.setup({
-				on_attach = on_attach,
-				capabilities = capabilities,
-			})
-			return
-		end
+
+		local server = lsp_config["rust_analyzer"]
+		server.setup({
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+		return
 
 		rt.setup({
 			capabilities = capabilities,
@@ -99,9 +90,9 @@ mason_config.setup_handlers({
 				on_attach = function(client, bufnr)
 					on_attach(client, bufnr)
 					-- Hover actions
-					vim.keymap.set("n", "<C-L>", rt.hover_actions.hover_actions, { buffer = bufnr })
+					vim.keymap.set("n", "<C-K>", rt.hover_actions.hover_actions, { buffer = bufnr })
 					-- Code action groups
-					vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+					vim.keymap.set("n", "<Leder>a", rt.code_action_group.code_action_group, { buffer = bufnr })
 				end,
 			},
 		})

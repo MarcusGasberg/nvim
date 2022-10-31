@@ -1,6 +1,11 @@
 local is_open = false
 return {
 	setup = function()
+		local api = require("nvim-tree.api")
+		api.events.subscribe(api.events.Event.FileCreated, function(file)
+			vim.cmd("edit " .. file.fname)
+		end)
+
 		vim.keymap.set("n", "<leader>;", require("plugins/nvim_tree").setup_and_open)
 	end,
 	setup_and_open = function()
@@ -84,7 +89,6 @@ return {
 				filters = { dotfiles = false, custom = {} },
 				view = {
 					width = 40,
-					height = 30,
 					hide_root_folder = false,
 					side = "left",
 					mappings = {

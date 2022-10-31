@@ -61,6 +61,9 @@ vim.opt.fileformats="unix,dos"
 vim.opt.encoding="utf-8"
 vim.opt.fileencoding="utf-8"
 
+vim.g.gui_font_default_size = 12
+vim.g.gui_font_size = vim.g.gui_font_default_size
+vim.g.gui_font_face = "Fira Code Retina"
 
 vim.g.t_Co=256
 vim.g.t_ut=nil

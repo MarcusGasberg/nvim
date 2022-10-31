@@ -63,9 +63,9 @@ if cmp_status_ok then
 			end, { "i", "s", "c" }),
 		},
 		sources = cmp.config.sources({
+			{ name = "luasnip" },
 			{ name = "nvim_lsp" },
 			{ name = "nvim_lua" },
-			{ name = "luasnip" },
 		}),
 	})
 end

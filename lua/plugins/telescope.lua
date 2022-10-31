@@ -267,6 +267,7 @@ telescope.setup({
 })
 -- TODO: Fix fzf
 -- telescope.load_extension("fzf")
+vim.g.fzf_history_dir = '~/.local/share/fzf-history'
 
 vim.keymap.set("n", "<C-f>", live_grep, {})
 vim.keymap.set("n", "<C-c>", current_buffer_fuzzy_find, {})

@@ -51,6 +51,7 @@ packer.startup(function(use)
 	use("hrsh7th/cmp-cmdline")
 	use("nvim-lua/plenary.nvim")
 	use("rebelot/kanagawa.nvim") -- In colors.lua file
+	use('folke/tokyonight.nvim')
 	use({ "stevearc/aerial.nvim", config = setup("plugins.aerial") })
 	use("saadparwaiz1/cmp_luasnip")
 	use({
@@ -91,7 +92,7 @@ packer.startup(function(use)
 	use("romainl/vim-cool")
 	use("tpope/vim-rhubarb")
 	use("vim-scripts/BufOnly.vim")
-	use("djoshea/vim-autoread")
+	-- use("djoshea/vim-autoread")
 	use("jtmkrueger/vim-c-cr")
 	use({ "tpope/vim-fugitive", config = setup("plugins.fugitive") })
 	use({ "windwp/nvim-autopairs", config = setup("plugins.autopairs", "nvim-autopairs") })
@@ -129,8 +130,10 @@ packer.startup(function(use)
 		run = ":TSUpdate",
 		config = setup("plugins.treesitter", "nvim-treesitter"),
 	})
+	use({ "nvim-treesitter/nvim-treesitter-context", requires = "nvim-treesitter/nvim-treesitter", config = setup("plugins.treesitter-context", "nvim-treesitter-context")})
 	use("lambdalisue/glyph-palette.vim")
-	use("andymass/vim-matchup")
+	-- Sometimes freezes nvim for 6s
+	-- use("andymass/vim-matchup")
 	use({ "mattn/emmet-vim", ft = { "html", "vue", "javascript", "javascriptreact", "typescriptreact" } })
 	use("AndrewRadev/tagalong.vim")
 	use("alvan/vim-closetag")
