@@ -18,7 +18,7 @@ require("lualine").setup({
 		component_separators = { right = "" },
 		section_separators = { left = "", right = "" },
 		-- theme = "kanagawa",
-		theme = "tokyo",
+		theme = "tokyonight",
 	},
 	sections = {
 		lualine_a = { get_git_head },
