@@ -53,11 +53,12 @@ packer.startup(function(use)
 	use("rebelot/kanagawa.nvim") -- In colors.lua file
 	use('folke/tokyonight.nvim')
 	use({ "stevearc/aerial.nvim", config = setup("plugins.aerial") })
-	use("saadparwaiz1/cmp_luasnip")
+	use("rafamadriz/friendly-snippets")
 	use({
 		"L3MON4D3/LuaSnip",
 		config = setup("plugins.luasnip"),
 	})
+	use { 'saadparwaiz1/cmp_luasnip' }
 	use({ "jose-elias-alvarez/null-ls.nvim", config = setup("plugins.null", "null-ls") })
 	--	use({ "nvim-telescope/telescope-fzf-native.nvim", requires={ { "nvim-telescope/telescope.nvim" } }, run = "make" })
 	use({
@@ -81,7 +82,7 @@ packer.startup(function(use)
 	use({ "rmagatti/auto-session", config = setup("plugins.auto-session") })
 	-- TODO: Make startup and luatab work together
 	-- use({ "startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "alvarosevilla95/luatab.nvim"}, config = setup("plugins.startup") })
-	use("ap/vim-buftabline")
+	use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'kyazdani42/nvim-web-devicons', config = setup('plugins.bufferline', 'bufferline')}
 	use("tpope/vim-eunuch")
 	use("tpope/vim-obsession")
 	use({ "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap") })
@@ -101,11 +102,11 @@ packer.startup(function(use)
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 		config = setup("plugins.lualine", "lualine"),
 	})
-	use({
-		"alvarosevilla95/luatab.nvim",
-		config = setup("plugins/luatab", "luatab"),
-		requires = "kyazdani42/nvim-web-devicons",
-	})
+	-- use({
+	-- 	"alvarosevilla95/luatab.nvim",
+	-- 	config = setup("plugins/luatab", "luatab"),
+	-- 	requires = "kyazdani42/nvim-web-devicons",
+	-- })
 	use({
 		"lewis6991/gitsigns.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
