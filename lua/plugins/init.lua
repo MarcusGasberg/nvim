@@ -125,7 +125,7 @@ packer.startup(function(use)
 	use({ "karb94/neoscroll.nvim", config = setup("plugins.neoscroll", "neoscroll") })
 	use("itchyny/vim-gitbranch")
 	use({ "harrisoncramer/jump-tag", config = setup("plugins.jump-tag", "jump-tag") })
-	use({ "phaazon/hop.nvim", config = setup("plugins.hop", "hop") })
+	use({ "ggandor/leap.nvim", config = setup("plugins.leap", "leap") })
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
@@ -139,5 +139,5 @@ packer.startup(function(use)
 	use("AndrewRadev/tagalong.vim")
 	use("alvan/vim-closetag")
 	use({ "vim-test/vim-test", config = setup("plugins.vim-test") })
-	use('simrat39/rust-tools.nvim')
+	use("simrat39/rust-tools.nvim")
 end)

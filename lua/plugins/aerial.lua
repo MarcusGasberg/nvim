@@ -1,4 +1,6 @@
-require("aerial").setup({
+local aerial = require("aerial")
+
+aerial.setup({
   on_attach = function(bufnr)
     -- Toggle the aerial window with <leader>a
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>AerialToggle!<CR>', {})
@@ -6,7 +8,7 @@ require("aerial").setup({
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '{', '<cmd>AerialPrev<CR>', {})
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '}', '<cmd>AerialNext<CR>', {})
     -- Jump up the tree with '[[' or ']]'
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '[[', '<cmd>AerialPrevUp<CR>', {})
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', ']]', '<cmd>AerialNextUp<CR>', {})
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '[[', '<cmd>lua require("aerial").prev_up()<CR>', {})
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', ']]', '<cmd>lua require("aerial").next_up()<CR>', {})
   end
 })
