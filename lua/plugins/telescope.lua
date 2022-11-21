@@ -270,7 +270,7 @@ telescope.setup({
 vim.g.fzf_history_dir = '~/.local/share/fzf-history'
 
 vim.keymap.set("n", "<C-f>", live_grep, {})
-vim.keymap.set("n", "<C-c>", current_buffer_fuzzy_find, {})
+vim.keymap.set("n", "<C-k>", current_buffer_fuzzy_find, {})
 vim.keymap.set("n", "<C-j>", git_files, {})
 vim.keymap.set("n", "<C-g>", buffers, {})
 vim.keymap.set("n", "<leader>tr", oldfiles, {})

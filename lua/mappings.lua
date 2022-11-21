@@ -41,6 +41,10 @@ vim.keymap.set("n", "<leader>[", ":bp!<CR>")
 vim.keymap.set("n", "<leader>]", ":bn!<CR>")
 vim.keymap.set("n", "<leader>x", ":bd<CR>")
 vim.keymap.set("n", "<leader>X", ":BD<CR>")
+vim.keymap.set("n", "<leader>h", ":wincmd h<CR>")
+vim.keymap.set("n", "<leader>j", ":wincmd j<CR>")
+vim.keymap.set("n", "<leader>k", ":wincmd k<CR>")
+vim.keymap.set("n", "<leader>l", ":wincmd l<CR>")
 
 -- copy, cut and paste
 vim.keymap.set("v", "<C-c>", "\"+y")

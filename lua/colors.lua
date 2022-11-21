@@ -13,6 +13,8 @@ tokyo.setup()
 
 vim.cmd[[colorscheme tokyonight]]
 
+vim.cmd([[ :hi Normal guibg=none ctermbg=NONE]])
+vim.cmd([[ :hi NonText guibg=none ctermbg=NONE ]])
 -- local kanagawa_ok, kanagawa = pcall(require, "kanagawa")
 -- if not kanagawa_ok then
 -- 	print("Kanagawa is not installed.")
