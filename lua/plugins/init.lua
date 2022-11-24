@@ -17,6 +17,7 @@ local setup = function(mod, remote)
 	end
 end
 
+
 local no_setup = function(mod)
 	local status = pcall(require, mod)
 	if not status then
@@ -52,6 +53,7 @@ packer.startup(function(use)
 	use("nvim-lua/plenary.nvim")
 	use("rebelot/kanagawa.nvim") -- In colors.lua file
 	use('folke/tokyonight.nvim')
+	use('catppuccin/nvim')
 	use({ "stevearc/aerial.nvim", config = setup("plugins.aerial") })
 	use("rafamadriz/friendly-snippets")
 	use({
@@ -79,9 +81,8 @@ packer.startup(function(use)
 			vim.fn["fzf#install"]()
 		end,
 	})
-	use({ "rmagatti/auto-session", config = setup("plugins.auto-session") })
 	-- TODO: Make startup and luatab work together
-	-- use({ "startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "alvarosevilla95/luatab.nvim"}, config = setup("plugins.startup") })
+	use({ "startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "alvarosevilla95/luatab.nvim"}, config = setup("plugins.startup") })
 	use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'kyazdani42/nvim-web-devicons', config = setup('plugins.bufferline', 'bufferline')}
 	use("tpope/vim-eunuch")
 	use("tpope/vim-obsession")
@@ -91,10 +92,7 @@ packer.startup(function(use)
 	use({ "samoshkin/vim-mergetool", before = require("plugins.mergetool") })
 	use({ "numToStr/FTerm.nvim", config = setup("plugins.fterm", "FTerm") })
 	use("romainl/vim-cool")
-	use("tpope/vim-rhubarb")
 	use("vim-scripts/BufOnly.vim")
-	-- use("djoshea/vim-autoread")
-	use("jtmkrueger/vim-c-cr")
 	use({ "tpope/vim-fugitive", config = setup("plugins.fugitive") })
 	use({ "windwp/nvim-autopairs", config = setup("plugins.autopairs", "nvim-autopairs") })
 	use({
@@ -102,11 +100,6 @@ packer.startup(function(use)
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 		config = setup("plugins.lualine", "lualine"),
 	})
-	-- use({
-	-- 	"alvarosevilla95/luatab.nvim",
-	-- 	config = setup("plugins/luatab", "luatab"),
-	-- 	requires = "kyazdani42/nvim-web-devicons",
-	-- })
 	use({
 		"lewis6991/gitsigns.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
@@ -121,9 +114,9 @@ packer.startup(function(use)
 		requires = "nvim-lua/plenary.nvim",
 		config = setup("plugins.diffview", "diffview"),
 	})
-	use({ "petertriho/nvim-scrollbar", config = setup("plugins.scrollbar", "scrollbar") })
+	use("kevinhwang91/nvim-hlslens")
+	use({ "petertriho/nvim-scrollbar", requires = "kevinhwang91/nvim-hlslens", config = setup("plugins.scrollbar", "scrollbar") })
 	use({ "karb94/neoscroll.nvim", config = setup("plugins.neoscroll", "neoscroll") })
-	use("itchyny/vim-gitbranch")
 	use({ "harrisoncramer/jump-tag", config = setup("plugins.jump-tag", "jump-tag") })
 	use({ "ggandor/leap.nvim", config = setup("plugins.leap", "leap") })
 	use({
@@ -133,8 +126,6 @@ packer.startup(function(use)
 	})
 	use({ "nvim-treesitter/nvim-treesitter-context", requires = "nvim-treesitter/nvim-treesitter", config = setup("plugins.treesitter-context", "nvim-treesitter-context")})
 	use("lambdalisue/glyph-palette.vim")
-	-- Sometimes freezes nvim for 6s
-	-- use("andymass/vim-matchup")
 	use({ "mattn/emmet-vim", ft = { "html", "vue", "javascript", "javascriptreact", "typescriptreact" } })
 	use("AndrewRadev/tagalong.vim")
 	use("alvan/vim-closetag")

@@ -6,10 +6,8 @@ return {
 			vim.cmd("edit " .. file.fname)
 		end)
 
-		vim.keymap.set("n", "<leader>;", require("plugins/nvim_tree").setup_and_open)
-	end,
-	setup_and_open = function()
-		-- Key mappings
+		vim.keymap.set("n", "<leader>;", require("plugins/nvim_tree").toggle_open)
+
 		local list = {
 			{ key = "<C-v>", action = "vsplit" },
 			{ key = "<C-x>", action = "split" },
@@ -35,11 +33,6 @@ return {
 			{ key = "q", action = "close" },
 			{ key = "g?", action = "toggle_help" },
 		}
-
-		if is_open then
-			vim.cmd("NvimTreeToggle")
-		else
-			is_open = true
 			require("nvim-tree").setup({
 				renderer = {
 					icons = {
@@ -101,6 +94,8 @@ return {
 					require_confirm = true,
 				},
 			})
-		end
+	end,
+	toggle_open = function()
+		vim.cmd("NvimTreeToggle")
 	end,
 }

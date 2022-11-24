@@ -37,6 +37,7 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<leader><leader>", "ci")
 
 -- move through buffers
+vim.keymap.set("n", "<leader>b", ":buffers<CR>:buffer<Space>")
 vim.keymap.set("n", "<leader>[", ":bp!<CR>")
 vim.keymap.set("n", "<leader>]", ":bn!<CR>")
 vim.keymap.set("n", "<leader>x", ":bd<CR>")
@@ -53,7 +54,8 @@ vim.keymap.set("n", "<C-v>", "c<ESC>\"+p")
 vim.keymap.set("i", "<C-v>", "<ESC>\"+pa")
 
 -- search
-vim.keymap.set("n", "<C-n>", ":nohl<CR>")
+vim.keymap.set("n", "<C-n>", ":cn<CR>zv")
+vim.keymap.set("n", "<C-p>", ":cp<CR>zv")
 
 -- Allows numbered jumps to be saved to the jumplist, for use w/ C-o and C-i
 vim.api.nvim_exec("nnoremap <expr> k (v:count > 1 ? \"m'\" . v:count : '') . 'k'", false)
