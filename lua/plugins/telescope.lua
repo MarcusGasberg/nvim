@@ -53,6 +53,7 @@ end
 
 local function git_files_string_visual()
 	local text = u.get_visual_selection()
+	if(text == nil) then return end
 	vim.api.nvim_input("<esc>")
 	if text[1] == nil then
 		print("No appropriate visual selection found")
@@ -64,12 +65,15 @@ end
 
 local function grep_string_visual()
 	local text = u.get_visual_selection()
+	if(text == nil) then return end
+
 	vim.api.nvim_input("<esc>")
-	if text[1] == nil then
+	local firstText = text[1]
+	if firstText == nil then
 		print("No appropriate visual selection found")
 	else
 		builtin.grep_string()
-		vim.api.nvim_input(text[1])
+		vim.api.nvim_input(firstText)
 		vim.api.nvim_feedkeys(text, "i", false)
 	end
 end
@@ -172,7 +176,6 @@ local function CopyCommitHash(prompt_bufnr)
 	actions.close(prompt_bufnr)
 end
 
-local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
 local custom_actions = {}
 
@@ -181,7 +184,7 @@ function custom_actions.fzf_multi_select(prompt_bufnr)
   local num_selections = table.getn(picker:get_multi_selection())
 
   if num_selections > 1 then
-    local picker = action_state.get_current_picker(prompt_bufnr)
+    picker = action_state.get_current_picker(prompt_bufnr)
     for _, entry in ipairs(picker:get_multi_selection()) do
       vim.cmd(string.format("%s %s", ":e!", entry.value))
     end
@@ -195,17 +198,8 @@ local telescope = require("telescope")
 telescope.setup({
 	defaults = {
 		file_ignore_patterns = { "node_modules", "package%-lock.json" },
-		extensions = {
-			fzf = {
-				fuzzy = true,
-				override_generic_sorter = true,
-				override_file_sorter = true,
-				case_mode = "smart_case",
-			},
-		},
 		mappings = {
 			i = {
-				["<esc>"] = actions.close,
 				["<C-j>"] = actions.cycle_history_next,
 				["<C-k>"] = actions.cycle_history_prev,
         ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
@@ -213,7 +207,9 @@ telescope.setup({
         ['<cr>'] = custom_actions.fzf_multi_select,
       },
       n = {
-        ['<esc>'] = actions.close,
+				["<C-j>"] = actions.cycle_history_next,
+				["<C-k>"] = actions.cycle_history_prev,
+        ['<q>'] = actions.close,
         ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
         ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
         ['<cr>'] = custom_actions.fzf_multi_select
@@ -264,19 +260,40 @@ telescope.setup({
 			},
 		},
 	},
+	extensions = {
+			fzf = {
+				fuzzy = true,
+				override_generic_sorter = true,
+				override_file_sorter = true,
+				case_mode = "smart_case",
+			},
+  },
 })
 -- TODO: Fix fzf
 -- telescope.load_extension("fzf")
 vim.g.fzf_history_dir = '~/.local/share/fzf-history'
 
-vim.keymap.set("n", "<C-f>", live_grep, {})
-vim.keymap.set("n", "<C-h>", current_buffer_fuzzy_find, {})
-vim.keymap.set("n", "<C-j>", git_files, {})
-vim.keymap.set("n", "<C-g>", buffers, {})
 vim.keymap.set("n", "<leader>tr", oldfiles, {})
 vim.keymap.set("n", "<leader>tgc", git_commits, {})
 vim.keymap.set("n", "<leader>tgb", git_branches, {})
 vim.keymap.set("n", "<leader>tf", grep_string, {})
+vim.keymap.set('n', ';e', function()
+  builtin.diagnostics()
+end)
+vim.keymap.set("n", ";r", live_grep, {})
+vim.keymap.set("n", ";f", git_files, {})
+vim.keymap.set('n', ';b', function()
+	buffers()
+end)
+vim.keymap.set('n', ';t', function()
+  builtin.help_tags()
+end)
+vim.keymap.set('n', ';;', function()
+  builtin.resume()
+end)
+vim.keymap.set('n', ';e', function()
+  builtin.diagnostics()
+end)
 -- vim.keymap.set("n", "<leader>tf", git_files_string, {})
 -- vim.keymap.set("v", "<leader>tf", git_files_string_visual, {})
 vim.keymap.set("v", "<leader>tf", grep_string_visual, {})

@@ -17,7 +17,6 @@ local setup = function(mod, remote)
 	end
 end
 
-
 local no_setup = function(mod)
 	local status = pcall(require, mod)
 	if not status then
@@ -52,17 +51,27 @@ packer.startup(function(use)
 	use("hrsh7th/cmp-cmdline")
 	use("nvim-lua/plenary.nvim")
 	use("rebelot/kanagawa.nvim") -- In colors.lua file
-	use('folke/tokyonight.nvim')
-	use('catppuccin/nvim')
+	use("folke/tokyonight.nvim")
+	use("catppuccin/nvim")
 	use({ "stevearc/aerial.nvim", config = setup("plugins.aerial") })
 	use("rafamadriz/friendly-snippets")
 	use({
 		"L3MON4D3/LuaSnip",
 		config = setup("plugins.luasnip"),
 	})
-	use { 'saadparwaiz1/cmp_luasnip' }
+	use({ "saadparwaiz1/cmp_luasnip" })
 	use({ "jose-elias-alvarez/null-ls.nvim", config = setup("plugins.null", "null-ls") })
 	--	use({ "nvim-telescope/telescope-fzf-native.nvim", requires={ { "nvim-telescope/telescope.nvim" } }, run = "make" })
+	use({
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v2.x",
+		requires = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+		},
+		config = setup("plugins.neo-tree", "neo-tree"),
+	})
 	use({
 		"nvim-telescope/telescope.nvim",
 		requires = { { "nvim-lua/plenary.nvim" } },
@@ -81,9 +90,17 @@ packer.startup(function(use)
 			vim.fn["fzf#install"]()
 		end,
 	})
-	-- TODO: Make startup and luatab work together
-	use({ "startup-nvim/startup.nvim", requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "alvarosevilla95/luatab.nvim"}, config = setup("plugins.startup") })
-	use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'kyazdani42/nvim-web-devicons', config = setup('plugins.bufferline', 'bufferline')}
+	use({
+		"startup-nvim/startup.nvim",
+		requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+		config = setup("plugins.startup"),
+	})
+	use({
+		"akinsho/bufferline.nvim",
+		tag = "v3.*",
+		requires = "kyazdani42/nvim-web-devicons",
+		config = setup("plugins.bufferline", "bufferline"),
+	})
 	use("tpope/vim-eunuch")
 	use("tpope/vim-obsession")
 	use({ "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap") })
@@ -108,14 +125,17 @@ packer.startup(function(use)
 	use({ "gelguy/wilder.nvim", config = setup("plugins.wilder", "wilder") })
 	use({ "p00f/nvim-ts-rainbow", requires = "nvim-treesitter/nvim-treesitter" })
 	use({ "kyazdani42/nvim-web-devicons", no_setup("nvim-web-devicons") })
-	use({ "kyazdani42/nvim-tree.lua", config = setup("plugins.nvim_tree", "nvim-tree") })
 	use({
 		"sindrets/diffview.nvim",
 		requires = "nvim-lua/plenary.nvim",
 		config = setup("plugins.diffview", "diffview"),
 	})
 	use("kevinhwang91/nvim-hlslens")
-	use({ "petertriho/nvim-scrollbar", requires = "kevinhwang91/nvim-hlslens", config = setup("plugins.scrollbar", "scrollbar") })
+	use({
+		"petertriho/nvim-scrollbar",
+		requires = "kevinhwang91/nvim-hlslens",
+		config = setup("plugins.scrollbar", "scrollbar"),
+	})
 	use({ "karb94/neoscroll.nvim", config = setup("plugins.neoscroll", "neoscroll") })
 	use({ "harrisoncramer/jump-tag", config = setup("plugins.jump-tag", "jump-tag") })
 	use({ "ggandor/leap.nvim", config = setup("plugins.leap", "leap") })
@@ -124,7 +144,11 @@ packer.startup(function(use)
 		run = ":TSUpdate",
 		config = setup("plugins.treesitter", "nvim-treesitter"),
 	})
-	use({ "nvim-treesitter/nvim-treesitter-context", requires = "nvim-treesitter/nvim-treesitter", config = setup("plugins.treesitter-context", "nvim-treesitter-context")})
+	use({
+		"nvim-treesitter/nvim-treesitter-context",
+		requires = "nvim-treesitter/nvim-treesitter",
+		config = setup("plugins.treesitter-context", "nvim-treesitter-context"),
+	})
 	use("lambdalisue/glyph-palette.vim")
 	use({ "mattn/emmet-vim", ft = { "html", "vue", "javascript", "javascriptreact", "typescriptreact" } })
 	use("AndrewRadev/tagalong.vim")

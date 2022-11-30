@@ -53,9 +53,12 @@ vim.keymap.set("v", "<C-x>", "\"+c")
 vim.keymap.set("n", "<C-v>", "c<ESC>\"+p")
 vim.keymap.set("i", "<C-v>", "<ESC>\"+pa")
 
+-- Delete a word backwards
+vim.keymap.set('n', 'dw', 'vb"_d')
+
 -- search
-vim.keymap.set("n", "<C-n>", ":cn<CR>zv")
-vim.keymap.set("n", "<C-p>", ":cp<CR>zv")
+-- vim.keymap.set("n", "<C-n>", ":cn<CR>zv")
+-- vim.keymap.set("n", "<C-p>", ":cp<CR>zv")
 
 -- Allows numbered jumps to be saved to the jumplist, for use w/ C-o and C-i
 vim.api.nvim_exec("nnoremap <expr> k (v:count > 1 ? \"m'\" . v:count : '') . 'k'", false)
