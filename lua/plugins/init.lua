@@ -136,8 +136,6 @@ packer.startup(function(use)
 		requires = "kevinhwang91/nvim-hlslens",
 		config = setup("plugins.scrollbar", "scrollbar"),
 	})
-	use({ "karb94/neoscroll.nvim", config = setup("plugins.neoscroll", "neoscroll") })
-	use({ "harrisoncramer/jump-tag", config = setup("plugins.jump-tag", "jump-tag") })
 	use({ "ggandor/leap.nvim", config = setup("plugins.leap", "leap") })
 	use({
 		"nvim-treesitter/nvim-treesitter",
@@ -147,8 +145,9 @@ packer.startup(function(use)
 	use({
 		"nvim-treesitter/nvim-treesitter-context",
 		requires = "nvim-treesitter/nvim-treesitter",
-		config = setup("plugins.treesitter-context", "nvim-treesitter-context"),
+		config = setup("plugins.nvim-treesitter-context", "nvim-treesitter-context"),
 	})
+	use({ "karb94/neoscroll.nvim", requires= "nvim-treesitter/nvim-treesitter-context" , config = setup("plugins.neoscroll", "neoscroll") })
 	use("lambdalisue/glyph-palette.vim")
 	use({ "mattn/emmet-vim", ft = { "html", "vue", "javascript", "javascriptreact", "typescriptreact" } })
 	use("AndrewRadev/tagalong.vim")

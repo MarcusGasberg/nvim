@@ -1,5 +1,0 @@
-local jump = require("jump-tag")
-vim.keymap.set("n", "<leader>tt", jump.jumpParent, {})
-vim.keymap.set("n", "<leader>tn", jump.jumpNextSibling, {})
-vim.keymap.set("n", "<leader>tp", jump.jumpPrevSibling, {})
-vim.keymap.set("n", "<leader>tc", jump.jumpChild, {})

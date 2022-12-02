@@ -18,7 +18,7 @@ end
 require('nvim-treesitter.install').compilers = { "zig" }
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = { "lua", "css", "javascript", "typescript", "go", "rust", "c_sharp", "scss", "json", "yaml", "html", "markdown" },
+	ensure_installed = { "lua", "css", "javascript", "typescript", "go", "rust", "c_sharp", "scss", "json", "html", "markdown" },
 	sync_install = false,
 	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },
 	highlight = {

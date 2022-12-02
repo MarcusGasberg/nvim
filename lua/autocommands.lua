@@ -23,3 +23,13 @@ vim.cmd([[
   autocmd FileChangedShellPost *
   \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 ]])
+
+-- enable syntax highlighting for csharp files
+vim.cmd([[
+augroup Html
+    au!
+    au BufNewFile,BufRead *.aspx setl filetype=html
+    au BufNewFile,BufRead *.cshtml set filetype=html
+    au BufNewFile,BufRead *.ascx set filetype=html
+augroup END
+]])
