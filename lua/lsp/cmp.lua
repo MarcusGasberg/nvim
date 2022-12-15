@@ -28,8 +28,14 @@ if cmp_status_ok then
 			format = function(entry, vim_item)
 				local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
 				local strings = vim.split(kind.kind, "%s", { trimempty = true })
-				kind.kind = " " .. strings[1] .. " "
-				kind.menu = "    (" .. strings[2] .. ")"
+				if strings[1] ~= nil then
+					kind.kind = " " .. strings[1] .. " "
+				end
+
+				if strings[2] ~= nil then
+					kind.menu = "    (" .. strings[2] .. ")"
+				end
+
 
 				return kind
 			end,
