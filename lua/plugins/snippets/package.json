@@ -42,23 +42,23 @@
     "snippets": [
       {
         "language": "typescript",
-        "path": "./snippets/typescript.json"
+        "path": "./my-snippets/typescript.json"
       },
       {
         "language": "javascript",
-        "path": "./snippets/javascript.json"
+        "path": "./my-snippets/javascript.json"
       },
       {
         "language": "jsonc",
-        "path": "./snippets/jsonc.json"
+        "path": "./my-snippets/jsonc.json"
       },
       {
         "language": "html",
-        "path": "./snippets/html.json"
+        "path": "./my-snippets/html.json"
       },
       {
         "language": "dockerfile",
-        "path": "./snippets/dockerfile.json"
+        "path": "./my-snippets/dockerfile.json"
       }
     ]
   },
