@@ -51,7 +51,13 @@ local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local capabilities = cmp_nvim_lsp.default_capabilities(normal_capabilities)
 
-mason.setup()
+mason.setup({
+	providers = {
+		"mason.providers.client",
+		"mason.providers.registry-api",
+	}
+})
+
 mason_config.setup({
 	ensure_installed = { "sumneko_lua", "angularls", "tsserver", "omnisharp", "cssls", "html", "rust_analyzer" },
 })
@@ -64,7 +70,7 @@ mason_config.setup_handlers({
 		local server = lsp_config[server_name]
 		local server_status_ok, server_config = pcall(require, "lsp.servers." .. server.name)
 		if not server_status_ok then
-			print("The LSP '" .. server.name .. "' does not have a config.")
+			-- print("The LSP '" .. server.name .. "' does not have a config.")
 			server.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,

@@ -255,7 +255,7 @@ telescope.setup({
 				i = {
 					["<C-y>"] = CopyCommitHash,
 					["<C-o>"] = SeeCommitChangesInDiffview,
-					["<C-c>"] = CompareWithCurrentBranchInDiffview,
+					["<CR>"] = CompareWithCurrentBranchInDiffview,
 				},
 			},
 		},

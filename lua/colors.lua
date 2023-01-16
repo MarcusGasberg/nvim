@@ -6,9 +6,6 @@ local catppuccin_ok, catppuccin = pcall(require, "catppuccin")
 local kanagawa_ok, kanagawa = pcall(require, "kanagawa")
 local tokyo_ok, tokyo = pcall(require, "tokyonight")
 
-if catppuccin_ok then
-	catppuccin.setup()
-end
 
 if tokyo_ok then
 	tokyo.setup()
@@ -34,7 +31,10 @@ if kanagawa_ok then
 	})
 end
 
-vim.cmd([[colorscheme catppuccin-mocha]])
+if catppuccin_ok then
+	catppuccin.setup()
+  vim.cmd([[colorscheme catppuccin-mocha]])
+end
 
 vim.cmd([[ :hi Normal guibg=none ctermbg=NONE]])
 vim.cmd([[ :hi NonText guibg=none ctermbg=NONE ]])

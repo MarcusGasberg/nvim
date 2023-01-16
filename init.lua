@@ -1,6 +1,3 @@
--- if vim.loop.os_uname().sysname == "Windows_NT" then
---   $PATH = "C:/Program Files\\Git\\usr\\bin;" . $PATH
--- end
 -- Basic Settings
 require("settings")
 

@@ -122,8 +122,9 @@ packer.startup(function(use)
 		requires = { "nvim-lua/plenary.nvim" },
 		config = setup("plugins.gitsigns", "gitsigns"),
 	})
-	use({ "gelguy/wilder.nvim", config = setup("plugins.wilder", "wilder") })
+	-- use({ "gelguy/wilder.nvim", config = setup("plugins.wilder", "wilder") })
 	use({ "p00f/nvim-ts-rainbow", requires = "nvim-treesitter/nvim-treesitter" })
+	use({"nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter/nvim-treesitter"})
 	use({ "kyazdani42/nvim-web-devicons", no_setup("nvim-web-devicons") })
 	use({
 		"sindrets/diffview.nvim",
@@ -145,7 +146,7 @@ packer.startup(function(use)
 	use({
 		"nvim-treesitter/nvim-treesitter-context",
 		requires = "nvim-treesitter/nvim-treesitter",
-		config = setup("plugins.nvim-treesitter-context", "nvim-treesitter-context"),
+		config = setup("plugins.treesitter-context"),
 	})
 	use({ "karb94/neoscroll.nvim", requires= "nvim-treesitter/nvim-treesitter-context" , config = setup("plugins.neoscroll", "neoscroll") })
 	use("lambdalisue/glyph-palette.vim")
