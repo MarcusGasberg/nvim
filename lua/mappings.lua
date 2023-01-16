@@ -25,6 +25,8 @@ cabbrev("wQ", "wq")
 cabbrev("WQ", "wq")
 cabbrev("W", "w")
 cabbrev("Q", "q")
+cabbrev("Qa", "qa")
+cabbrev("Qa!", "qa!")
 cabbrev("Qall", "qall")
 
 -- Search mappings: These will make it so that going to the next one in a
@@ -48,15 +50,18 @@ vim.keymap.set("n", "<leader>k", ":wincmd k<CR>")
 vim.keymap.set("n", "<leader>l", ":wincmd l<CR>")
 
 -- copy, cut and paste
-vim.keymap.set("v", "<C-c>", "\"+y")
-vim.keymap.set("v", "<C-x>", "\"+c")
-vim.keymap.set("n", "<C-v>", "c<ESC>\"+p")
-vim.keymap.set("i", "<C-v>", "<ESC>\"+pa")
+-- vim.keymap.set("v", "<C-c>", "\"+y")
+-- vim.keymap.set("v", "<C-x>", "\"+c")
+-- vim.keymap.set("n", "<C-v>", "c<ESC>\"+p")
+-- vim.keymap.set("i", "<C-v>", "<ESC>\"+pa")
 
 -- Delete a word backwards
-vim.keymap.set('n', 'dw', 'vb"_d')
+vim.keymap.set('n', 'db', 'vb"_d')
+vim.keymap.set('n', 'cb', 'vb"_c')
 vim.keymap.set("n", "<leader>d", "\"_d")
 vim.keymap.set("v", "<leader>d", "\"_d")
+vim.keymap.set("n", "<leader>c", "\"_c")
+vim.keymap.set("v", "<leader>c", "\"_c")
 
 -- search
 -- vim.keymap.set("n", "<C-n>", ":cn<CR>zv")
