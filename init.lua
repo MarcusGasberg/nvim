@@ -1,5 +1,6 @@
--- Basic Settings
 require("settings")
+
+require("plugins")
 
 -- Language Server
 require("lsp")
@@ -11,6 +12,4 @@ require("functions")
 require("autocommands")
 require("commands")
 
--- Packer plugins
-require("plugins")
 

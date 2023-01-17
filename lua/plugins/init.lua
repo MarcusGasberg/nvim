@@ -1,17 +1,19 @@
 -- Utility settings loader
 local setup = function(mod, remote)
-	if remote == nil then
-		-- If plugin does not need "require" setup, then just set it up.
-		require(mod)
-	else
-		local status = pcall(require, remote)
-		if not status then
-			print(remote .. " is not downloaded.")
-			return
+	return function()
+		if remote == nil then
+			-- If plugin does not need "require" setup, then just set it up.
+			require(mod)
 		else
-			local local_config = require(mod)
-			if type(local_config) == "table" then
-				local_config.setup()
+			local status = pcall(require, remote)
+			if not status then
+				print(remote .. " is not downloaded.")
+				return
+			else
+				local local_config = require(mod)
+				if type(local_config) == "table" then
+					return local_config.setup()
+				end
 			end
 		end
 	end
@@ -58,7 +60,7 @@ lazy.setup({
 	{ "williamboman/mason-lspconfig.nvim" },
 	{ "onsails/lspkind-nvim" },
 	{ "nvim-lua/plenary.nvim" },
-	{ "stevearc/aerial.nvim", config = setup("plugins.aerial")  },
+	{ "stevearc/aerial.nvim", config = setup("plugins.aerial"), event = "VeryLazy" },
 	{ "rafamadriz/friendly-snippets" },
 	{ "L3MON4D3/LuaSnip", config = setup("plugins.luasnip"), },
 	{ "saadparwaiz1/cmp_luasnip" },
@@ -75,7 +77,7 @@ lazy.setup({
 	},
 	{
 		"nvim-telescope/telescope.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
+		dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
 		config = setup("plugins.telescope", "telescope"),
 	},
 	{ "tpope/vim-dispatch" },
@@ -86,12 +88,7 @@ lazy.setup({
 	{ "tpope/vim-eunuch" },
 	{ "tpope/vim-obsession" },
 	{ "tpope/vim-fugitive", config = setup("plugins.fugitive") },
-	{
-		"junegunn/fzf",
-		init = function()
-			vim.fn["fzf#install"]()
-		end,
-	},
+	{ "junegunn/fzf", },
 	{
 		"startup-nvim/startup.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
@@ -99,17 +96,17 @@ lazy.setup({
 	},
 	{
 		"akinsho/bufferline.nvim",
-		tag = "v2.*",
+		version = "v3.*",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
 		config = setup("plugins.bufferline", "bufferline"),
 	},
 	{ "windwp/nvim-autopairs", config = setup("plugins.autopairs", "nvim-autopairs") } ,
-	{ "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap") },
-	{ "qpkorr/vim-bufkill" },
-	{ "numToStr/Comment.nvim", config = true },
+	-- { "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap") },
+	-- { "qpkorr/vim-bufkill" },
+	{ "numToStr/Comment.nvim", config = true, event = "VeryLazy"  },
 	{ "numToStr/FTerm.nvim", config = setup("plugins.fterm", "FTerm") },
 	{ "romainl/vim-cool" },
-	{ "vim-scripts/BufOnly.vim" },
+	{ "vim-scripts/BufOnly.vim", event = "VeryLazy" },
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
@@ -134,7 +131,7 @@ lazy.setup({
 		dependencies =  { "kevinhwang91/nvim-hlslens" },
 		config = setup("plugins.scrollbar", "scrollbar"),
 	},
-	{ "ggandor/leap.nvim", config = setup("plugins.leap", "leap") },
+	{ "ggandor/leap.nvim", config = setup("plugins.leap", "leap"), event="BufEnter" },
 	{
 		"nvim-treesitter/nvim-treesitter",
 		config = setup("plugins.treesitter", "nvim-treesitter"),

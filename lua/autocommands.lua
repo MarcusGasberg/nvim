@@ -33,3 +33,10 @@ augroup Html
     au BufNewFile,BufRead *.ascx set filetype=html
 augroup END
 ]])
+
+vim.cmd([[
+autocmd VimEnter * nested
+        \ if !argc() && empty(v:this_session) && filereadable('Session.vim') && !&modified |
+        \   source Session.vim |
+        \ endif
+]])

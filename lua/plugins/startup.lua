@@ -38,10 +38,10 @@ local settings = {
         title = "Basic Commands",
         margin = 5,
         content = {
-            { " Find File", "Telescope find_files", "<C-j>" },
-            { " Find Word", "Telescope live_grep", "<C-f>" },
+            { " Find File", "Telescope find_files", ";f" },
+            { " Find Word", "Telescope live_grep", ";r" },
             { " Recent Files", "Telescope oldfiles", "<leader>of" },
-            { " File Browser", "Telescope file_browser", "<leader>;" },
+            { " File Browser", "NeoTreeRevealToggle", "\\" },
             { " Colorschemes", "Telescope colorscheme", "<leader>cs" },
             { " New File", "lua require'startup'.new_file()", "<leader>nf" },
         },
@@ -87,19 +87,19 @@ local settings = {
         oldfiles_amount = 10,
     },
 
-    footer_2 = {
-        type = "text",
-        content = require("startup.functions").packer_plugins,
-        oldfiles_directory = false,
-        align = "center",
-        fold_section = false,
-        title = "",
-        margin = 5,
-        highlight = "TSString",
-        default_color = "#FFFFFF",
-        oldfiles_amount = 10,
-    },
-		options = {
+    -- footer_2 = {
+    --     type = "text",
+    --     content = require("startup.functions").packer_plugins,
+    --     oldfiles_directory = false,
+    --     align = "center",
+    --     fold_section = false,
+    --     title = "",
+    --     margin = 5,
+    --     highlight = "TSString",
+    --     default_color = "#FFFFFF",
+    --     oldfiles_amount = 10,
+    -- },
+    options = {
         mapping_keys = true,
         cursor_column = 0.5,
         empty_lines_between_mappings = true,
@@ -117,7 +117,6 @@ local settings = {
         "body_2",
         "footer",
         "clock",
-        "footer_2",
     },
 }
 

@@ -203,4 +203,4 @@ window = {
 				}
 			})
 
-			vim.cmd([[nnoremap <silent>\ :Neotree reveal<cr>]])
+			vim.cmd([[nnoremap <silent>\ :NeoTreeRevealToggle<cr>]])

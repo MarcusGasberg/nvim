@@ -1,5 +1,5 @@
 -- For rainbow brackets
-local enabled_list = { "clojure" }
+local enabled_list = { "typescript" }
 local parsers = require("nvim-treesitter.parsers")
 
 local disable_function = function(lang, bufnr)
@@ -18,7 +18,7 @@ end
 require('nvim-treesitter.install').compilers = { "zig" }
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = { "lua", "css", "javascript", "typescript", "go", "rust", "c_sharp", "scss", "json", "html", "markdown" },
+	ensure_installed = { "lua", "vim", "css", "javascript", "typescript", "go", "rust", "c_sharp", "scss", "json", "html", "markdown" },
 	sync_install = false,
 	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },
 	highlight = {
@@ -99,7 +99,7 @@ require("nvim-treesitter.configs").setup({
 				["[["] = "@class.outer",
 			},
 			goto_previous_end = {
-				-- ["[M"] = "@function.outer",
+				["[M"] = "@function.outer",
 				["[]"] = "@class.outer",
 			},
 		},
