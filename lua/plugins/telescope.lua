@@ -248,6 +248,15 @@ telescope.setup({
 		},
 		buffers = {
 			hidden = true,
+			show_all_buffers = true,
+      sort_lastused = true,
+      theme = "dropdown",
+      previewer = false,
+      mappings = {
+        i = {
+          ["<c-x>"] = "delete_buffer",
+        }
+      }
 		},
 		git_commits = {
 			prompt_prefix = " ",

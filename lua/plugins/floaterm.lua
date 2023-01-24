@@ -1,0 +1,15 @@
+-- vim.keymap.set("n", "<silent>   <leader>fn", ":FloatermNew<CR>")
+-- vim.keymap.set("t", "<silent>   <leader>fn", "<C-\\><C-n>:FloatermNew<CR>")
+vim.keymap.set("n", "<leader>fp", "<cmd>:FloatermPrev<CR>")
+vim.keymap.set("t", "<leader>fp", "<cmd><C-\\><C-n>:FloatermPrev<CR>")
+vim.keymap.set("n", "<leader>fn", "<cmd>:FloatermNext<CR>")
+vim.keymap.set("t", "<leader>fn", "<cmd><C-\\><C-n>:FloatermNext<CR>")
+vim.keymap.set("n", "<leader>ft", "<cmd>:FloatermToggle<CR>")
+vim.keymap.set("t", "<leader>ft", "<cmd><C-\\><C-n>:FloatermToggle<CR>")
+vim.keymap.set("n", "<leader>fh", "<cmd>:FloatermHide<CR>")
+vim.keymap.set("t", "<leader>fh", "<cmd><C-\\><C-n>:FloatermHide<CR>")
+vim.keymap.set("n", "<leader>fs", "<cmd>:FloatermShow<CR>")
+vim.keymap.set("t", "<leader>fs", "<cmd><C-\\><C-n>:FloatermShow<CR>")
+vim.g.floaterm_width = 0.95
+vim.g.floaterm_height = 0.95
+vim.keymap.set('n', '<leader>gs', ':FloatermNew lazygit<CR>')

@@ -44,15 +44,15 @@ lazy.setup({
 	},
 	{
 		"hrsh7th/nvim-cmp",
-		-- load cmp on InsertEnter
-		event = "InsertEnter",
 		-- these dependencies will only be loaded when cmp loads
 		-- dependencies are always lazy-loaded unless specified otherwise
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-cmdline"
+			"hrsh7th/cmp-cmdline",
+			"onsails/lspkind-nvim",
+			"L3MON4D3/LuaSnip"
 		},
 	},
 	{ "neovim/nvim-lspconfig" },
@@ -80,14 +80,11 @@ lazy.setup({
 		dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
 		config = setup("plugins.telescope", "telescope"),
 	},
-	{ "tpope/vim-dispatch" },
 	{ "tpope/vim-repeat" },
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-surround" },
 	{ "tpope/vim-unimpaired" },
-	{ "tpope/vim-eunuch" },
 	{ "tpope/vim-obsession" },
-	{ "tpope/vim-fugitive", config = setup("plugins.fugitive") },
 	{ "junegunn/fzf", },
 	{
 		"startup-nvim/startup.nvim",
@@ -104,7 +101,7 @@ lazy.setup({
 	-- { "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap") },
 	-- { "qpkorr/vim-bufkill" },
 	{ "numToStr/Comment.nvim", config = true, event = "VeryLazy"  },
-	{ "numToStr/FTerm.nvim", config = setup("plugins.fterm", "FTerm") },
+	{ "voldikss/vim-floaterm", config = setup("plugins.floaterm") },
 	{ "romainl/vim-cool" },
 	{ "vim-scripts/BufOnly.vim", event = "VeryLazy" },
 	{

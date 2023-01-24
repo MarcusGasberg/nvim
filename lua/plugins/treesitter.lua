@@ -41,7 +41,7 @@ require("nvim-treesitter.configs").setup({
 		end, parsers.available_parsers()),
 	},
 	matchup = {
-		enable = true,
+		enable = false,
 		disable = { "json", "csv" },
 	},
 	textobjects = {
