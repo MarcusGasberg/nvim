@@ -42,6 +42,7 @@ lazy.setup({
 			vim.cmd([[colorscheme catppuccin-mocha]])
 		end
 	},
+	-- { "rebelot/kanagawa.nvim" },
 	{
 		"hrsh7th/nvim-cmp",
 		-- these dependencies will only be loaded when cmp loads
@@ -114,7 +115,7 @@ lazy.setup({
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = setup("plugins.gitsigns", "gitsigns"),
 	},
-	{ "p00f/nvim-ts-rainbow", dependencies = { "nvim-treesitter/nvim-treesitter" } },
+	{ "mrjones2014/nvim-ts-rainbow", dependencies = { "nvim-treesitter/nvim-treesitter" } },
 	{"nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" }},
 	{ "kyazdani42/nvim-web-devicons", config = true },
 	{

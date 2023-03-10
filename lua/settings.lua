@@ -1,4 +1,8 @@
 vim.api.nvim_exec('language en_US', true)
+vim.opt.shell="powershell"
+vim.opt.shellcmdflag="-command"
+vim.opt.shellquote="\""
+vim.opt.shellxquote=""
 -- set.leader to comma/space key
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","

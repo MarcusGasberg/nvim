@@ -59,7 +59,7 @@ mason.setup({
 })
 
 mason_config.setup({
-	ensure_installed = { "sumneko_lua", "angularls", "tsserver", "omnisharp", "cssls", "html", "rust_analyzer", "emmet-ls" },
+	ensure_installed = { "lua_ls", "angularls", "tsserver", "omnisharp", "cssls", "html", "rust_analyzer" }
 })
 
 mason_config.setup_handlers({
