@@ -11,6 +11,7 @@ local disable_function = function(lang, bufnr)
 		vim.g.matchup_matchparen_enabled = 0
 		return true
 	else
+		vim.g.matchup_matchparen_enabled = 1
 		return false
 	end
 end

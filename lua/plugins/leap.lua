@@ -6,5 +6,7 @@ if not leap_ok then
 end
 
 leap.add_default_mappings()
-leap.init_highlight(true)
-
+vim.cmd([[ 
+	autocmd ColorScheme * lua require('leap').init_highlight(true)
+]])
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
