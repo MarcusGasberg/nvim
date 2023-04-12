@@ -13,20 +13,8 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +309 lua/plugins/telescope.lua
-badd +2 lua/plugins/treesitter.lua
-badd +6 lua/plugins/init.lua
-badd +6 lua/settings.lua
-badd +1 lua/plugins/leap.lua
-badd +1 lua/plugins/gitsigns.lua
-badd +2 lua/plugins/floaterm.lua
-badd +23 lua/plugins/fugitive.lua
-badd +1 lua/commands.lua
-badd +12 lua/functions/utils.lua
-badd +1 lua/plugins/neo-tree.lua
-badd +1 lua/plugins/treesitter-context.lua
-badd +90 lua/plugins/wilder.lua
-badd +0 fugitive:///C:/Users/guest-maga/AppData/Local/nvim/.git//
+badd +2 lua/plugins/telescope.lua
+badd +1 fugitive:///C:/Users/guest-maga/AppData/Local/nvim/.git//
 argglobal
 %argdel
 edit fugitive:///C:/Users/guest-maga/AppData/Local/nvim/.git//
@@ -46,8 +34,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 26 + 27) / 55)
-exe '2resize ' . ((&lines * 25 + 27) / 55)
+exe '1resize ' . ((&lines * 27 + 29) / 58)
+exe '2resize ' . ((&lines * 27 + 29) / 58)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -57,7 +45,7 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 1 - ((0 * winheight(0) + 13) / 26)
+let s:l = 1 - ((0 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -65,9 +53,9 @@ keepjumps 1
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("lua/plugins/init.lua", ":p")) | buffer lua/plugins/init.lua | else | edit lua/plugins/init.lua | endif
+if bufexists(fnamemodify("lua/plugins/telescope.lua", ":p")) | buffer lua/plugins/telescope.lua | else | edit lua/plugins/telescope.lua | endif
 if &buftype ==# 'terminal'
-  silent file lua/plugins/init.lua
+  silent file lua/plugins/telescope.lua
 endif
 setlocal fdm=manual
 setlocal fde=0
@@ -79,16 +67,15 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 6 - ((5 * winheight(0) + 12) / 25)
+let s:l = 322 - ((13 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 6
-normal! 031|
+keepjumps 322
+normal! 03|
 wincmd w
-exe '1resize ' . ((&lines * 26 + 27) / 55)
-exe '2resize ' . ((&lines * 25 + 27) / 55)
-if exists(':tcd') == 2 | tcd ~/AppData/Local/nvim | endif
+exe '1resize ' . ((&lines * 27 + 29) / 58)
+exe '2resize ' . ((&lines * 27 + 29) / 58)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

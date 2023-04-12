@@ -66,22 +66,26 @@ lazy.setup({
 	{ "L3MON4D3/LuaSnip", config = setup("plugins.luasnip") },
 	{ "saadparwaiz1/cmp_luasnip" },
 	{ "jose-elias-alvarez/null-ls.nvim", config = setup("plugins.null", "null-ls") },
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v2.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"kyazdani42/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
-		},
-		config = setup("plugins.neo-tree", "neo-tree"),
-	},
+	-- {
+	-- 	"nvim-neo-tree/neo-tree.nvim",
+	-- 	branch = "v2.x",
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"kyazdani42/nvim-web-devicons",
+	-- 		"MunifTanjim/nui.nvim",
+	-- 	},
+	-- 	config = setup("plugins.neo-tree", "neo-tree"),
+	-- },
 	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
 		config = setup("plugins.telescope", "telescope"),
 	},
-	{ "tpope/vim-fugitive", config = setup("plugins.fugitive") },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+  },
+  { "tpope/vim-fugitive", config = setup("plugins.fugitive") },
 	{ "tpope/vim-repeat", event = "VeryLazy"},
 	{ "tpope/vim-sleuth", event = "VeryLazy"},
 	{ "tpope/vim-surround", event = "VeryLazy"},

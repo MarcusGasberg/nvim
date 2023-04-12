@@ -205,7 +205,7 @@ telescope.setup({
 				["<C-k>"] = actions.cycle_history_prev,
         ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
         ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
-        ['<cr>'] = custom_actions.fzf_multi_select,
+        -- ['<cr>'] = custom_actions.fzf_multi_select,
       },
       n = {
 				["<C-j>"] = actions.cycle_history_next,
@@ -213,7 +213,7 @@ telescope.setup({
         ['<q>'] = actions.close,
         ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
         ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
-        ['<cr>'] = custom_actions.fzf_multi_select
+        -- ['<cr>'] = custom_actions.fzf_multi_select
       }
 		},
 	},
@@ -277,19 +277,26 @@ telescope.setup({
 				override_file_sorter = true,
 				case_mode = "smart_case",
 			},
+	file_browser = {
+      theme = "dropdown",
+      -- disables netrw and use telescope-file-browser in its place
+      hijack_netrw = true,
+			["i"] = {
+				["<C-CR>"] = actions.file_edit
+			},
+			["n"] = {
+				["<CR>"] = actions.file_edit
+			}
+    },
   },
 })
--- TODO: Fix fzf
--- telescope.load_extension("fzf")
 vim.g.fzf_history_dir = '~/.local/share/fzf-history'
+telescope.load_extension("file_browser")
 
 vim.keymap.set("n", "<leader>tr", oldfiles, {})
 vim.keymap.set("n", "<leader>tgc", git_commits, {})
 vim.keymap.set("n", "<leader>tgb", git_branches, {})
 vim.keymap.set("n", "<leader>tf", grep_string, {})
-vim.keymap.set('n', ';e', function()
-  builtin.diagnostics()
-end)
 vim.keymap.set("n", ";r", live_grep, {})
 vim.keymap.set("n", ";f", git_files, {})
 vim.keymap.set('n', ';b', function()
@@ -308,3 +315,21 @@ end)
 -- vim.keymap.set("v", "<leader>tf", git_files_string_visual, {})
 vim.keymap.set("v", "<leader>tf", grep_string_visual, {})
 vim.keymap.set("n", "<leader>tgs", stash_filter, {})
+
+
+local function telescope_buffer_dir()
+  return vim.fn.expand('%:p:h')
+end
+vim.keymap.set("n", "\\", function()
+  telescope.extensions.file_browser.file_browser({
+    path = "%:p:h",
+    cwd = telescope_buffer_dir(),
+    select_buffer=false,
+    respect_gitignore = false,
+    hidden = true,
+    grouped = true,
+    previewer = false,
+    initial_mode = "normal",
+    layout_config = { height = 40 }
+  })
+end)
