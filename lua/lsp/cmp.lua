@@ -93,6 +93,7 @@ cmp.setup.cmdline(':', {
 	{
 		{
 			name = 'cmdline',
+			keyword_pattern=[=[[^[:blank:]\!]*]=],
 			option = {
 				ignore_cmds = { 'Man', '!' }
 			}

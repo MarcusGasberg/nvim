@@ -13,8 +13,8 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +2 lua/plugins/telescope.lua
-badd +1 fugitive:///C:/Users/guest-maga/AppData/Local/nvim/.git//
+badd +60 lua/lsp/cmp.lua
+badd +0 fugitive:///C:/Users/guest-maga/AppData/Local/nvim/.git//
 argglobal
 %argdel
 edit fugitive:///C:/Users/guest-maga/AppData/Local/nvim/.git//
@@ -34,8 +34,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 27 + 29) / 58)
-exe '2resize ' . ((&lines * 27 + 29) / 58)
+exe '1resize ' . ((&lines * 23 + 25) / 50)
+exe '2resize ' . ((&lines * 23 + 25) / 50)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -45,7 +45,7 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 1 - ((0 * winheight(0) + 13) / 27)
+let s:l = 1 - ((0 * winheight(0) + 11) / 23)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -53,9 +53,9 @@ keepjumps 1
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("lua/plugins/telescope.lua", ":p")) | buffer lua/plugins/telescope.lua | else | edit lua/plugins/telescope.lua | endif
+if bufexists(fnamemodify("lua/lsp/cmp.lua", ":p")) | buffer lua/lsp/cmp.lua | else | edit lua/lsp/cmp.lua | endif
 if &buftype ==# 'terminal'
-  silent file lua/plugins/telescope.lua
+  silent file lua/lsp/cmp.lua
 endif
 setlocal fdm=manual
 setlocal fde=0
@@ -67,15 +67,15 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 322 - ((13 * winheight(0) + 13) / 27)
+let s:l = 60 - ((11 * winheight(0) + 11) / 23)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 322
-normal! 03|
+keepjumps 60
+normal! 048|
 wincmd w
-exe '1resize ' . ((&lines * 27 + 29) / 58)
-exe '2resize ' . ((&lines * 27 + 29) / 58)
+exe '1resize ' . ((&lines * 23 + 25) / 50)
+exe '2resize ' . ((&lines * 23 + 25) / 50)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
