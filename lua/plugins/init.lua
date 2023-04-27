@@ -66,6 +66,7 @@ lazy.setup({
 	{ "L3MON4D3/LuaSnip", config = setup("plugins.luasnip") },
 	{ "saadparwaiz1/cmp_luasnip" },
 	{ "jose-elias-alvarez/null-ls.nvim", config = setup("plugins.null", "null-ls") },
+	{ "jose-elias-alvarez/typescript.nvim"},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v2.x",
@@ -149,5 +150,5 @@ lazy.setup({
 	{ "AndrewRadev/tagalong.vim" },
 	{ "vim-test/vim-test", config = setup("plugins.vim-test") },
 	{ "simrat39/rust-tools.nvim" },
-	{ "windwp/nvim-ts-autotag" },
+	{'kevinhwang91/nvim-ufo', dependencies = { 'kevinhwang91/promise-async' }, config = setup("plugins.ufo", "")}
 })

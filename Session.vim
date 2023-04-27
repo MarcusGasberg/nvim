@@ -13,7 +13,12 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +60 lua/lsp/cmp.lua
+badd +148 lua/plugins/init.lua
+badd +2 ~/AppData/Local/nvim/lua/plugins/ufo.lua
+badd +162 lua/lsp/init.lua
+badd +15 lua/plugins/null.lua
+badd +18 lua/plugins/neoscroll.lua
+badd +74 lua/mappings.lua
 badd +0 fugitive:///C:/Users/guest-maga/AppData/Local/nvim/.git//
 argglobal
 %argdel
@@ -37,11 +42,12 @@ set winwidth=1
 exe '1resize ' . ((&lines * 23 + 25) / 50)
 exe '2resize ' . ((&lines * 23 + 25) / 50)
 argglobal
+balt lua/plugins/null.lua
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
@@ -53,26 +59,61 @@ keepjumps 1
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("lua/lsp/cmp.lua", ":p")) | buffer lua/lsp/cmp.lua | else | edit lua/lsp/cmp.lua | endif
+if bufexists(fnamemodify("lua/lsp/init.lua", ":p")) | buffer lua/lsp/init.lua | else | edit lua/lsp/init.lua | endif
 if &buftype ==# 'terminal'
-  silent file lua/lsp/cmp.lua
+  silent file lua/lsp/init.lua
 endif
+balt lua/plugins/null.lua
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
+6,8fold
+16,17fold
+34,35fold
+37,38fold
+40,41fold
+45,46fold
+15,47fold
+51,53fold
+59,61fold
+58,62fold
+65,66fold
+78,80fold
+76,81fold
+82,83fold
+73,84fold
+92,94fold
+101,106fold
+100,107fold
+98,108fold
+88,109fold
+114,117fold
+113,118fold
+112,118fold
+69,119fold
+127,131fold
+123,132fold
+137,139fold
+156,157fold
+158,167fold
+147,172fold
+178,181fold
+183,187fold
+175,190fold
+193,199fold
 let &fdl = &fdl
-let s:l = 60 - ((11 * winheight(0) + 11) / 23)
+let s:l = 2 - ((1 * winheight(0) + 11) / 23)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 60
-normal! 048|
+keepjumps 2
+normal! 03|
 wincmd w
 exe '1resize ' . ((&lines * 23 + 25) / 50)
 exe '2resize ' . ((&lines * 23 + 25) / 50)
