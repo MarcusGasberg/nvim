@@ -42,7 +42,7 @@ lazy.setup({
 			vim.cmd([[colorscheme catppuccin-mocha]])
 		end
 	},
-	-- { "rebelot/kanagawa.nvim" },
+	{ "rebelot/kanagawa.nvim" },
 	{
 		"hrsh7th/nvim-cmp",
 		-- these dependencies will only be loaded when cmp loads
@@ -57,40 +57,45 @@ lazy.setup({
 		},
 	},
 	{ "neovim/nvim-lspconfig" },
-	{ "williamboman/mason.nvim" },
+	{ "williamboman/mason.nvim", build = ":MasonUpdate" },
 	{ "williamboman/mason-lspconfig.nvim" },
+  {
+    "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
+    },
+    config = setup("plugins.null", "null-ls") 
+  },
 	{ "onsails/lspkind-nvim" },
 	{ "nvim-lua/plenary.nvim" },
-	{ "stevearc/aerial.nvim", config = setup("plugins.aerial"), event = "VeryLazy" },
 	{ "rafamadriz/friendly-snippets" },
 	{ "L3MON4D3/LuaSnip", config = setup("plugins.luasnip") },
 	{ "saadparwaiz1/cmp_luasnip" },
-	{ "jose-elias-alvarez/null-ls.nvim", config = setup("plugins.null", "null-ls") },
+	{ "jose-elias-alvarez/null-ls.nvim"},
 	{ "jose-elias-alvarez/typescript.nvim"},
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v2.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"kyazdani42/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
-		},
-		config = setup("plugins.neo-tree", "neo-tree"),
-	},
+	-- {
+	-- 	"nvim-neo-tree/neo-tree.nvim",
+	-- 	branch = "v2.x",
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"kyazdani42/nvim-web-devicons",
+	-- 		"MunifTanjim/nui.nvim",
+	-- 	},
+	-- 	config = setup("plugins.neo-tree", "neo-tree"),
+	-- },
 	{
 		"nvim-telescope/telescope.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
+		dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build" } },
 		config = setup("plugins.telescope", "telescope"),
 	},
-  {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-  },
-  { "tpope/vim-fugitive", config = setup("plugins.fugitive") },
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+	},
 	{ "tpope/vim-repeat", event = "VeryLazy"},
-	{ "tpope/vim-sleuth", event = "VeryLazy"},
 	{ "tpope/vim-surround", event = "VeryLazy"},
-	{ "tpope/vim-unimpaired", event = "VeryLazy"},
 	{ "tpope/vim-obsession", event = "VeryLazy"},
 	{ "junegunn/fzf", },
 	{
@@ -140,15 +145,26 @@ lazy.setup({
 		"nvim-treesitter/nvim-treesitter",
 		config = setup("plugins.treesitter", "nvim-treesitter"),
 	},
-	{
-		"nvim-treesitter/nvim-treesitter-context",
-		dependencies =  {"nvim-treesitter/nvim-treesitter"},
-		config = setup("plugins.treesitter-context"),
-	},
-	{ "karb94/neoscroll.nvim", dependencies= { "nvim-treesitter/nvim-treesitter-context" } , config = setup("plugins.neoscroll", "neoscroll") },
+	{ "karb94/neoscroll.nvim", config = setup("plugins.neoscroll", "neoscroll") },
 	{ "lambdalisue/glyph-palette.vim" },
-	{ "AndrewRadev/tagalong.vim" },
 	{ "vim-test/vim-test", config = setup("plugins.vim-test") },
 	{ "simrat39/rust-tools.nvim" },
-	{'kevinhwang91/nvim-ufo', dependencies = { 'kevinhwang91/promise-async' }, config = setup("plugins.ufo", "")}
+	{ "windwp/nvim-ts-autotag" },
+	{"kevinhwang91/nvim-ufo", dependencies = { "kevinhwang91/promise-async" }, config = setup("plugins.ufo", "ufo")},
+	{ "folke/zen-mode.nvim", config = setup("plugins.zen-mode", "zen-mode"), event = "VeryLazy"},
+	{
+		"glepnir/lspsaga.nvim",
+		event = "LspAttach",
+		config = setup("plugins.lspsaga"),
+		dependencies = {
+			{"kyazdani42/nvim-web-devicons"},
+			--Please make sure you install markdown and markdown_inline parser
+			{"nvim-treesitter/nvim-treesitter"}
+		}
+	},
+	{
+		"kevinhwang91/nvim-bqf",
+		ft = "qf",
+		config = true
+	}
 })

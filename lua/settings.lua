@@ -1,5 +1,5 @@
 vim.api.nvim_exec('language en_US', true)
-vim.opt.shell="powershell"
+vim.opt.shell="pwsh"
 vim.opt.shellcmdflag="-command"
 vim.opt.shellquote="\""
 vim.opt.shellxquote=""
@@ -71,6 +71,8 @@ vim.g.gui_font_face = "Fira Code Retina"
 
 vim.g.t_Co=256
 vim.g.t_ut=nil
+
+vim.opt.colorcolumn = "80"
 
 vim.g.matchparen_timeout = 10
 vim.g.matchparen_insert_timeout = 10

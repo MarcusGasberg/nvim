@@ -1,6 +1,8 @@
 require("toggleterm").setup{
-    shade_terminals=false
+    shade_terminals=false,
 }
+
+local opts= {noremap = true, silent = true}
 
 local Terminal  = require('toggleterm.terminal').Terminal
 local lazygit = Terminal:new({
@@ -8,12 +10,13 @@ local lazygit = Terminal:new({
   dir = "git_dir",
   direction = "float",
   float_opts = {
-    border = "double",
+    border = "curved",
   },
   -- function to run on opening the terminal
   on_open = function(term)
+    vim.cmd("normal 0")
     vim.cmd("startinsert!")
-    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", opts)
   end
 })
 
@@ -21,8 +24,8 @@ function _lazygit_toggle()
   lazygit:toggle()
 end
 
--- Using fugitive instead of lazy git
--- vim.api.nvim_set_keymap("n", "<leader>gs", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+vim.keymap.set({"n", "t", "i"}, "<C-g>", "<cmd>lua _lazygit_toggle()<CR>", opts)
+
 function _G.set_terminal_keymaps()
   local opts = {buffer = 0}
   vim.keymap.set('t', '<C-j><C-k>', [[<C-\><C-n>]], opts)

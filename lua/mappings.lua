@@ -23,6 +23,7 @@ cabbrev("Wq", "wq")
 cabbrev("Wa", "wa")
 cabbrev("wQ", "wq")
 cabbrev("WQ", "wq")
+cabbrev("Wqa", "wqa")
 cabbrev("W", "w")
 cabbrev("Q", "q")
 cabbrev("Qa", "qa")
@@ -36,18 +37,11 @@ vim.keymap.set("n", "N", "Nzzzv")
 
 -- vim.keymap.set("n", "gx", "!start <c-r><c-a>")
 
-vim.keymap.set("n", "<leader><leader>", "ci")
-
 -- move through buffers
-vim.keymap.set("n", "<leader>b", ":buffers<CR>:buffer<Space>")
 vim.keymap.set("n", "<leader>[", ":bp!<CR>")
 vim.keymap.set("n", "<leader>]", ":bn!<CR>")
 vim.keymap.set("n", "<leader>x", ":bd<CR>")
 vim.keymap.set("n", "<leader>X", ":BD<CR>")
-vim.keymap.set("n", "<leader>h", ":wincmd h<CR>")
-vim.keymap.set("n", "<leader>j", ":wincmd j<CR>")
-vim.keymap.set("n", "<leader>k", ":wincmd k<CR>")
-vim.keymap.set("n", "<leader>l", ":wincmd l<CR>")
 
 -- copy, cut and paste
 -- vim.keymap.set("v", "<C-c>", "\"+y")

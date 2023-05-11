@@ -73,6 +73,9 @@ cmp.setup({
 		{ name = "luasnip" },
 		{ name = 'path' }
 	}),
+	experimental = {
+		native_menu = false,
+	}
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
@@ -88,14 +91,13 @@ cmp.setup.cmdline(':', {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = cmp.config.sources(
 	{
-		{ name = 'path' }
+		{ name = 'async_path' }
 	},
 	{
 		{
 			name = 'cmdline',
-			keyword_pattern=[=[[^[:blank:]\!]*]=],
 			option = {
-				ignore_cmds = { 'Man', '!' }
+				ignore_cmds = { 'Man', '!', 'grep', 'vimgrep' }
 			}
 		}
 	})

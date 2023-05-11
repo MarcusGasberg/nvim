@@ -24,9 +24,10 @@ local on_attach = function(client, bufnr)
 	client.server_capabilities.documentFormattingProvider = false
 
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+	-- Handled by lsp saga
+	-- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
-	vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help)
+	vim.keymap.set({"n", "i"}, "<C-k>", vim.lsp.buf.signature_help)
 	vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, {})
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
 	vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
@@ -45,6 +46,15 @@ local on_attach = function(client, bufnr)
 	if client.server_capabilities.colorProvider then
 		require("lsp/colorizer").buf_attach(bufnr, { single_column = false, debounce = 500 })
 	end
+end
+
+
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+  opts = opts or {}
+  opts.border = opts.border or 'rounded'
+  opts.max_width= opts.max_width or 80
+  return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
 local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -172,29 +182,29 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
     return newVirtText
 end
 
-require('ufo').setup({
-    close_fold_kinds = {'imports', 'comment'},
-    preview = {
-        win_config = {
-            border = {'', '─', '', '', '', '─', '', ''},
-            winhighlight = 'Normal:Folded',
-            winblend = 0
-        },
-        mappings = {
-            scrollU = '<C-u>',
-            scrollD = '<C-d>',
-            jumpTop = '[',
-            jumpBot = ']'
-        }
-    },
-    fold_virt_text_handler = handler
-})
-
-vim.keymap.set('n', 'K', function()
-    local winid = require('ufo').peekFoldedLinesUnderCursor()
-    if not winid then
-        -- choose one of coc.nvim and nvim lsp
-        vim.fn.CocActionAsync('definitionHover') -- coc.nvim
-        vim.lsp.buf.hover()
-    end
-end)
+-- require('ufo').setup({
+--     close_fold_kinds = {'imports', 'comment'},
+--     preview = {
+--         win_config = {
+--             border = {'', '─', '', '', '', '─', '', ''},
+--             winhighlight = 'Normal:Folded',
+--             winblend = 0
+--         },
+--         mappings = {
+--             scrollU = '<C-u>',
+--             scrollD = '<C-d>',
+--             jumpTop = '[',
+--             jumpBot = ']'
+--         }
+--     },
+--     fold_virt_text_handler = handler
+-- })
+--
+-- vim.keymap.set('n', 'K', function()
+--     local winid = require('ufo').peekFoldedLinesUnderCursor()
+--     if not winid then
+--         -- choose one of coc.nvim and nvim lsp
+--         vim.fn.CocActionAsync('definitionHover') -- coc.nvim
+--         vim.lsp.buf.hover()
+--     end
+-- end)

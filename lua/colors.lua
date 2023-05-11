@@ -27,14 +27,12 @@ if kanagawa_ok then
 		globalStatus = false, -- adjust window separators highlight for laststatus=3
 		terminalColors = true, -- define vim.g.terminal_color_{0,17}
 		colors = {},
-		overrides = {},
+		overrides = function(colors) -- add/modify highlights
+			return {}
+		end,
 	})
 end
 
-if catppuccin_ok then
-	catppuccin.setup()
-  vim.cmd([[colorscheme catppuccin-mocha]])
-end
 
 vim.cmd([[ :hi Normal guibg=none ctermbg=NONE]])
 vim.cmd([[ :hi NonText guibg=none ctermbg=NONE ]])
