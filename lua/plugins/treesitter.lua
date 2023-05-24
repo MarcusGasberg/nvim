@@ -2,20 +2,6 @@
 local enabled_list = { "typescript" }
 local parsers = require("nvim-treesitter.parsers")
 
-local disable_function = function(lang, bufnr)
-	if not bufnr then
-		bufnr = 0
-	end
-	local line_count = vim.api.nvim_buf_line_count(bufnr)
-	if line_count > 20000 or (line_count == 1 and lang == "json") then
-		vim.g.matchup_matchparen_enabled = 0
-		return true
-	else
-		vim.g.matchup_matchparen_enabled = 1
-		return false
-	end
-end
-
 require('nvim-treesitter.install').compilers = { "zig" }
 
 require("nvim-treesitter.configs").setup({
@@ -26,20 +12,6 @@ require("nvim-treesitter.configs").setup({
 		enable = true, -- false will disable the whole extension
 		disable = disable_function,
 		additional_vim_regex_highlighting = false,
-	},
-	-- Rainbow parens plugin
-	rainbow = {
-		enable = false,
-		-- Enable only for lisp like languages
-		disable = vim.tbl_filter(function(p)
-			local disable = true
-			for _, lang in pairs(enabled_list) do
-				if p == lang then
-					disable = false
-				end
-			end
-			return disable
-		end, parsers.available_parsers()),
 	},
 	matchup = {
 		enable = false,

@@ -126,7 +126,6 @@ lazy.setup({
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = setup("plugins.gitsigns", "gitsigns"),
 	},
-	{ "mrjones2014/nvim-ts-rainbow", dependencies = { "nvim-treesitter/nvim-treesitter" } },
 	{"nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" }},
 	{ "kyazdani42/nvim-web-devicons", config = true },
 	{
@@ -151,7 +150,6 @@ lazy.setup({
 	{ "simrat39/rust-tools.nvim" },
 	{ "windwp/nvim-ts-autotag" },
 	{"kevinhwang91/nvim-ufo", dependencies = { "kevinhwang91/promise-async" }, config = setup("plugins.ufo", "ufo")},
-	{ "folke/zen-mode.nvim", config = setup("plugins.zen-mode", "zen-mode"), event = "VeryLazy"},
 	{
 		"glepnir/lspsaga.nvim",
 		event = "LspAttach",

@@ -48,3 +48,4 @@ require('ufo').setup({
     },
     fold_virt_text_handler = handler
 })
+

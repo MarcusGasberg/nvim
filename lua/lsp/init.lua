@@ -126,7 +126,7 @@ mason_config.setup_handlers({
 				root_dir = lsp_config.util.root_pattern("angular.json", "project.json"),
 				capabilities = capabilities,
 			})
-	end
+	end,
 })
 
 -- Global diagnostic settings
