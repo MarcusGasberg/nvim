@@ -3,7 +3,7 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/AppData/Local/nvim
+cd ~/.config/nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
@@ -13,24 +13,21 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +376 lua/plugins/telescope.lua
-badd +8 lua/lsp/cmp.lua
-badd +16 lua/lsp/servers/tsserver.lua
-badd +2 lua/plugins/fugitive.lua
-badd +2 lua/functions/init.lua
-badd +215 health://
-badd +126 lua/lsp/init.lua
-badd +7 lua/plugins/null.lua
-badd +149 lua/plugins/init.lua
-badd +75 lua/settings.lua
-badd +5 lua/plugins/lazygit.lua
-badd +2 lua/plugins/toggleterm.lua
-badd +2 lua/plugins/ufo.lua
-badd +5 lua/plugins/treesitter.lua
+badd +123 lua/functions/utils.lua
+badd +38 lua/lsp/init.lua
+badd +71 lua/plugins/telescope.lua
+badd +4 init.lua
+badd +1 lua/plugins/autopairs.lua
+badd +44 lua/plugins/startup.lua
+badd +5 lua/plugins/scrollbar.lua
+badd +4 ~/.config/nvim/lua/plugins/init.lua
+badd +8 lua/plugins/luasnip.lua
+badd +13 lua/plugins/null.lua
 argglobal
 %argdel
-edit lua/plugins/init.lua
+edit lua/plugins/null.lua
 argglobal
+balt lua/plugins/luasnip.lua
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -40,42 +37,16 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-4,6fold
-9,11fold
-14,15fold
-12,16fold
-7,17fold
-3,18fold
-2,19fold
-25,31fold
-24,32fold
-41,42fold
-39,43fold
-50,56fold
-46,57fold
-65,67fold
-62,69fold
-88,91fold
-93,95fold
-101,104fold
-106,110fold
-119,122fold
-124,127fold
-131,134fold
-137,140fold
-143,145fold
-157,160fold
-153,161fold
-163,166fold
-38,167fold
+9,13fold
+16,23fold
+26,29fold
 let &fdl = &fdl
-let s:l = 149 - ((27 * winheight(0) + 23) / 47)
+let s:l = 13 - ((12 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 149
-normal! 059|
-if exists(':tcd') == 2 | tcd ~/AppData/Local/nvim | endif
+keepjumps 13
+normal! 02|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

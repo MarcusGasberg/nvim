@@ -75,25 +75,25 @@ lazy.setup({
 	{ "saadparwaiz1/cmp_luasnip" },
 	{ "jose-elias-alvarez/null-ls.nvim"},
 	{ "jose-elias-alvarez/typescript.nvim"},
-	-- {
-	-- 	"nvim-neo-tree/neo-tree.nvim",
-	-- 	branch = "v2.x",
-	-- 	dependencies = {
-	-- 		"nvim-lua/plenary.nvim",
-	-- 		"kyazdani42/nvim-web-devicons",
-	-- 		"MunifTanjim/nui.nvim",
-	-- 	},
-	-- 	config = setup("plugins.neo-tree", "neo-tree"),
-	-- },
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v2.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"kyazdani42/nvim-web-devicons",
+			"MunifTanjim/nui.nvim",
+		},
+		config = setup("plugins.neo-tree", "neo-tree"),
+	},
 	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build" } },
 		config = setup("plugins.telescope", "telescope"),
 	},
-	{
-		"nvim-telescope/telescope-file-browser.nvim",
-		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-	},
+	-- {
+	-- 	"nvim-telescope/telescope-file-browser.nvim",
+	-- 	dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+	-- },
 	{ "tpope/vim-repeat", event = "VeryLazy"},
 	{ "tpope/vim-surround", event = "VeryLazy"},
 	{ "tpope/vim-obsession", event = "VeryLazy"},
@@ -150,16 +150,6 @@ lazy.setup({
 	{ "simrat39/rust-tools.nvim" },
 	{ "windwp/nvim-ts-autotag" },
 	{"kevinhwang91/nvim-ufo", dependencies = { "kevinhwang91/promise-async" }, config = setup("plugins.ufo", "ufo")},
-	{
-		"glepnir/lspsaga.nvim",
-		event = "LspAttach",
-		config = setup("plugins.lspsaga"),
-		dependencies = {
-			{"kyazdani42/nvim-web-devicons"},
-			--Please make sure you install markdown and markdown_inline parser
-			{"nvim-treesitter/nvim-treesitter"}
-		}
-	},
 	{
 		"kevinhwang91/nvim-bqf",
 		ft = "qf",

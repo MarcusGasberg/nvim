@@ -4,12 +4,7 @@ vim.cmd([[ :hi NonText guifg=bg ]])
 
 local catppuccin_ok, catppuccin = pcall(require, "catppuccin")
 local kanagawa_ok, kanagawa = pcall(require, "kanagawa")
-local tokyo_ok, tokyo = pcall(require, "tokyonight")
 
-
-if tokyo_ok then
-	tokyo.setup()
-end
 
 if kanagawa_ok then
 	kanagawa.setup({

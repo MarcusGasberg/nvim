@@ -7,7 +7,6 @@ local actions = require("telescope.actions")
 local entry_display = require("telescope.pickers.entry_display")
 local utils = require("telescope.utils")
 local state = require("telescope.actions.state")
-local f = require("functions")
 local u = require("functions.utils")
 local transform_mod = require("telescope.actions.mt").transform_mod
 
@@ -371,16 +370,16 @@ telescope.setup({
 				override_file_sorter = true,
 				case_mode = "smart_case",
 			},
-	file_browser = {
-      theme = "dropdown",
-      -- disables netrw and use telescope-file-browser in its place
-      hijack_netrw = true,
-    },
+	-- file_browser = {
+ --      theme = "dropdown",
+ --      -- disables netrw and use telescope-file-browser in its place
+ --      hijack_netrw = true,
+ --    },
   },
 })
 vim.g.fzf_history_dir = '~/.local/share/fzf-history'
-telescope.load_extension("file_browser")
-telescope.load_extension("fzf")
+-- telescope.load_extension("file_browser")
+-- telescope.load_extension("fzf")
 
 vim.keymap.set("n", "<leader>tr", oldfiles, {})
 vim.keymap.set("n", "<leader>tgc", git_commits, {})

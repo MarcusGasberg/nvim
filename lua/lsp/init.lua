@@ -11,6 +11,40 @@ end
 -- Configure CMP
 require("lsp.cmp")
 
+
+vim.diagnostic.config({
+  virtual_text = {
+    severity = { min = vim.diagnostic.severity.WARN },
+    prefix = "●",
+  },
+  float = {
+    border = "rounded",
+  },
+  severity_sort = true,
+})
+
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
+vim.keymap.set({"n", "i"}, "<C-k>", vim.lsp.buf.signature_help)
+vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, {})
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
+vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
+vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
+vim.keymap.set("n", "<leader>fo", function ()
+  vim.lsp.buf.format{ async = true}
+end, {})
+vim.keymap.set("n", "]d", function()
+  vim.diagnostic.goto_next()
+end)
+vim.keymap.set("n", "[d", function()
+  vim.diagnostic.goto_prev()
+end)
+
 -- Map keys after LSP attaches (utility function)
 local on_attach = function(client, bufnr)
 	local function buf_set_option(...)
@@ -22,30 +56,6 @@ local on_attach = function(client, bufnr)
 	-- Debounce by 300ms by default
 	client.config.flags.debounce_text_changes = 100
 	client.server_capabilities.documentFormattingProvider = false
-
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-	-- Handled by lsp saga
-	-- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
-	vim.keymap.set({"n", "i"}, "<C-k>", vim.lsp.buf.signature_help)
-	vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, {})
-	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
-	vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
-	vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
-	vim.keymap.set("n", "<leader>fo", function ()
-		vim.lsp.buf.format{ async = true}
-	end, {})
-	vim.keymap.set("n", "]d", function()
-		vim.diagnostic.goto_next()
-	end)
-	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_prev()
-	end)
-
-	-- This is ripped off from https://github.com/kabouzeid/dotfiles, it's for tailwind preview support
-	if client.server_capabilities.colorProvider then
-		require("lsp/colorizer").buf_attach(bufnr, { single_column = false, debounce = 500 })
-	end
 end
 
 
@@ -73,7 +83,7 @@ mason.setup({
 })
 
 mason_config.setup({
-	ensure_installed = { "lua_ls", "angularls", "tsserver", "omnisharp", "cssls", "html", "rust_analyzer" }
+	ensure_installed = { "lua_ls", "angularls", "tsserver", "cssls", "html", "rust_analyzer" }
 })
 
 mason_config.setup_handlers({
