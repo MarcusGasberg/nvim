@@ -8,6 +8,7 @@ if not (cmp_status_ok and luasnip_ok and lspkind_status_ok) then
 end
 
 
+
 -- Setup completion engine
 cmp.setup({
 	snippet = {
@@ -43,7 +44,7 @@ cmp.setup({
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
 		["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
 		["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
-		["<C-L>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+		["<C-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c", "n" }),
 		["<C-y>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
 		["<C-e>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
 		["<Tab>"] = cmp.mapping(function(fallback)

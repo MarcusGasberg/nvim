@@ -154,5 +154,7 @@ lazy.setup({
 		"kevinhwang91/nvim-bqf",
 		ft = "qf",
 		config = true
-	}
+	},
+  { "folke/neodev.nvim", opts = {} },
+  { "norcalli/nvim-colorizer.lua", setup = true}
 })

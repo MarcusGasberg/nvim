@@ -35,8 +35,6 @@ cabbrev("Qall", "qall")
 vim.keymap.set("n", "n",  "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
--- vim.keymap.set("n", "gx", "!start <c-r><c-a>")
-
 -- move through buffers
 vim.keymap.set("n", "<leader>[", ":bp!<CR>")
 vim.keymap.set("n", "<leader>]", ":bn!<CR>")
@@ -52,6 +50,8 @@ vim.keymap.set("n", "<leader>X", ":BD<CR>")
 -- Delete a word backwards
 vim.keymap.set('n', 'db', 'vb"_d')
 vim.keymap.set('n', 'cb', 'vb"_c')
+
+-- Delete/Change without writing to register
 vim.keymap.set("n", "<leader>d", "\"_d")
 vim.keymap.set("v", "<leader>d", "\"_d")
 vim.keymap.set("n", "<leader>c", "\"_c")

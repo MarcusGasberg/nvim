@@ -2,6 +2,20 @@
 local enabled_list = { "typescript" }
 local parsers = require("nvim-treesitter.parsers")
 
+local disable_function = function(lang, bufnr)
+	if not bufnr then
+		bufnr = 0
+	end
+	local line_count = vim.api.nvim_buf_line_count(bufnr)
+	if line_count > 20000 then
+		vim.g.matchup_matchparen_enabled = 0
+		return true
+	else
+		vim.g.matchup_matchparen_enabled = 1
+		return false
+	end
+end
+
 require('nvim-treesitter.install').compilers = { "zig" }
 
 require("nvim-treesitter.configs").setup({
