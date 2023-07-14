@@ -1,6 +1,5 @@
 vim.cmd("set termguicolors")
 vim.cmd([[ :set signcolumn=yes ]])
-vim.cmd([[ :hi NonText guifg=bg ]])
 
 local catppuccin_ok, catppuccin = pcall(require, "catppuccin")
 local kanagawa_ok, kanagawa = pcall(require, "kanagawa")

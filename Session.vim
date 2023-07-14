@@ -13,34 +13,26 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +123 lua/functions/utils.lua
-badd +38 lua/lsp/init.lua
-badd +2 lua/plugins/telescope.lua
-badd +4 init.lua
-badd +1 lua/plugins/autopairs.lua
-badd +44 lua/plugins/startup.lua
-badd +5 lua/plugins/scrollbar.lua
-badd +159 lua/plugins/init.lua
-badd +8 lua/plugins/luasnip.lua
-badd +12 lua/plugins/null.lua
-badd +2 lua/lsp/cmp.lua
-badd +81 lua/plugins/treesitter.lua
-badd +42 lua/plugins/wilder.lua
-badd +1 lua/plugins/treesitter-context.lua
-badd +1 lua/plugins/lualine.lua
+badd +7 lua/lsp/servers/eslint.lua
+badd +1 lua/plugins/refactoring.lua
+badd +2 lua/lsp/servers/tsserver.lua
+badd +25 lua/plugins/null.lua
+badd +120 health://
+badd +116 ~/.zshrc
+badd +7 lua/plugins/luasnip.lua
 badd +2 lua/plugins/gitsigns.lua
+badd +51 lua/lsp/init.lua
+badd +396 lua/plugins/telescope.lua
+badd +2 lua/plugins/diffview.lua
+badd +10 ~/.gitconfig
+badd +164 lua/plugins/init.lua
+badd +66 lua/mappings.lua
+badd +31 lua/settings.lua
 argglobal
 %argdel
-edit lua/plugins/init.lua
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
+edit lua/settings.lua
 argglobal
-balt lua/plugins/gitsigns.lua
+balt lua/mappings.lua
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -50,40 +42,14 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-4,6fold
-9,11fold
-14,15fold
-12,16fold
-7,17fold
-3,18fold
-2,19fold
-25,31fold
-24,32fold
-41,42fold
-39,43fold
-50,56fold
-46,57fold
-65,67fold
-62,69fold
-81,84fold
-78,86fold
-88,91fold
-101,104fold
-106,110fold
-119,122fold
-124,127fold
-131,134fold
-137,140fold
-143,145fold
-153,156fold
-38,159fold
 let &fdl = &fdl
-let s:l = 159 - ((58 * winheight(0) + 30) / 60)
+let s:l = 31 - ((27 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 159
-normal! 035|
+keepjumps 31
+normal! 023|
+if exists(':tcd') == 2 | tcd ~/.config/nvim/lua | endif
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -91,8 +57,6 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)

@@ -48,5 +48,8 @@
         "/home/maga/.local/share/nvim/lazy/kanagawa.nvim/lua",
         "/home/maga/.config/nvim/lua",
         "${3rd}/luv/library"
+    ],
+    "diagnostics.disable": [
+        "duplicate-set-field"
     ]
 }
