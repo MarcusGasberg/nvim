@@ -16,7 +16,7 @@ endif
 badd +7 lua/lsp/servers/eslint.lua
 badd +1 lua/plugins/refactoring.lua
 badd +2 lua/lsp/servers/tsserver.lua
-badd +25 lua/plugins/null.lua
+badd +15 lua/plugins/null.lua
 badd +120 health://
 badd +116 ~/.zshrc
 badd +7 lua/plugins/luasnip.lua
@@ -27,12 +27,13 @@ badd +2 lua/plugins/diffview.lua
 badd +10 ~/.gitconfig
 badd +164 lua/plugins/init.lua
 badd +66 lua/mappings.lua
-badd +31 lua/settings.lua
+badd +2 lua/settings.lua
+badd +8 init.lua
 argglobal
 %argdel
-edit lua/settings.lua
+edit init.lua
 argglobal
-balt lua/mappings.lua
+balt lua/plugins/null.lua
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -43,12 +44,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 31 - ((27 * winheight(0) + 27) / 55)
+let s:l = 8 - ((7 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 31
-normal! 023|
+keepjumps 8
+normal! 020|
 if exists(':tcd') == 2 | tcd ~/.config/nvim/lua | endif
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

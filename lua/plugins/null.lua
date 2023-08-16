@@ -7,14 +7,18 @@ local code_actions = null_ls.builtins.code_actions
 local completion = null_ls.builtins.completion
 
 require("mason-null-ls").setup({
-  ensure_installed = { },
-  automatic_installation = false,
-  automatic_setup = true, -- Recommended, but optional
-  handlers = {},
+	ensure_installed = {},
+	automatic_installation = false,
+	automatic_setup = true, -- Recommended, but optional
+	handlers = {},
 })
 
 local sources = {
-	formatting.prettierd,
+	formatting.prettierd.with({
+		extra_filetypes = {
+      "svelte",
+		}
+	}),
 	formatting.eslint_d,
 	formatting.stylua,
 	formatting.csharpier,

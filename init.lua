@@ -1,4 +1,6 @@
+
 require("settings")
+require("mappings")
 
 require("plugins")
 
@@ -7,6 +9,5 @@ require("lsp")
 
 -- Other Mappings and Settings
 require("colors")
-require("mappings")
 require("autocommands")
 
