@@ -177,5 +177,5 @@ lazy.setup({
 		},
 		config = setup("plugins.refactoring", "refactoring"),
 	},
-  { "jose-elias-alvarez/typescript.nvim", config = true },
+  { "jose-elias-alvarez/typescript.nvim", config = true }
 })

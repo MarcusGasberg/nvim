@@ -23,30 +23,30 @@ vim.keymap.set(
 vim.keymap.set("n", "<silent> <Leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>")
 vim.keymap.set("n", "<silent> <Leader>dl", "<Cmd>lua require'dap'.run_last()<CR>")
 
-local netcoredbg = mason_registry.get_package("netcoredbg")
-
-local netcoredbg_path = netcoredbg:get_install_path()
-
-dap.adapters.coreclr = {
-	type = "executable",
-	command = netcoredbg_path .. "/netcoredbg/netcoredbg",
-	args = { "--interpreter=vscode" },
-}
-dap.configurations.cs = {
-	{
-		name = "launch - netcoredbg",
-		type = "coreclr",
-		request = "launch",
-		preLaunchTask = "build",
-		program = "${workspaceFolder}/Sirene3API/bin/Debug/net5.0/Sirene3API.dll",
-		args = {},
-		cwd = "${workspaceFolder}/Sirene3API",
-		stopAtEntry = false,
-		env = {
-			ASPNETCORE_ENVIRONMENT = "Development",
-		},
-	},
-}
+-- local netcoredbg = mason_registry.get_package("netcoredbg")
+--
+-- local netcoredbg_path = netcoredbg:get_install_path()
+--
+-- dap.adapters.coreclr = {
+-- 	type = "executable",
+-- 	command = netcoredbg_path .. "/netcoredbg/netcoredbg",
+-- 	args = { "--interpreter=vscode" },
+-- }
+-- dap.configurations.cs = {
+-- 	{
+-- 		name = "launch - netcoredbg",
+-- 		type = "coreclr",
+-- 		request = "launch",
+-- 		preLaunchTask = "build",
+-- 		program = "${workspaceFolder}/Sirene3API/bin/Debug/net5.0/Sirene3API.dll",
+-- 		args = {},
+-- 		cwd = "${workspaceFolder}/Sirene3API",
+-- 		stopAtEntry = false,
+-- 		env = {
+-- 			ASPNETCORE_ENVIRONMENT = "Development",
+-- 		},
+-- 	},
+-- }
 
 -- TODO Find out how to load the launch json from .vscode 
--- require('dap.ext.vscode').load_launchjs()
+require('dap.ext.vscode').load_launchjs()
