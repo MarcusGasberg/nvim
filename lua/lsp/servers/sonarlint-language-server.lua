@@ -1,4 +1,3 @@
-print('GOT HERE')
 require('sonarlint').setup({
    server = {
       cmd = { 

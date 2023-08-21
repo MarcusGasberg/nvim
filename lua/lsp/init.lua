@@ -129,7 +129,7 @@ mason_config.setup_handlers({
 		})
 	end,
 	-- for some reason angularls cannot be found in the servers folder and i am to lazy to find out why
-	["angularls"] = function() 
+	["angularls"] = function()
 		local server = lsp_config["angularls"]
 			server.setup({
 				on_attach = on_attach,
