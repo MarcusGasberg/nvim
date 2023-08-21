@@ -16,10 +16,26 @@ local disable_function = function(lang, bufnr)
 	end
 end
 
-require('nvim-treesitter.install').compilers = { "zig" }
+require("nvim-treesitter.install").compilers = { "zig" }
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = { "lua", "vim", "css", "javascript", "typescript", "go", "rust", "c_sharp", "scss", "json", "html", "markdown" },
+	ensure_installed = {
+		"lua",
+		"vim",
+		"css",
+		"javascript",
+		"typescript",
+		"go",
+		"rust",
+		"c_sharp",
+		"scss",
+		"json",
+		"html",
+		"markdown",
+    "regex",
+    "bash",
+    "markdown_inline"
+	},
 	sync_install = false,
 	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },
 	highlight = {
@@ -55,9 +71,9 @@ require("nvim-treesitter.configs").setup({
 			-- and should return the mode ('v', 'V', or '<c-v>') or a table
 			-- mapping query_strings to modes.
 			selection_modes = {
-				['@parameter.outer'] = 'v', -- charwise
-				['@function.outer'] = 'V', -- linewise
-				['@class.outer'] = '<c-v>', -- blockwise
+				["@parameter.outer"] = "v", -- charwise
+				["@function.outer"] = "V", -- linewise
+				["@class.outer"] = "<c-v>", -- blockwise
 			},
 			-- If you set this to `true` (default is `false`) then any textobject is
 			-- extended to include preceding or succeeding whitespace. Succeeding
@@ -93,5 +109,5 @@ require("nvim-treesitter.configs").setup({
 	},
 	autotag = {
 		enable = true,
-	}
+	},
 })
