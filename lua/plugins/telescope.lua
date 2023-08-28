@@ -408,16 +408,16 @@ vim.keymap.set("n", "<leader>tgs", stash_filter, {})
 local function telescope_buffer_dir()
   return vim.fn.expand('%:p:h')
 end
-vim.keymap.set("n", '\\', function()
-  telescope.extensions.file_browser.file_browser({
-    path = "%:p:h",
-    cwd = telescope_buffer_dir(),
-    select_buffer=false,
-    respect_gitignore = false,
-    hidden = true,
-    grouped = true,
-    previewer = false,
-    initial_mode = "normal",
-    layout_config = { height = 40 }
-  })
-end)
+-- vim.keymap.set("n", '\\', function()
+--   telescope.extensions.file_browser.file_browser({
+--     path = "%:p:h",
+--     cwd = telescope_buffer_dir(),
+--     select_buffer=false,
+--     respect_gitignore = false,
+--     hidden = true,
+--     grouped = true,
+--     previewer = false,
+--     initial_mode = "normal",
+--     layout_config = { height = 40 }
+--   })
+-- end)
