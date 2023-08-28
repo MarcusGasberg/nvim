@@ -1,7 +1,4 @@
 -- For rainbow brackets
-local enabled_list = { "typescript" }
-local parsers = require("nvim-treesitter.parsers")
-
 local disable_function = function(lang, bufnr)
 	if not bufnr then
 		bufnr = 0

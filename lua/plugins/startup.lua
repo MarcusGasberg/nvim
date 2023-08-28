@@ -38,8 +38,8 @@ local settings = {
         title = "Basic Commands",
         margin = 5,
         content = {
-            { " Find File", "Telescope find_files", ";f" },
-            { " Find Word", "Telescope live_grep", ";r" },
+            { " Find File", "Telescope find_files", "<leader>j" },
+            { " Find Word", "Telescope live_grep", "<leader>h" },
             { " Recent Files", "Telescope oldfiles", "<leader>of" },
             { " File Browser", "NeoTreeFocusToggle", "\\" },
             { " Colorschemes", "Telescope colorscheme", "<leader>cs" },

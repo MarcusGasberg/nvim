@@ -44,7 +44,6 @@ lazy.setup({
 			vim.cmd([[colorscheme catppuccin-mocha]])
 		end,
 	},
-	{ "rebelot/kanagawa.nvim" },
 	{
 		"hrsh7th/nvim-cmp",
 		-- these dependencies will only be loaded when cmp loads
@@ -104,7 +103,7 @@ lazy.setup({
 	-- },
 	{ "tpope/vim-repeat", event = "VeryLazy" },
 	{ "tpope/vim-surround", event = "VeryLazy" },
-	{ "tpope/vim-obsession", event = "VeryLazy" },
+	{ "tpope/vim-obsession" },
 	{ "junegunn/fzf" },
 	{
 		"startup-nvim/startup.nvim",
@@ -141,27 +140,14 @@ lazy.setup({
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = setup("plugins.diffview", "diffview"),
 	},
-	{ "kevinhwang91/nvim-hlslens" },
-	{
-		"petertriho/nvim-scrollbar",
-		dependencies = { "kevinhwang91/nvim-hlslens" },
-		config = setup("plugins.scrollbar", "scrollbar"),
-	},
 	{ "ggandor/leap.nvim", config = setup("plugins.leap", "leap") },
 	{
 		"nvim-treesitter/nvim-treesitter",
 		config = setup("plugins.treesitter", "nvim-treesitter"),
 	},
-	{ "karb94/neoscroll.nvim", config = setup("plugins.neoscroll", "neoscroll") },
 	{ "lambdalisue/glyph-palette.vim" },
-	{ "vim-test/vim-test", config = setup("plugins.vim-test") },
 	{ "simrat39/rust-tools.nvim" },
 	{ "windwp/nvim-ts-autotag" },
-	-- {
-	-- 	"kevinhwang91/nvim-ufo",
-	-- 	dependencies = { "kevinhwang91/promise-async" },
-	-- 	config = setup("plugins.ufo", "ufo"),
-	-- },
 	{
 		"kevinhwang91/nvim-bqf",
 		ft = "qf",
