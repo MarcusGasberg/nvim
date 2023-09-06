@@ -58,8 +58,8 @@ vim.keymap.set("n", "<leader>c", "\"_c")
 vim.keymap.set("v", "<leader>c", "\"_c")
 
 -- Center on scroll. Doesn't work with smooth scrolling
--- vim.keymap.set("n", "<C-d>", "<C-d>zz")
--- vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
 -- Allows numbered jumps to be saved to the jumplist, for use w/ C-o and C-i
 vim.api.nvim_exec("nnoremap <expr> k (v:count > 1 ? \"m'\" . v:count : '') . 'k'", false)

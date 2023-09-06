@@ -39,7 +39,7 @@ require("nvim-treesitter.configs").setup({
 	sync_install = false,
 	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },
 	highlight = {
-		enable = true, -- false will disable the whole extension
+		enable = not vim.g.vscode, -- false will disable the whole extension
 		disable = disable_function,
 		additional_vim_regex_highlighting = false,
 	},

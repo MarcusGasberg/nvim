@@ -23,6 +23,7 @@ require("bufferline").setup({
 		separator_style = "slant",
 		enforce_regular_tabs = false,
 		always_show_bufferline = true,
+    highlights = require("catppuccin.groups.integrations.bufferline").get()
 	},
 })
 
