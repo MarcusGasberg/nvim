@@ -86,7 +86,8 @@ lazy.setup({
           },
           leap = true,
           mason = true,
-          neotest = true
+          neotest = true,
+          dap = true
         },
       })
 			vim.cmd([[colorscheme catppuccin-mocha]])
@@ -170,7 +171,8 @@ lazy.setup({
 	},
 	{ "numToStr/Comment.nvim", config = true, event = "VeryLazy" },
 	{ "windwp/nvim-autopairs", config = setup("plugins.autopairs", "nvim-autopairs"), cond = not vim.g.vscode },
-	{ "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap"), event = "VeryLazy", cond = not vim.g.vscode },
+	{ "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap"), cond = not vim.g.vscode },
+  { "rcarriga/nvim-dap-ui", dependencies = {"mfussenegger/nvim-dap"}, config = setup("plugins.dap-ui") },
 	{ "qpkorr/vim-bufkill", cond = not vim.g.vscode },
 	{ "akinsho/toggleterm.nvim", config = setup("plugins.toggleterm"), cond = not vim.g.vscode },
 	{ "romainl/vim-cool" },
