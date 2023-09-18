@@ -83,7 +83,6 @@ lazy.setup({
             enabled = true,
             colored_indent_levels = false,
           },
-          flash = true,
           mason = true,
           neotest = true,
           dap = true
@@ -190,19 +189,6 @@ lazy.setup({
 		config = setup("plugins.scrollbar", "scrollbar"),
     cond = not vim.g.vscode
 	},
-	{
-    "folke/flash.nvim",
-  event = "VeryLazy",
-  opts = {},
-  keys = {
-    { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
-    { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-  },
-  cond = not vim.g.vscode
-},
 	{
 		"nvim-treesitter/nvim-treesitter",
 		config = setup("plugins.treesitter", "nvim-treesitter"),
