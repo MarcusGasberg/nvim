@@ -77,14 +77,13 @@ lazy.setup({
         integrations = {
           cmp = true,
           gitsigns = true,
-          nvimtree = true,
           treesitter = true,
           dashboard = true,
           indent_blankline = {
             enabled = true,
             colored_indent_levels = false,
           },
-          leap = true,
+          flash = true,
           mason = true,
           neotest = true,
           dap = true
@@ -129,16 +128,10 @@ lazy.setup({
 	{ "saadparwaiz1/cmp_luasnip", cond = not vim.g.vscode },
 	{ "jose-elias-alvarez/null-ls.nvim", cond = not vim.g.vscode },
 	{ "jose-elias-alvarez/typescript.nvim", config = true, cond = not vim.g.vscode },
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v2.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"kyazdani42/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
-		},
-		config = setup("plugins.neo-tree", "neo-tree"),
-    cond = not vim.g.vscode
+  {
+    "stevearc/oil.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = setup("plugins.oil", "oil")
   },
 	{
 		"nvim-telescope/telescope.nvim",
@@ -162,13 +155,6 @@ lazy.setup({
 		config = setup("plugins.startup"),
     cond = not vim.g.vscode
 	},
-	{
-		"akinsho/bufferline.nvim",
-		version = "v3.*",
-		dependencies = { "kyazdani42/nvim-web-devicons" },
-		config = setup("plugins.bufferline", "bufferline"),
-    cond = not vim.g.vscode
-	},
 	{ "numToStr/Comment.nvim", config = true, event = "VeryLazy" },
 	{ "windwp/nvim-autopairs", config = setup("plugins.autopairs", "nvim-autopairs"), cond = not vim.g.vscode },
 	{ "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap"), cond = not vim.g.vscode },
@@ -179,7 +165,7 @@ lazy.setup({
 	{ "vim-scripts/BufOnly.vim", event = "VeryLazy", cond = not vim.g.vscode },
 	{
 		"nvim-lualine/lualine.nvim",
-		dependencies = { "kyazdani42/nvim-web-devicons" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = setup("plugins.lualine", "lualine"),
     cond = not vim.g.vscode
 	},
@@ -190,12 +176,12 @@ lazy.setup({
     cond = not vim.g.vscode
 	},
 	{ "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
-	{ "kyazdani42/nvim-web-devicons", config = true, cond = not vim.g.vscode },
 	{
 		"sindrets/diffview.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = setup("plugins.diffview", "diffview"),
     cond = not vim.g.vscode
+
 	},
 	{ "kevinhwang91/nvim-hlslens", config = true },
 	{
@@ -204,7 +190,19 @@ lazy.setup({
 		config = setup("plugins.scrollbar", "scrollbar"),
     cond = not vim.g.vscode
 	},
-	{ "ggandor/leap.nvim", config = setup("plugins.leap", "leap") },
+	{
+    "folke/flash.nvim",
+  event = "VeryLazy",
+  opts = {},
+  keys = {
+    { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
+    { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+    { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+    { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+  },
+  cond = not vim.g.vscode
+},
 	{
 		"nvim-treesitter/nvim-treesitter",
 		config = setup("plugins.treesitter", "nvim-treesitter"),

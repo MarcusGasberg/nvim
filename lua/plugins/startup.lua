@@ -41,7 +41,7 @@ local settings = {
             { " Find File", "Telescope find_files", ";f" },
             { " Find Word", "Telescope live_grep", ";r" },
             { " Recent Files", "Telescope oldfiles", "<leader>of" },
-            { " File Browser", "NeoTreeFocusToggle", "\\" },
+            { " File Browser", "Oil", "\\" },
             { " Colorschemes", "Telescope colorscheme", "<leader>cs" },
             { " New File", "lua require'startup'.new_file()", "<leader>nf" },
         },
