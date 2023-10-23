@@ -49,6 +49,10 @@
         "path": "./my-snippets/javascript.json"
       },
       {
+        "language": "elixir",
+        "path": "./my-snippets/elixir.json"
+      },
+      {
         "language": "jsonc",
         "path": "./my-snippets/jsonc.json"
       },

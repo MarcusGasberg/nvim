@@ -23,7 +23,6 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
-
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 
@@ -35,9 +34,7 @@ vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, {})
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
 vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
 vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
-vim.keymap.set("n", "<leader>fo", function ()
-  vim.lsp.buf.format{ async = true}
-end, {})
+vim.keymap.set("n", "<leader>fo", vim.lsp.buf.format , {})
 vim.keymap.set("n", "]d", function()
   vim.diagnostic.goto_next()
 end)
@@ -55,7 +52,6 @@ local on_attach = function(client, bufnr)
 
 	-- Debounce by 300ms by default
 	client.config.flags.debounce_text_changes = 100
-	client.server_capabilities.documentFormattingProvider = false
 end
 
 
@@ -136,7 +132,7 @@ mason_config.setup_handlers({
 				root_dir = lsp_config.util.root_pattern("angular.json", "project.json"),
 				capabilities = capabilities,
 			})
-	end,
+	end
 })
 
 -- Global diagnostic settings

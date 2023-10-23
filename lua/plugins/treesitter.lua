@@ -16,8 +16,6 @@ local disable_function = function(lang, bufnr)
 	end
 end
 
-require("nvim-treesitter.install").compilers = { "zig" }
-
 require("nvim-treesitter.configs").setup({
 	ensure_installed = {
 		"lua",
