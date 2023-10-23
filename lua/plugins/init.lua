@@ -126,7 +126,12 @@ lazy.setup({
 	{ "L3MON4D3/LuaSnip", dependencies = { "rafamadriz/friendly-snippets"}, config = setup("plugins.luasnip"), cond = not vim.g.vscode },
 	{ "saadparwaiz1/cmp_luasnip", cond = not vim.g.vscode },
 	{ "jose-elias-alvarez/null-ls.nvim", cond = not vim.g.vscode },
-	{ "jose-elias-alvarez/typescript.nvim", config = true, cond = not vim.g.vscode },
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    config = setup("plugins.typescript-tools", "typescript-tools"),
+    cond = not vim.g.vscode
+  },
   {
     "stevearc/oil.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -232,6 +237,18 @@ lazy.setup({
     config = setup("plugins.neotest"),
     cond = not vim.g.vscode
   },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
+  },
   { "github/copilot.vim" },
   {
     "jackMort/ChatGPT.nvim",
@@ -246,3 +263,4 @@ lazy.setup({
     }
   }
 })
+

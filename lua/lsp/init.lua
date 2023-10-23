@@ -83,7 +83,7 @@ mason.setup({
 })
 
 mason_config.setup({
-	ensure_installed = { "lua_ls", "angularls", "tsserver", "cssls", "html", "rust_analyzer" }
+	ensure_installed = { "lua_ls", "angularls", "cssls", "html", "rust_analyzer" }
 })
 
 mason_config.setup_handlers({
