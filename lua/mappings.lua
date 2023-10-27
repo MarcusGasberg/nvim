@@ -62,4 +62,7 @@ vim.api.nvim_exec2("nnoremap <expr> j (v:count > 1 ? \"m'\" . v:count : '') . 'j
 -- expand current directory when typing %% in command mode
 vim.api.nvim_exec2("cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'", {})
 
+vim.keymap.set("i", "<C-p>", "<nop>")
+vim.keymap.set("i", "<C-n>", "<nop>")
+
 return {}

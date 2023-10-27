@@ -84,7 +84,8 @@ cmp.setup({
 				fallback()
 			end
 		end, { "i", "s", "c" }),
-		["C-p"] = cmp.mapping(function(fallback)
+		["<C-p>"] = cmp.mapping(function(fallback)
+      print("hello")
 			if cmp.visible() then
 				cmp.select_prev_item()
 			elseif luasnip.jumpable(-1) then

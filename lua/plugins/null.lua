@@ -1,5 +1,4 @@
 local u = require("functions.utils")
-
 local null_ls = require("null-ls")
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
@@ -28,5 +27,5 @@ local sources = {
 null_ls.setup({
   debug = false,
   sources = sources,
-  timeout = 5000,
+  timeout = 10000,
 })

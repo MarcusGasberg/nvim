@@ -40,3 +40,10 @@ autocmd VimEnter * nested
         \   source Session.vim |
         \ endif
 ]])
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
+
