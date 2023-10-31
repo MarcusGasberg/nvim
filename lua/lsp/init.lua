@@ -84,7 +84,7 @@ mason_config.setup({
 
 -- Configure linter
 require("mason-nvim-lint").setup({
-	ensure_installed = { "eslint_d", "prettierd" },
+	ensure_installed = { "eslint_d" },
 })
 
 mason_config.setup_handlers({
