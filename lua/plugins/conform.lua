@@ -3,6 +3,8 @@ require("conform").setup({
 		lua = { "stylua" },
 		javascript = { { "prettierd", "prettier" } },
 		typescript = { { "prettierd", "prettier" } },
+		html = { { "prettierd", "prettier" } },
+		scss = { { "prettierd", "prettier" } },
 	},
 	format_on_save = {
 		lsp_fallback = true,
