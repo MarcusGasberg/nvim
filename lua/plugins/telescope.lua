@@ -53,7 +53,9 @@ end
 
 local function git_files_string_visual()
 	local text = u.get_visual_selection()
-	if(text == nil) then return end
+	if text == nil then
+		return
+	end
 	vim.api.nvim_input("<esc>")
 	if text[1] == nil then
 		print("No appropriate visual selection found")
@@ -65,7 +67,9 @@ end
 
 local function grep_string_visual()
 	local text = u.get_visual_selection()
-	if(text == nil) then return end
+	if text == nil then
+		return
+	end
 
 	vim.api.nvim_input("<esc>")
 	local firstText = text[1]
@@ -133,16 +137,18 @@ local stash_filter = function()
 	opts.show_branch = vim.F.if_nil(opts.show_branch, true)
 	opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_stash(opts))
 
-	pickers.new(opts, {
-		prompt_title = "Git Stash",
-		finder = finders.new_oneshot_job({ "git", "--no-pager", "stash", "list" }, opts),
-		previewer = previewers.git_stash_diff.new(opts),
-		sorter = conf.file_sorter(opts),
-		attach_mappings = function()
-			actions.select_default:replace(actions.git_apply_stash)
-			return true
-		end,
-	}):find()
+	pickers
+		.new(opts, {
+			prompt_title = "Git Stash",
+			finder = finders.new_oneshot_job({ "git", "--no-pager", "stash", "list" }, opts),
+			previewer = previewers.git_stash_diff.new(opts),
+			sorter = conf.file_sorter(opts),
+			attach_mappings = function()
+				actions.select_default:replace(actions.git_apply_stash)
+				return true
+			end,
+		})
+		:find()
 end
 
 local function SeeCommitChangesInDiffview(prompt_bufnr)
@@ -176,120 +182,119 @@ local function CopyCommitHash(prompt_bufnr)
 	actions.close(prompt_bufnr)
 end
 
-
 local function multiopen(prompt_bufnr, method)
-    local edit_file_cmd_map = {
-        vertical = "vsplit",
-        horizontal = "split",
-        tab = "tabedit",
-        default = "edit",
-    }
-    local edit_buf_cmd_map = {
-        vertical = "vert sbuffer",
-        horizontal = "sbuffer",
-        tab = "tab sbuffer",
-        default = "buffer",
-    }
-    local picker = state.get_current_picker(prompt_bufnr)
-    local multi_selection = picker:get_multi_selection()
+	local edit_file_cmd_map = {
+		vertical = "vsplit",
+		horizontal = "split",
+		tab = "tabedit",
+		default = "edit",
+	}
+	local edit_buf_cmd_map = {
+		vertical = "vert sbuffer",
+		horizontal = "sbuffer",
+		tab = "tab sbuffer",
+		default = "buffer",
+	}
+	local picker = state.get_current_picker(prompt_bufnr)
+	local multi_selection = picker:get_multi_selection()
 
-    if #multi_selection > 1 then
-        require("telescope.pickers").on_close_prompt(prompt_bufnr)
-        pcall(vim.api.nvim_set_current_win, picker.original_win_id)
+	if #multi_selection > 1 then
+		require("telescope.pickers").on_close_prompt(prompt_bufnr)
+		pcall(vim.api.nvim_set_current_win, picker.original_win_id)
 
-        for i, entry in ipairs(multi_selection) do
-            local filename, row, col
+		for i, entry in ipairs(multi_selection) do
+			local filename, row, col
 
-            if entry.path or entry.filename then
-                filename = entry.path or entry.filename
+			if entry.path or entry.filename then
+				filename = entry.path or entry.filename
 
-                row = entry.row or entry.lnum
-                col = vim.F.if_nil(entry.col, 1)
-            elseif not entry.bufnr then
-                local value = entry.value
-                if not value then
-                    return
-                end
+				row = entry.row or entry.lnum
+				col = vim.F.if_nil(entry.col, 1)
+			elseif not entry.bufnr then
+				local value = entry.value
+				if not value then
+					return
+				end
 
-                if type(value) == "table" then
-                    value = entry.display
-                end
+				if type(value) == "table" then
+					value = entry.display
+				end
 
-                local sections = vim.split(value, ":")
+				local sections = vim.split(value, ":")
 
-                filename = sections[1]
-                row = tonumber(sections[2])
-                col = tonumber(sections[3])
-            end
+				filename = sections[1]
+				row = tonumber(sections[2])
+				col = tonumber(sections[3])
+			end
 
-            local entry_bufnr = entry.bufnr
+			local entry_bufnr = entry.bufnr
 
-            if entry_bufnr then
-                if not vim.api.nvim_buf_get_option(entry_bufnr, "buflisted") then
-                    vim.api.nvim_buf_set_option(entry_bufnr, "buflisted", true)
-                end
-                local command = i == 1 and "buffer" or edit_buf_cmd_map[method]
-                pcall(vim.cmd, string.format("%s %s", command, vim.api.nvim_buf_get_name(entry_bufnr)))
-            else
-                local command = i == 1 and "edit" or edit_file_cmd_map[method]
-                if vim.api.nvim_buf_get_name(0) ~= filename or command ~= "edit" then
-                    filename = require("plenary.path"):new(vim.fn.fnameescape(filename)):normalize(vim.loop.cwd())
-                    pcall(vim.cmd, string.format("%s %s", command, filename))
-                end
-            end
+			if entry_bufnr then
+				if not vim.api.nvim_buf_get_option(entry_bufnr, "buflisted") then
+					vim.api.nvim_buf_set_option(entry_bufnr, "buflisted", true)
+				end
+				local command = i == 1 and "buffer" or edit_buf_cmd_map[method]
+				pcall(vim.cmd, string.format("%s %s", command, vim.api.nvim_buf_get_name(entry_bufnr)))
+			else
+				local command = i == 1 and "edit" or edit_file_cmd_map[method]
+				if vim.api.nvim_buf_get_name(0) ~= filename or command ~= "edit" then
+					filename = require("plenary.path"):new(vim.fn.fnameescape(filename)):normalize(vim.loop.cwd())
+					pcall(vim.cmd, string.format("%s %s", command, filename))
+				end
+			end
 
-            if row and col then
-                pcall(vim.api.nvim_win_set_cursor, 0, { row, col })
-            end
-        end
-    else
-        actions["select_" .. method](prompt_bufnr)
-    end
+			if row and col then
+				pcall(vim.api.nvim_win_set_cursor, 0, { row, col })
+			end
+		end
+	else
+		actions["select_" .. method](prompt_bufnr)
+	end
 end
 
 local custom_actions = transform_mod({
-    multi_selection_open_vertical = function(prompt_bufnr)
-        multiopen(prompt_bufnr, "vertical")
-    end,
-    multi_selection_open_horizontal = function(prompt_bufnr)
-        multiopen(prompt_bufnr, "horizontal")
-    end,
-    multi_selection_open_tab = function(prompt_bufnr)
-        multiopen(prompt_bufnr, "tab")
-    end,
-    multi_selection_open = function(prompt_bufnr)
-        multiopen(prompt_bufnr, "default")
-    end,
+	multi_selection_open_vertical = function(prompt_bufnr)
+		multiopen(prompt_bufnr, "vertical")
+	end,
+	multi_selection_open_horizontal = function(prompt_bufnr)
+		multiopen(prompt_bufnr, "horizontal")
+	end,
+	multi_selection_open_tab = function(prompt_bufnr)
+		multiopen(prompt_bufnr, "tab")
+	end,
+	multi_selection_open = function(prompt_bufnr)
+		multiopen(prompt_bufnr, "default")
+	end,
 })
 
 local function stopinsert(callback)
-    return function(prompt_bufnr)
-        vim.cmd.stopinsert()
-        vim.schedule(function()
-            callback(prompt_bufnr)
-        end)
-    end
+	return function(prompt_bufnr)
+		vim.cmd.stopinsert()
+		vim.schedule(function()
+			callback(prompt_bufnr)
+		end)
+	end
 end
 
 local multi_open_mappings = {
-    i = {
-        ["<C-v>"] = stopinsert(custom_actions.multi_selection_open_vertical),
-        ["<C-s>"] = stopinsert(custom_actions.multi_selection_open_horizontal),
-        ["<C-t>"] = stopinsert(custom_actions.multi_selection_open_tab),
-        ["<CR>"]  = stopinsert(custom_actions.multi_selection_open)
-    },
-    n = {
-        ["<C-v>"] = custom_actions.multi_selection_open_vertical,
-        ["<C-s>"] = custom_actions.multi_selection_open_horizontal,
-        ["<C-t>"] = custom_actions.multi_selection_open_tab,
-        ["<CR>"] = custom_actions.multi_selection_open,
-    },
+	i = {
+		["<C-v>"] = stopinsert(custom_actions.multi_selection_open_vertical),
+		["<C-s>"] = stopinsert(custom_actions.multi_selection_open_horizontal),
+		["<C-t>"] = stopinsert(custom_actions.multi_selection_open_tab),
+		["<CR>"] = stopinsert(custom_actions.multi_selection_open),
+	},
+	n = {
+		["<C-v>"] = custom_actions.multi_selection_open_vertical,
+		["<C-s>"] = custom_actions.multi_selection_open_horizontal,
+		["<C-t>"] = custom_actions.multi_selection_open_tab,
+		["<CR>"] = custom_actions.multi_selection_open,
+	},
 }
 
-local live_grep_mappings = vim.tbl_deep_extend('keep', multi_open_mappings, {
-  i = {
-    ["<C-y>"] = CopyTextFromPreview,
-  },
+local live_grep_mappings = vim.tbl_deep_extend("keep", multi_open_mappings, {
+	i = {
+		["<C-y>"] = CopyTextFromPreview,
+	},
 })
 
 local telescope = require("telescope")
@@ -301,11 +306,11 @@ telescope.setup({
 			i = {
 				["<C-j>"] = actions.cycle_history_next,
 				["<C-k>"] = actions.cycle_history_prev,
-      },
-      n = {
+			},
+			n = {
 				["<C-j>"] = actions.cycle_history_next,
 				["<C-k>"] = actions.cycle_history_prev,
-      }
+			},
 		},
 	},
 	pickers = {
@@ -323,13 +328,13 @@ telescope.setup({
 				},
 			},
 		},
-    git_files = {
-      prompt_prefix = " ",
-      mappings = multi_open_mappings
-    },
+		git_files = {
+			prompt_prefix = " ",
+			mappings = multi_open_mappings,
+		},
 		oldfiles = {
 			prompt_prefix = " ",
-			mappings = multi_open_mappings
+			mappings = multi_open_mappings,
 		},
 		grep_string = {
 			prompt_prefix = " ",
@@ -342,14 +347,14 @@ telescope.setup({
 		buffers = {
 			hidden = true,
 			show_all_buffers = true,
-      sort_lastused = true,
-      theme = "dropdown",
-      previewer = false,
-      mappings = {
-        i = {
-          ["<c-x>"] = actions.delete_buffer,
-        }
-      }
+			sort_lastused = true,
+			theme = "dropdown",
+			previewer = false,
+			mappings = {
+				i = {
+					["<c-x>"] = actions.delete_buffer,
+				},
+			},
 		},
 		git_commits = {
 			prompt_prefix = " ",
@@ -361,23 +366,22 @@ telescope.setup({
 				},
 			},
 		},
-
 	},
 	extensions = {
-			fzf = {
-				fuzzy = true,
-				override_generic_sorter = true,
-				override_file_sorter = true,
-				case_mode = "smart_case",
-			},
-	-- file_browser = {
- --      theme = "dropdown",
- --      -- disables netrw and use telescope-file-browser in its place
- --      hijack_netrw = true,
- --    },
-  },
+		fzf = {
+			fuzzy = true,
+			override_generic_sorter = true,
+			override_file_sorter = true,
+			case_mode = "smart_case",
+		},
+		-- file_browser = {
+		--      theme = "dropdown",
+		--      -- disables netrw and use telescope-file-browser in its place
+		--      hijack_netrw = true,
+		--    },
+	},
 })
-vim.g.fzf_history_dir = '~/.local/share/fzf-history'
+vim.g.fzf_history_dir = "~/.local/share/fzf-history"
 -- telescope.load_extension("file_browser")
 -- telescope.load_extension("fzf")
 
@@ -385,28 +389,27 @@ vim.keymap.set("n", "<leader>tr", oldfiles, {})
 vim.keymap.set("n", "<leader>tgc", git_commits, {})
 vim.keymap.set("n", "<leader>tgb", git_branches, {})
 vim.keymap.set("n", "<leader>tf", grep_string, {})
-vim.keymap.set("n", "<leader>h", live_grep, {})
+vim.keymap.set("n", "<leader>f", live_grep, {})
 vim.keymap.set("n", "<leader>j", git_files, {})
-vim.keymap.set('n', '<leader>k', function()
+vim.keymap.set("n", "<leader>k", function()
 	buffers()
 end)
-vim.keymap.set('n', '<leader>th', function()
-  builtin.help_tags()
+vim.keymap.set("n", "<leader>th", function()
+	builtin.help_tags()
 end)
-vim.keymap.set('n', '<leader><leader>', function()
-  builtin.resume()
+vim.keymap.set("n", "<leader><leader>", function()
+	builtin.resume()
 end)
-vim.keymap.set('n', '<leader>e', function()
-  builtin.diagnostics()
+vim.keymap.set("n", "<leader>e", function()
+	builtin.diagnostics()
 end)
 -- vim.keymap.set("n", "<leader>tf", git_files_string, {})
 -- vim.keymap.set("v", "<leader>tf", git_files_string_visual, {})
 vim.keymap.set("v", "<leader>tf", grep_string_visual, {})
 vim.keymap.set("n", "<leader>tgs", stash_filter, {})
 
-
 local function telescope_buffer_dir()
-  return vim.fn.expand('%:p:h')
+	return vim.fn.expand("%:p:h")
 end
 -- vim.keymap.set("n", '\\', function()
 --   telescope.extensions.file_browser.file_browser({

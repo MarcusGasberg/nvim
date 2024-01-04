@@ -165,4 +165,15 @@ return {
 	press_enter = function()
 		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", false, true, true), "n", false)
 	end,
+
+	filter_empty_string = function(list)
+		local next = {}
+		for idx = 1, #list do
+			if list[idx].value ~= "" then
+				table.insert(next, list[idx])
+			end
+		end
+
+		return next
+	end,
 }

@@ -49,7 +49,7 @@ lazy.setup({
 				},
 				transparent_background = false, -- disables setting the background color.
 				show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-				term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+				term_colors = true, -- sets terminal colors (e.g. `g:terminal_color_0`)
 				dim_inactive = {
 					enabled = false, -- dims the background color of inactive window
 					shade = "dark",
@@ -86,6 +86,7 @@ lazy.setup({
 					mason = true,
 					neotest = true,
 					dap = true,
+					harpoon = true,
 				},
 			})
 			vim.cmd([[colorscheme catppuccin-mocha]])
@@ -112,9 +113,12 @@ lazy.setup({
 	{ "williamboman/mason.nvim", build = ":MasonUpdate", cond = not vim.g.vscode },
 	{ "williamboman/mason-lspconfig.nvim", cond = not vim.g.vscode },
 	{ "rshkarin/mason-nvim-lint", cond = not vim.g.vscode },
+
 	{ "onsails/lspkind-nvim", cond = not vim.g.vscode },
 	{ "nvim-lua/plenary.nvim", cond = not vim.g.vscode },
 	{ "rafamadriz/friendly-snippets", cond = not vim.g.vscode },
+	{ "tpope/vim-abolish" },
+	{ "tpope/vim-repeat" },
 	{
 		"L3MON4D3/LuaSnip",
 		dependencies = { "rafamadriz/friendly-snippets" },
@@ -261,5 +265,13 @@ lazy.setup({
 		"norcalli/nvim-colorizer.lua",
 		config = setup("plugins.colorizer"),
 		cond = not vim.g.vscode,
+	},
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		config = setup("plugins.harpoon"),
 	},
 })

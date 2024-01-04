@@ -33,7 +33,7 @@ vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, {})
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
 vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
 vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
-vim.keymap.set("n", "<leader>fo", function(args)
+vim.keymap.set("n", "<leader>=", function(args)
 	require("conform").format()
 end, {})
 vim.keymap.set("n", "]d", function()
@@ -79,12 +79,7 @@ mason.setup({
 })
 
 mason_config.setup({
-	ensure_installed = { "lua_ls", "angularls", "cssls", "html", "rust_analyzer" },
-})
-
--- Configure linter
-require("mason-nvim-lint").setup({
-	ensure_installed = { "eslint_d" },
+	ensure_installed = { "lua_ls", "angularls", "cssls", "html", "rust_analyzer", "eslint" },
 })
 
 mason_config.setup_handlers({
