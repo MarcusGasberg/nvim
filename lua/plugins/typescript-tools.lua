@@ -1,4 +1,15 @@
 require("typescript-tools").setup({
+	on_attach = function(client, bufnr)
+		local angular_client = vim.lsp.get_clients({
+			bufnr = bufnr,
+			name = "angularls",
+		})
+
+		if angular_client then
+			client.server_capabilities.renameProvider = false
+			client.server_capabilities.rename = false
+		end
+	end,
 	settings = {
 		-- spawn additional tsserver instance to calculate diagnostics on it
 		separate_diagnostic_server = false,
@@ -9,7 +20,6 @@ require("typescript-tools").setup({
 		-- to include all supported code actions
 		-- specify commands exposed as code_actions
 		expose_as_code_action = {
-			"fix_all",
 			"add_missing_imports",
 			"remove_unused_imports",
 		},
