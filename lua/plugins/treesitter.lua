@@ -30,9 +30,10 @@ require("nvim-treesitter.configs").setup({
 		"json",
 		"html",
 		"markdown",
-    "regex",
-    "bash",
-    "markdown_inline"
+		"regex",
+		"bash",
+		"markdown_inline",
+		"angular",
 	},
 	sync_install = false,
 	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },

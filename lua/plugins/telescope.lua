@@ -383,7 +383,7 @@ telescope.setup({
 })
 vim.g.fzf_history_dir = "~/.local/share/fzf-history"
 -- telescope.load_extension("file_browser")
--- telescope.load_extension("fzf")
+telescope.load_extension("fzf")
 
 vim.keymap.set("n", "<leader>tr", oldfiles, {})
 vim.keymap.set("n", "<leader>tgc", git_commits, {})

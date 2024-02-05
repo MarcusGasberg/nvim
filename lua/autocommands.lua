@@ -51,3 +51,10 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 		require("lint").try_lint()
 	end,
 })
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufEnter" }, {
+	pattern = { "*.component.html" },
+	callback = function()
+		vim.bo.filetype = "angular"
+	end,
+})

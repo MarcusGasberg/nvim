@@ -83,6 +83,7 @@ lazy.setup({
 						enabled = true,
 						colored_indent_levels = false,
 					},
+					leap = true,
 					mason = true,
 					neotest = true,
 					dap = true,
@@ -139,13 +140,14 @@ lazy.setup({
 		cond = not vim.g.vscode,
 	},
 	{
+		"nvim-telescope/telescope-fzf-native.nvim",
+		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+	},
+	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			{
-				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-			},
+			"nvim-telescope/telescope-fzf-native.nvim",
 		},
 		config = setup("plugins.telescope", "telescope"),
 		cond = not vim.g.vscode,
@@ -172,6 +174,9 @@ lazy.setup({
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = setup("plugins.gitsigns", "gitsigns"),
 		cond = not vim.g.vscode,
+	},
+	{
+		"tpope/vim-fugitive",
 	},
 	{ "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
 	{
@@ -202,15 +207,6 @@ lazy.setup({
 	},
 	{ "folke/neodev.nvim", opts = {}, cond = not vim.g.vscode },
 	{ "norcalli/nvim-colorizer.lua", config = true, cond = not vim.g.vscode },
-	{
-		"ThePrimeagen/refactoring.nvim",
-		dependencies = {
-			{ "nvim-lua/plenary.nvim" },
-			{ "nvim-treesitter/nvim-treesitter" },
-		},
-		config = setup("plugins.refactoring", "refactoring"),
-		cond = not vim.g.vscode,
-	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
@@ -250,17 +246,34 @@ lazy.setup({
 		cond = not vim.g.vscode,
 	},
 	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		opts = {},
+	},
+	{
 		"stevearc/conform.nvim",
 		config = setup("plugins.conform", "conform"),
 		cond = not vim.g.vscode,
 	},
-	{ "echasnovski/mini.nvim", version = "*", config = setup("plugins.mini"), cond = not vim.g.vscode },
 	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
 		event = "VeryLazy",
 		config = setup("plugins.surround"),
 	},
+	{
+		"numToStr/Comment.nvim",
+		lazy = false,
+		config = setup("plugins.comment", "Comment"),
+	},
+	{
+		"ggandor/leap.nvim",
+		dependencies = {
+			"tpope/vim-repeat",
+		},
+		config = setup("plugins.leap"),
+	},
+	{ "echasnovski/mini.nvim", version = "*", config = setup("plugins.mini") },
 	{
 		"norcalli/nvim-colorizer.lua",
 		config = setup("plugins.colorizer"),
@@ -273,5 +286,6 @@ lazy.setup({
 			"nvim-lua/plenary.nvim",
 		},
 		config = setup("plugins.harpoon"),
+		cond = not vim.g.vscode,
 	},
 })

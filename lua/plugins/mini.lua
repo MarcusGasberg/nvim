@@ -1,16 +1,16 @@
+if vim.g.vscode then
+	return
+end
+
 local header_art = [[
  ╭╮╭┬─╮╭─╮┬  ┬┬╭┬╮
  │││├┤ │ │╰┐┌╯││││
  ╯╰╯╰─╯╰─╯ ╰╯ ┴┴ ┴
 ]]
 
+require("mini.sessions").setup()
 require("mini.bufremove").setup()
 vim.keymap.set("n", "<leader>x", ":lua MiniBufremove.delete()<cr>", { noremap = true, silent = true })
-
-require("mini.pairs").setup()
-require("mini.sessions").setup()
-require("mini.comment").setup()
-
 local starter = require("mini.starter")
 starter.setup({
 	-- evaluate_single = true,

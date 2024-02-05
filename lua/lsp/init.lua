@@ -117,8 +117,17 @@ mason_config.setup_handlers({
 					-- Hover actions
 					vim.keymap.set("n", "<C-K>", rt.hover_actions.hover_actions, { buffer = bufnr })
 					-- Code action groups
-					vim.keymap.set("n", "<Leder>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+					vim.keymap.set("n", "<leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
 				end,
+			},
+			procMacro = {
+				ignored = {
+					leptos_macro = {
+						-- optional: --
+						-- "component",
+						"server",
+					},
+				},
 			},
 		})
 	end,
@@ -127,6 +136,7 @@ mason_config.setup_handlers({
 		local server = lsp_config["angularls"]
 		server.setup({
 			on_attach = on_attach,
+			filetypes = { "angular", "html", "typescript", "typescriptreact" },
 			root_dir = lsp_config.util.root_pattern("angular.json", "project.json"),
 			capabilities = capabilities,
 		})

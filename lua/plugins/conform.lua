@@ -5,6 +5,7 @@ require("conform").setup({
 		sh = { "shfmt" },
 		javascript = { "eslint_d", { "prettierd", "prettier" } },
 		typescript = { "eslint_d", { "prettierd", "prettier" } },
+		angular = { { "prettierd", "prettier" } },
 		json = { { "prettierd", "prettier" } },
 		html = { { "prettierd", "prettier" } },
 		scss = { { "prettierd", "prettier" } },
