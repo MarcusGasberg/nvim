@@ -58,9 +58,8 @@
     "body": [
       "import { Injectable } from '@angular/core';",
       "",
-      "@Injectable({providedIn: ${1:'root'}})",
-      "export class ${2:ServiceName}Service {",
-      "\tconstructor() { }",
+      "@Injectable({providedIn: 'root'})",
+      "export class ${1:ServiceName}Service {",
       "\t$0",
       "}"
     ]
@@ -108,8 +107,8 @@
     "description": "Angular - subscribe to routing parameters",
     "body": [
       "this.route.paramMap",
-      "\t.pipe(map(params => params.get('id')), tap(id => (this.id = +id)))",
-      "\t.subscribe(id => {$1});",
+      "\t.pipe(map(params => params.get({$1})))",
+      "\t.subscribe();",
       "$0"
     ]
   },
@@ -122,12 +121,12 @@
     "prefix": "a-service-httpclient",
     "description": "Angular service with HttpClient",
     "body": [
-      "import { Injectable } from '@angular/core';",
+      "import { Injectable, inject } from '@angular/core';",
       "import { HttpClient } from '@angular/common/http';",
       "",
       "@Injectable({providedIn: ${1:'root'}})",
       "export class ${2:ServiceName}Service {",
-      "\tconstructor(private httpClient: HttpClient) { }",
+      "\thttpClient = inject(HttpClient);",
       "\t$0",
       "}"
     ]

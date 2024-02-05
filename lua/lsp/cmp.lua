@@ -7,7 +7,44 @@ if not (cmp_status_ok and luasnip_ok and lspkind_status_ok) then
 	return
 end
 
+local kind_icons = {
+  Text = "󰉿",
+  Method = "󰆧",
+  Function = "󰊕",
+  Constructor = "",
+  Field = "󰜢",
+  Variable = "󰀫",
+  Class = "󰠱",
+  Interface = "",
+  Module = "",
+  Property = "󰜢",
+  Unit = "",
+  Value = "󰎠",
+  Enum = "",
+  Keyword = "󰌋",
+  Snippet = "",
+  Color = "󰏘",
+  File = "󰈙",
+  Reference = "󰈇",
+  Folder = "󰉋",
+  EnumMember = "",
+  Constant = "󰏿",
+  Struct = "󰙅",
+  Event = "",
+  Operator = "󰆕",
+  TypeParameter = "󰅲",
+}
+require('lspkind').init({
+    mode = 'symbol',
 
+    -- default symbol map
+    -- can be either 'default' (requires nerd-fonts font) or
+    -- 'codicons' for codicon preset (requires vscode-codicons font)
+    --
+    -- default: 'default'
+    preset = 'codicons',
+    symbol_map = kind_icons,
+})
 
 -- Setup completion engine
 cmp.setup({
@@ -26,39 +63,29 @@ cmp.setup({
 	formatting = {
 		fields = { "kind", "abbr", "menu" },
 		format = function(entry, vim_item)
-			local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
-			local strings = vim.split(kind.kind, "%s", { trimempty = true })
-			if strings[1] ~= nil then
-				kind.kind = " " .. strings[1] .. " "
-			end
+			local kind = lspkind.cmp_format({ maxwidth = 50 })(entry, vim_item)
 
-			if strings[2] ~= nil then
-				kind.menu = "    (" .. strings[2] .. ")"
-			end
-
-
+      local strings = vim.split(kind.kind, "%s")
+      kind.kind = " " .. (strings[1] or "") .. " "
 			return kind
 		end,
 	},
 	mapping = {
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
-		["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
-		["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
 		["<C-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c", "n" }),
 		["<C-y>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
 		["<C-e>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-		["<Tab>"] = cmp.mapping(function(fallback)
+		["<C-n>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
 			elseif luasnip.expand_or_jumpable() then
 				luasnip.expand_or_jump()
-				-- elseif has_words_before() then
-				-- 	cmp.complete()
 			else
 				fallback()
 			end
 		end, { "i", "s", "c" }),
-		["<S-Tab>"] = cmp.mapping(function(fallback)
+		["<C-p>"] = cmp.mapping(function(fallback)
+      print("hello")
 			if cmp.visible() then
 				cmp.select_prev_item()
 			elseif luasnip.jumpable(-1) then

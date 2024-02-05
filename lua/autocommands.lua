@@ -35,8 +35,26 @@ augroup END
 ]])
 
 vim.cmd([[
-autocmd VimEnter * nested
-        \ if !argc() && empty(v:this_session) && filereadable('Session.vim') && !&modified |
-        \   source Session.vim |
-        \ endif
+augroup KeepCentered
+  autocmd!
+  autocmd CursorMoved,CursorMovedI * call CentreCursor()
+augroup END
+function! CentreCursor()
+    let pos = getpos(".")
+    normal! zz
+    call setpos(".", pos)
+endfunction
 ]])
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+	callback = function()
+		require("lint").try_lint()
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufEnter" }, {
+	pattern = { "*.component.html" },
+	callback = function()
+		vim.bo.filetype = "angular"
+	end,
+})

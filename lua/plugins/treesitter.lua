@@ -13,8 +13,6 @@ local disable_function = function(lang, bufnr)
 	end
 end
 
-require("nvim-treesitter.install").compilers = { "zig" }
-
 require("nvim-treesitter.configs").setup({
 	ensure_installed = {
 		"lua",
@@ -29,14 +27,15 @@ require("nvim-treesitter.configs").setup({
 		"json",
 		"html",
 		"markdown",
-    "regex",
-    "bash",
-    "markdown_inline"
+		"regex",
+		"bash",
+		"markdown_inline",
+		"angular",
 	},
 	sync_install = false,
 	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },
 	highlight = {
-		enable = true, -- false will disable the whole extension
+		enable = not vim.g.vscode, -- false will disable the whole extension
 		disable = disable_function,
 		additional_vim_regex_highlighting = false,
 	},

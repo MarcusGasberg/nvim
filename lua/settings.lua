@@ -28,7 +28,7 @@ vim.opt.gdefault = true
 -- Do not allow line wraping
 vim.opt.wrap = false
 -- Start scrolling when you're 15 away from bottom (and side)
-vim.opt.scrolloff = 999
+vim.opt.scrolloff = 15
 vim.opt.sidescrolloff = 35
 -- Keep column for linting always on
 vim.opt.signcolumn = "yes"
@@ -51,6 +51,9 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.backspace = "indent,eol,start"
 
+-- Session
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 -- Indenting
 vim.opt.shiftwidth = 2
 vim.opt.autoindent = true
@@ -60,16 +63,16 @@ vim.opt.tabstop = 2
 vim.opt.expandtab = true
 
 -- filenames
-vim.opt.fileformat="unix"
-vim.opt.fileformats="unix,dos"
-vim.opt.encoding="utf-8"
-vim.opt.fileencoding="utf-8"
+vim.opt.fileformat = "unix"
+vim.opt.fileformats = "unix,dos"
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
 
 vim.g.gui_font_default_size = 12
 vim.g.gui_font_size = vim.g.gui_font_default_size
 vim.g.gui_font_face = "Fira Code Retina"
 
-vim.g.t_Co=256
-vim.g.t_ut=nil
+vim.g.t_Co = 256
+vim.g.t_ut = nil
 
 vim.opt.colorcolumn = "80"
