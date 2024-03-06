@@ -8,42 +8,42 @@ if not (cmp_status_ok and luasnip_ok and lspkind_status_ok) then
 end
 
 local kind_icons = {
-  Text = "󰉿",
-  Method = "󰆧",
-  Function = "󰊕",
-  Constructor = "",
-  Field = "󰜢",
-  Variable = "󰀫",
-  Class = "󰠱",
-  Interface = "",
-  Module = "",
-  Property = "󰜢",
-  Unit = "",
-  Value = "󰎠",
-  Enum = "",
-  Keyword = "󰌋",
-  Snippet = "",
-  Color = "󰏘",
-  File = "󰈙",
-  Reference = "󰈇",
-  Folder = "󰉋",
-  EnumMember = "",
-  Constant = "󰏿",
-  Struct = "󰙅",
-  Event = "",
-  Operator = "󰆕",
-  TypeParameter = "󰅲",
+	Text = "󰉿",
+	Method = "󰆧",
+	Function = "󰊕",
+	Constructor = "",
+	Field = "󰜢",
+	Variable = "󰀫",
+	Class = "󰠱",
+	Interface = "",
+	Module = "",
+	Property = "󰜢",
+	Unit = "",
+	Value = "󰎠",
+	Enum = "",
+	Keyword = "󰌋",
+	Snippet = "",
+	Color = "󰏘",
+	File = "󰈙",
+	Reference = "󰈇",
+	Folder = "󰉋",
+	EnumMember = "",
+	Constant = "󰏿",
+	Struct = "󰙅",
+	Event = "",
+	Operator = "󰆕",
+	TypeParameter = "󰅲",
 }
-require('lspkind').init({
-    mode = 'symbol',
+require("lspkind").init({
+	mode = "symbol",
 
-    -- default symbol map
-    -- can be either 'default' (requires nerd-fonts font) or
-    -- 'codicons' for codicon preset (requires vscode-codicons font)
-    --
-    -- default: 'default'
-    preset = 'codicons',
-    symbol_map = kind_icons,
+	-- default symbol map
+	-- can be either 'default' (requires nerd-fonts font) or
+	-- 'codicons' for codicon preset (requires vscode-codicons font)
+	--
+	-- default: 'default'
+	preset = "codicons",
+	symbol_map = kind_icons,
 })
 
 -- Setup completion engine
@@ -65,8 +65,8 @@ cmp.setup({
 		format = function(entry, vim_item)
 			local kind = lspkind.cmp_format({ maxwidth = 50 })(entry, vim_item)
 
-      local strings = vim.split(kind.kind, "%s")
-      kind.kind = " " .. (strings[1] or "") .. " "
+			local strings = vim.split(kind.kind, "%s")
+			kind.kind = " " .. (strings[1] or "") .. " "
 			return kind
 		end,
 	},
@@ -85,7 +85,7 @@ cmp.setup({
 			end
 		end, { "i", "s", "c" }),
 		["<C-p>"] = cmp.mapping(function(fallback)
-      print("hello")
+			print("hello")
 			if cmp.visible() then
 				cmp.select_prev_item()
 			elseif luasnip.jumpable(-1) then
@@ -99,34 +99,29 @@ cmp.setup({
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lua" },
 		{ name = "luasnip" },
-		{ name = 'path' }
+		{ name = "path" },
 	}),
-	experimental = {
-		native_menu = false,
-	}
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ '/', '?' }, {
+cmp.setup.cmdline({ "/", "?" }, {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = {
-		{ name = 'buffer' }
-	}
+		{ name = "buffer" },
+	},
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
+cmp.setup.cmdline(":", {
 	mapping = cmp.mapping.preset.cmdline(),
-	sources = cmp.config.sources(
-	{
-		{ name = 'async_path' }
-	},
-	{
+	sources = cmp.config.sources({
+		{ name = "path" },
+	}, {
 		{
-			name = 'cmdline',
+			name = "cmdline",
 			option = {
-				ignore_cmds = { 'Man', '!', 'grep', 'vimgrep' }
-			}
-		}
-	})
+				ignore_cmds = { "Man", "!", "grep", "vimgrep", "Dispatch" },
+			},
+		},
+	}),
 })
