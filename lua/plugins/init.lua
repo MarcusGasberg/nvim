@@ -114,12 +114,12 @@ lazy.setup({
 	{ "williamboman/mason.nvim", build = ":MasonUpdate", cond = not vim.g.vscode },
 	{ "williamboman/mason-lspconfig.nvim", cond = not vim.g.vscode },
 	{ "rshkarin/mason-nvim-lint", cond = not vim.g.vscode },
-
 	{ "onsails/lspkind-nvim", cond = not vim.g.vscode },
 	{ "nvim-lua/plenary.nvim", cond = not vim.g.vscode },
 	{ "rafamadriz/friendly-snippets", cond = not vim.g.vscode },
 	{ "tpope/vim-abolish" },
 	{ "tpope/vim-repeat" },
+	{ "tpope/vim-dispatch" },
 	{
 		"L3MON4D3/LuaSnip",
 		dependencies = { "rafamadriz/friendly-snippets" },
@@ -205,8 +205,7 @@ lazy.setup({
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
-		opts = {},
-		config = setup("plugins.indent-blankline", "ibl"),
+		config = setup("plugins.indent-blankline"),
 		cond = not vim.g.vscode,
 	},
 	{ "vim-test/vim-test", config = setup("plugins.vim-test"), cond = not vim.g.vscode },
@@ -262,11 +261,51 @@ lazy.setup({
 		config = setup("plugins.comment", "Comment"),
 	},
 	{
-		"ggandor/leap.nvim",
-		dependencies = {
-			"tpope/vim-repeat",
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		opts = {},
+		keys = {
+			{
+				"s",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").jump()
+				end,
+				desc = "Flash",
+			},
+			{
+				"S",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").treesitter()
+				end,
+				desc = "Flash Treesitter",
+			},
+			{
+				"r",
+				mode = "o",
+				function()
+					require("flash").remote()
+				end,
+				desc = "Remote Flash",
+			},
+			{
+				"R",
+				mode = { "o", "x" },
+				function()
+					require("flash").treesitter_search()
+				end,
+				desc = "Treesitter Search",
+			},
+			{
+				"<c-s>",
+				mode = { "c" },
+				function()
+					require("flash").toggle()
+				end,
+				desc = "Toggle Flash Search",
+			},
 		},
-		config = setup("plugins.leap"),
 	},
 	{ "echasnovski/mini.nvim", version = "*", config = setup("plugins.mini") },
 	{

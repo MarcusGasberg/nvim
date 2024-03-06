@@ -1,8 +1,7 @@
 local root_pattern = require("lspconfig.util").root_pattern
 return {
-	setup = function(on_attach, capabilities, server)
+	setup = function(capabilities, server)
 		server.setup({
-			on_attach = on_attach,
 			capabilities = capabilities,
 			cmd = { "tailwindcss-language-server", "--stdio" },
 			filetypes = {
@@ -14,7 +13,7 @@ return {
 				"edge",
 				"eelixir",
 				"elixir",
-        "heex",
+				"heex",
 				"ejs",
 				"erb",
 				"eruby",
@@ -56,7 +55,7 @@ return {
 			init_options = {
 				userLanguages = {
 					eelixir = "html-eex",
-          elixir = "html-eex",
+					elixir = "html-eex",
 					eruby = "erb",
 				},
 			},

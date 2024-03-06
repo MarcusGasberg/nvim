@@ -1,7 +1,6 @@
 return {
-	setup = function(on_attach, capabilities, server)
+	setup = function(capabilities, server)
 		server.setup({
-			on_attach = on_attach,
 			capabilities = capabilities,
 			settings = {
 				Lua = {

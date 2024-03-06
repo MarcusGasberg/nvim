@@ -1,6 +1,7 @@
 local indent_ok, indent = pcall(require, "ibl")
 
 if not indent_ok then
+	print("indent-blankline not found")
 	return
 end
 

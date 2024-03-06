@@ -11,13 +11,12 @@ local tsserver_on_attach = function(client, bufnr)
 end
 
 return {
-	setup = function(on_attach, capabilities, server)
+	setup = function(capabilities, server)
 		-- server.setup({
 		-- 	capabilities = capabilities,
 		-- 	root_dir = require("lspconfig").util.root_pattern("package.json"),
 		-- 	on_attach = function(client, bufnr)
 		-- 		tsserver_on_attach(client, bufnr)
-		-- 		on_attach(client, bufnr)
 		-- 	end,
 		-- })
 	end,

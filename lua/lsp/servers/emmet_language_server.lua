@@ -1,7 +1,6 @@
 return {
-	setup = function(common_on_attach, capabilities, server)
+	setup = function(capabilities, server)
 		server.setup({
-			on_attach = common_on_attach,
 			filetypes = {
 				"css",
 				"eruby",

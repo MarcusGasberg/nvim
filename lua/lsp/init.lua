@@ -25,17 +25,6 @@ vim.diagnostic.config({
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
-vim.keymap.set({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help)
-vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, {})
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
-vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, {})
-vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
-vim.keymap.set("n", "<leader>=", function(args)
-	require("conform").format()
-end, {})
 vim.keymap.set("n", "]d", function()
 	vim.diagnostic.goto_next()
 end)
@@ -43,18 +32,50 @@ vim.keymap.set("n", "[d", function()
 	vim.diagnostic.goto_prev()
 end)
 
--- Map keys after LSP attaches (utility function)
-local on_attach = function(client, bufnr)
-	local function buf_set_option(...)
-		vim.api.nvim_buf_set_option(bufnr, ...)
-	end
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+	callback = function(event)
+		local map = function(keys, func, desc)
+			vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+		end
 
-	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+		map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+		map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
+		map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+		map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+		map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+		map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+		map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+		map("<leader>a", vim.lsp.buf.code_action, "Code [A]ction")
+		map("K", vim.lsp.buf.hover, "Hover Documentation")
+		map("<C-k>", vim.lsp.buf.signature_help, "Signature [K]elp")
+		map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-	-- Debounce by 300ms by default
-	client.config.flags.debounce_text_changes = 100
-end
+		vim.keymap.set("n", "<leader>=", function(args)
+			require("conform").format({
+				lsp_fallback = true,
+			})
+		end, {})
 
+		-- The following two autocommands are used to highlight references of the
+		-- word under your cursor when your cursor rests there for a little while.
+		--    See `:help CursorHold` for information about when this is executed
+		--
+		-- When you move your cursor, the highlights will be cleared (the second autocommand).
+		local client = vim.lsp.get_client_by_id(event.data.client_id)
+		if client and client.server_capabilities.documentHighlightProvider then
+			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+				buffer = event.buf,
+				callback = vim.lsp.buf.document_highlight,
+			})
+
+			vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+				buffer = event.buf,
+				callback = vim.lsp.buf.clear_references,
+			})
+		end
+	end,
+})
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	opts = opts or {}
@@ -92,11 +113,10 @@ mason_config.setup_handlers({
 		if not server_status_ok then
 			-- print("The LSP '" .. server.name .. "' does not have a config.")
 			server.setup({
-				on_attach = on_attach,
 				capabilities = capabilities,
 			})
 		else
-			server_config.setup(on_attach, capabilities, server)
+			server_config.setup(capabilities, server)
 		end
 	end,
 	-- Next, you can provide targeted overrides for specific servers.
@@ -106,14 +126,12 @@ mason_config.setup_handlers({
 
 		local server = lsp_config["rust_analyzer"]
 		server.setup({
-			on_attach = on_attach,
 			capabilities = capabilities,
 		})
 		return rt.setup({
 			capabilities = capabilities,
 			server = {
 				on_attach = function(client, bufnr)
-					on_attach(client, bufnr)
 					-- Hover actions
 					vim.keymap.set("n", "<C-K>", rt.hover_actions.hover_actions, { buffer = bufnr })
 					-- Code action groups
@@ -135,7 +153,6 @@ mason_config.setup_handlers({
 	["angularls"] = function()
 		local server = lsp_config["angularls"]
 		server.setup({
-			on_attach = on_attach,
 			filetypes = { "angular", "html", "typescript", "typescriptreact" },
 			root_dir = lsp_config.util.root_pattern("angular.json", "project.json"),
 			capabilities = capabilities,

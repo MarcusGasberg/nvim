@@ -76,3 +76,14 @@ vim.g.t_Co = 256
 vim.g.t_ut = nil
 
 vim.opt.colorcolumn = "80"
+
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
+
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
+vim.opt.list = true
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
+vim.opt.inccommand = "split"
