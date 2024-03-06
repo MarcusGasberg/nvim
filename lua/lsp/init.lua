@@ -79,7 +79,7 @@ mason.setup({
 })
 
 mason_config.setup({
-	ensure_installed = { "lua_ls", "angularls", "cssls", "html", "rust_analyzer", "eslint" },
+	ensure_installed = { "lua_ls", "kotlin_language_server", "angularls", "cssls", "html", "rust_analyzer", "eslint" },
 })
 
 mason_config.setup_handlers({
@@ -139,6 +139,88 @@ mason_config.setup_handlers({
 			filetypes = { "angular", "html", "typescript", "typescriptreact" },
 			root_dir = lsp_config.util.root_pattern("angular.json", "project.json"),
 			capabilities = capabilities,
+		})
+	end,
+	["jdtls"] = function()
+		local function progress_handler()
+			---@type table<string, boolean>
+			local tokens = {}
+			---@type table<string, boolean>
+			local ready_projects = {}
+			---@param result {type:"Starting"|"Started"|"ServiceReady", message:string}
+			return function(_, result, ctx)
+				local cwd = vim.loop.cwd()
+				if ready_projects[cwd] then
+					return
+				end
+				local token = tokens[cwd] or vim.tbl_count(tokens)
+				if result.type == "Starting" and not tokens[cwd] then
+					tokens[cwd] = token
+					vim.lsp.handlers["$/progress"](nil, {
+						token = token,
+						value = {
+							kind = "begin",
+							title = "jdtls",
+							message = result.message,
+							percentage = 0,
+						},
+					}, ctx)
+				elseif result.type == "Starting" then
+					local _, percentage_index = string.find(result.message, "^%d%d?%d?")
+					local percentage = 0
+					local message = result.message
+					if percentage_index then
+						percentage = tonumber(string.sub(result.message, 1, percentage_index))
+						message = string.sub(result.message, percentage_index + 3)
+					end
+
+					vim.lsp.handlers["$/progress"](nil, {
+						token = token,
+						value = {
+							kind = "report",
+							message = message,
+							percentage = percentage,
+						},
+					}, ctx)
+				elseif result.type == "Started" then
+					vim.lsp.handlers["$/progress"](nil, {
+						token = token,
+						value = {
+							kind = "report",
+							message = result.message,
+							percentage = 100,
+						},
+					}, ctx)
+				elseif result.type == "ServiceReady" then
+					ready_projects[cwd] = true
+					vim.lsp.handlers["$/progress"](nil, {
+						token = token,
+						value = {
+							kind = "end",
+							message = result.message,
+						},
+					}, ctx)
+				end
+			end
+		end
+
+		lsp_config.jdtls.setup({
+			cmd = {
+				"jdtls",
+				"--jvm-arg=" .. string.format("-javaagent:%s", vim.fn.expand("$MASON/share/jdtls/lombok.jar")),
+			},
+			capabilities = capabilities,
+			handlers = {
+				["language/status"] = progress_handler,
+			},
+		})
+	end,
+	["kotlin_language_server"] = function()
+		local server = lsp_config["kotlin_language_server"]
+		server.setup({
+			on_attach = on_attach,
+			capabilities = capabilities,
+			root_dir = lsp_config.util.root_pattern("settings.kts", "build.gradle.kts", "build.gradle", "pom.xml"),
 		})
 	end,
 })
