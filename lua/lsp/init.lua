@@ -159,77 +159,33 @@ mason_config.setup_handlers({
 		})
 	end,
 	["jdtls"] = function()
-		local function progress_handler()
-			---@type table<string, boolean>
-			local tokens = {}
-			---@type table<string, boolean>
-			local ready_projects = {}
-			---@param result {type:"Starting"|"Started"|"ServiceReady", message:string}
-			return function(_, result, ctx)
-				local cwd = vim.loop.cwd()
-				if ready_projects[cwd] then
-					return
-				end
-				local token = tokens[cwd] or vim.tbl_count(tokens)
-				if result.type == "Starting" and not tokens[cwd] then
-					tokens[cwd] = token
-					vim.lsp.handlers["$/progress"](nil, {
-						token = token,
-						value = {
-							kind = "begin",
-							title = "jdtls",
-							message = result.message,
-							percentage = 0,
-						},
-					}, ctx)
-				elseif result.type == "Starting" then
-					local _, percentage_index = string.find(result.message, "^%d%d?%d?")
-					local percentage = 0
-					local message = result.message
-					if percentage_index then
-						percentage = tonumber(string.sub(result.message, 1, percentage_index))
-						message = string.sub(result.message, percentage_index + 3)
-					end
-
-					vim.lsp.handlers["$/progress"](nil, {
-						token = token,
-						value = {
-							kind = "report",
-							message = message,
-							percentage = percentage,
-						},
-					}, ctx)
-				elseif result.type == "Started" then
-					vim.lsp.handlers["$/progress"](nil, {
-						token = token,
-						value = {
-							kind = "report",
-							message = result.message,
-							percentage = 100,
-						},
-					}, ctx)
-				elseif result.type == "ServiceReady" then
-					ready_projects[cwd] = true
-					vim.lsp.handlers["$/progress"](nil, {
-						token = token,
-						value = {
-							kind = "end",
-							message = result.message,
-						},
-					}, ctx)
-				end
-			end
-		end
+		local workspace_path = vim.fn.stdpath("data") .. "/lsp_servers/jdtls_workspace_"
+		local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+		local workspace_dir = workspace_path .. project_name
 
 		lsp_config.jdtls.setup({
 			cmd = {
-				"jdtls",
-				"--jvm-arg=" .. string.format("-javaagent:%s", vim.fn.expand("$MASON/share/jdtls/lombok.jar")),
+				"java",
+				"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+				"-Dosgi.bundles.defaultStartLevel=4",
+				"-Declipse.product=org.eclipse.jdt.ls.core.product",
+				"-Dlog.protocol=true",
+				"-Dlog.level=ALL",
+				"-Xms1g",
+				"--add-modules=ALL-SYSTEM",
+				"--add-opens",
+				"java.base/java.util=ALL-UNNAMED",
+				"--add-opens",
+				"java.base/java.lang=ALL-UNNAMED",
+				"-javaagent:" .. vim.fn.expand("$MASON/share/jdtls/lombok.jar"),
+				"-jar",
+				vim.fn.expand("$MASON/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"),
+				"-configuration",
+				vim.fn.expand("$MASON/share/jdtls/config"),
+				"-data",
+				workspace_dir,
 			},
 			capabilities = capabilities,
-			handlers = {
-				["language/status"] = progress_handler,
-			},
 		})
 	end,
 	["kotlin_language_server"] = function()

@@ -186,7 +186,7 @@ lazy.setup({
 		config = setup("plugins.diffview", "diffview"),
 		cond = not vim.g.vscode,
 	},
-	{ "ggandor/leap.nvim", config = setup("plugins.leap", "leap") },
+	{ "ggandor/leap.nvim", opts = {} },
 	{
 		"nvim-treesitter/nvim-treesitter",
 		config = setup("plugins.treesitter", "nvim-treesitter"),
@@ -208,7 +208,6 @@ lazy.setup({
 		config = setup("plugins.indent-blankline"),
 		cond = not vim.g.vscode,
 	},
-	{ "vim-test/vim-test", config = setup("plugins.vim-test"), cond = not vim.g.vscode },
 	{
 		"nvim-neotest/neotest",
 		dependencies = {
