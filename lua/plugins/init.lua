@@ -118,6 +118,7 @@ lazy.setup({
 	{ "nvim-lua/plenary.nvim", cond = not vim.g.vscode },
 	{ "rafamadriz/friendly-snippets", cond = not vim.g.vscode },
 	{ "tpope/vim-abolish" },
+	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-repeat" },
 	{ "tpope/vim-dispatch" },
 	{
@@ -207,12 +208,6 @@ lazy.setup({
 	},
 	{ "folke/neodev.nvim", opts = {}, cond = not vim.g.vscode },
 	{ "norcalli/nvim-colorizer.lua", config = true, cond = not vim.g.vscode },
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		config = setup("plugins.indent-blankline"),
-		cond = not vim.g.vscode,
-	},
 	{ "vim-test/vim-test", config = setup("plugins.vim-test"), cond = not vim.g.vscode },
 	{
 		"nvim-neotest/neotest",
@@ -221,11 +216,13 @@ lazy.setup({
 			"nvim-neotest/neotest-vim-test",
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-neotest/nvim-nio",
 		},
 		config = setup("plugins.neotest"),
 		cond = not vim.g.vscode,
 	},
-	{ "github/copilot.vim", cond = not vim.g.vscode },
+	{ "github/copilot.vim", cond = not vim.g.vscode, config = setup("plugins.copilot") },
 	{
 		"jackMort/ChatGPT.nvim",
 		event = "VeryLazy",
@@ -326,5 +323,18 @@ lazy.setup({
 		},
 		config = setup("plugins.harpoon"),
 		cond = not vim.g.vscode,
+	},
+	{
+		"folke/trouble.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = setup("plugins.trouble", "trouble"),
+	},
+	{
+		"kristijanhusak/vim-dadbod-ui",
+		dependencies = {
+			{ "tpope/vim-dadbod", lazy = true },
+			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+		},
+		config = setup("plugins.sql"),
 	},
 })

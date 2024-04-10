@@ -36,6 +36,8 @@ require("nvim-treesitter.configs").setup({
 		"angular",
 	},
 	sync_install = false,
+	auto_install = true,
+	modules = {},
 	ignore_install = { "haskell", "phpdoc", "jsdoc", "comment" },
 	highlight = {
 		enable = not vim.g.vscode, -- false will disable the whole extension

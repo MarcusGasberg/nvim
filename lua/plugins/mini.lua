@@ -10,7 +10,7 @@ local header_art = [[
 
 require("mini.sessions").setup()
 require("mini.bufremove").setup()
-vim.keymap.set("n", "<leader>x", ":lua MiniBufremove.delete()<cr>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-x>", ":lua MiniBufremove.delete()<cr>", { noremap = true, silent = true })
 local starter = require("mini.starter")
 starter.setup({
 	-- evaluate_single = true,
