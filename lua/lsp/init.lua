@@ -102,7 +102,7 @@ mason.setup({
 })
 
 mason_config.setup({
-	ensure_installed = { "lua_ls", "angularls", "cssls", "html", "rust_analyzer", "eslint" },
+	ensure_installed = { "lua_ls", "kotlin_language_server", "angularls", "cssls", "html", "rust_analyzer", "eslint" },
 })
 
 mason_config.setup_handlers({
@@ -158,6 +158,44 @@ mason_config.setup_handlers({
 			filetypes = { "angular", "html", "typescript", "typescriptreact" },
 			root_dir = lsp_config.util.root_pattern("angular.json", "project.json"),
 			capabilities = capabilities,
+		})
+	end,
+	["jdtls"] = function()
+		local workspace_path = vim.fn.stdpath("data") .. "/lsp_servers/jdtls_workspace_"
+		local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+		local workspace_dir = workspace_path .. project_name
+
+		lsp_config.jdtls.setup({
+			cmd = {
+				"java",
+				"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+				"-Dosgi.bundles.defaultStartLevel=4",
+				"-Declipse.product=org.eclipse.jdt.ls.core.product",
+				"-Dlog.protocol=true",
+				"-Dlog.level=ALL",
+				"-Xms1g",
+				"--add-modules=ALL-SYSTEM",
+				"--add-opens",
+				"java.base/java.util=ALL-UNNAMED",
+				"--add-opens",
+				"java.base/java.lang=ALL-UNNAMED",
+				"-javaagent:" .. vim.fn.expand("$MASON/share/jdtls/lombok.jar"),
+				"-jar",
+				vim.fn.expand("$MASON/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"),
+				"-configuration",
+				vim.fn.expand("$MASON/share/jdtls/config"),
+				"-data",
+				workspace_dir,
+			},
+			capabilities = capabilities,
+		})
+	end,
+	["kotlin_language_server"] = function()
+		local server = lsp_config["kotlin_language_server"]
+		server.setup({
+			on_attach = on_attach,
+			capabilities = capabilities,
+			root_dir = lsp_config.util.root_pattern("settings.kts", "build.gradle.kts", "build.gradle", "pom.xml"),
 		})
 	end,
 })
