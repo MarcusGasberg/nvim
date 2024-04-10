@@ -190,7 +190,7 @@ lazy.setup({
 	{
 		"petertriho/nvim-scrollbar",
 		dependencies = { "kevinhwang91/nvim-hlslens" },
-		config = setup("plugins.scrollbar", "scrollbar"),
+		config = {},
 		cond = not vim.g.vscode,
 	},
 	{
@@ -208,7 +208,6 @@ lazy.setup({
 	},
 	{ "folke/neodev.nvim", opts = {}, cond = not vim.g.vscode },
 	{ "norcalli/nvim-colorizer.lua", config = true, cond = not vim.g.vscode },
-	{ "vim-test/vim-test", config = setup("plugins.vim-test"), cond = not vim.g.vscode },
 	{
 		"nvim-neotest/neotest",
 		dependencies = {
