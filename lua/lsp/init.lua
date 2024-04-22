@@ -54,6 +54,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>=", function(args)
 			require("conform").format({
 				lsp_fallback = true,
+				timeout = 2000,
 			})
 		end, {})
 

@@ -39,6 +39,27 @@ local function git_branches()
 	builtin.git_branches()
 end
 
+local function changed_files()
+	local list = vim.fn.systemlist("git diff --name-only")
+
+	local opts = {
+		prompt_title = "Changed Files",
+		previewer = true,
+	}
+
+	pickers
+		.new(opts, {
+			prompt_title = "Git Stash",
+			-- sort by modified time
+			previewer = previewers.vim_buffer_cat.new(opts),
+			finder = finders.new_table({
+				results = list,
+				entry_maker = make_entry.gen_from_file(opts),
+			}),
+		})
+		:find()
+end
+
 local function grep_string()
 	local word = vim.fn.expand("<cword>")
 	builtin.grep_string()
@@ -384,6 +405,7 @@ telescope.setup({
 vim.g.fzf_history_dir = "~/.local/share/fzf-history"
 -- telescope.load_extension("file_browser")
 telescope.load_extension("fzf")
+telescope.load_extension("harpoon")
 
 vim.keymap.set("n", "<leader>tr", oldfiles, {})
 vim.keymap.set("n", "<leader>tgc", git_commits, {})
@@ -391,8 +413,10 @@ vim.keymap.set("n", "<leader>tgb", git_branches, {})
 vim.keymap.set("n", "<leader>tf", grep_string, {})
 vim.keymap.set("n", "<leader>f", live_grep, {})
 vim.keymap.set("n", "<leader>j", git_files, {})
-vim.keymap.set("n", "<leader>k", function()
-	buffers()
+vim.keymap.set("n", "<leader>k", buffers, {})
+
+vim.keymap.set("n", "<leader>tcf", function()
+	changed_files()
 end)
 vim.keymap.set("n", "<leader>th", function()
 	builtin.help_tags()
