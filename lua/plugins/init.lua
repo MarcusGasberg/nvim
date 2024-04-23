@@ -41,61 +41,29 @@ lazy.setup({
 		lazy = false,
 		priority = 1000,
 		config = function()
-			require("catppuccin").setup({
-				flavour = "mocha", -- latte, frappe, macchiato, mocha
-				background = { -- :h background
-					light = "latte",
-					dark = "mocha",
-				},
-				transparent_background = false, -- disables setting the background color.
-				show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-				term_colors = true, -- sets terminal colors (e.g. `g:terminal_color_0`)
-				dim_inactive = {
-					enabled = false, -- dims the background color of inactive window
-					shade = "dark",
-					percentage = 0.15, -- percentage of the shade to apply to the inactive window
-				},
-				no_italic = false, -- Force no italic
-				no_bold = false, -- Force no bold
-				no_underline = false, -- Force no underline
-				styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-					comments = { "italic" }, -- Change the style of comments
-					conditionals = { "italic" },
-					loops = {},
-					functions = {},
-					keywords = {},
-					strings = {},
-					variables = {},
-					numbers = {},
-					booleans = {},
-					properties = {},
-					types = {},
-					operators = {},
-				},
-				color_overrides = {},
-				custom_highlights = {},
-				integrations = {
-					cmp = true,
-					gitsigns = true,
-					treesitter = true,
-					dashboard = true,
-					indent_blankline = {
-						enabled = true,
-						colored_indent_levels = false,
-					},
-					leap = true,
-					mason = true,
-					neotest = true,
-					dap = true,
-					harpoon = true,
-				},
-			})
-			vim.cmd([[colorscheme catppuccin-mocha]])
+			require("plugins.color-schemes.catpuccin")
 		end,
 		cond = not vim.g.vscode,
 	},
-	{ "rose-pine/neovim", name = "rose-pine" },
-	{ "rebelot/kanagawa.nvim", cond = not vim.g.vscode },
+	{
+		"rose-pine/neovim",
+		lazy = false,
+		priority = 1001,
+		name = "rose-pine",
+		cond = not vim.g.vscode,
+		config = function()
+			require("plugins.color-schemes.rose-pine")
+		end,
+	},
+	{
+		"rebelot/kanagawa.nvim",
+		lazy = false,
+		priority = 1002,
+		cond = not vim.g.vscode,
+		config = function()
+			require("plugins.color-schemes.kanagawa")
+		end,
+	},
 	{
 		"hrsh7th/nvim-cmp",
 		-- these dependencies will only be loaded when cmp loads
@@ -315,13 +283,24 @@ lazy.setup({
 		cond = not vim.g.vscode,
 	},
 	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
+		"cbochs/grapple.nvim",
 		dependencies = {
-			"nvim-lua/plenary.nvim",
+			{ "nvim-tree/nvim-web-devicons", lazy = true },
 		},
-		config = setup("plugins.harpoon"),
 		cond = not vim.g.vscode,
+		opts = {
+			scope = "git", -- also try out "git_branch"
+		},
+		event = { "BufReadPost", "BufNewFile" },
+		cmd = "Grapple",
+		keys = {
+			{ "<leader>h", "<cmd>Grapple toggle<cr>", desc = "Grapple toggle tag" },
+			{ "<leader>l", "<cmd>Grapple toggle_tags<cr>", desc = "Grapple open tags window" },
+			{ "<leader>1", "<cmd>Grapple select index=1<cr>", desc = "Select first tag" },
+			{ "<leader>2", "<cmd>Grapple select index=2<cr>", desc = "Select second tag" },
+			{ "<leader>3", "<cmd>Grapple select index=3<cr>", desc = "Select third tag" },
+			{ "<leader>4", "<cmd>Grapple select index=4<cr>", desc = "Select fourth tag" },
+		},
 	},
 	{
 		"folke/trouble.nvim",
