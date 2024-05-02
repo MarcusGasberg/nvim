@@ -1,3 +1,5 @@
+local keymap = require("utils.keymap")
+local fmt = require("utils.icons").fmt
 local trouble_ok, trouble = pcall(require, "trouble")
 
 if not trouble_ok then
@@ -11,12 +13,12 @@ trouble.setup({
 })
 
 local map = function(keys, func, desc)
-	vim.keymap.set("n", keys, func, { desc = "TROUBLE: " .. desc })
+	vim.keymap.set("n", keys, func, { desc = fmt("Error", "[Trouble] " .. desc) })
 end
 
 map("<leader>xx", function()
 	require("trouble").toggle()
-end, "Toggle Trouble")
+end, "Toggle")
 map("<leader>xw", function()
 	require("trouble").toggle("workspace_diagnostics")
 end, "Toggle Workspace Diagnostics")

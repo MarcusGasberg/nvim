@@ -9,6 +9,8 @@ local utils = require("telescope.utils")
 local state = require("telescope.actions.state")
 local u = require("functions.utils")
 local transform_mod = require("telescope.actions.mt").transform_mod
+local fmt = require("utils.icons").fmt
+local keymap = require("utils.keymap")
 
 local builtin = require("telescope.builtin")
 
@@ -407,44 +409,27 @@ vim.g.fzf_history_dir = "~/.local/share/fzf-history"
 telescope.load_extension("fzf")
 telescope.load_extension("grapple")
 
-vim.keymap.set("n", "<leader>tr", oldfiles, {})
-vim.keymap.set("n", "<leader>tgc", git_commits, {})
-vim.keymap.set("n", "<leader>tgb", git_branches, {})
-vim.keymap.set("n", "<leader>tf", grep_string, {})
-vim.keymap.set("n", "<leader>f", live_grep, {})
-vim.keymap.set("n", "<leader>j", git_files, {})
-vim.keymap.set("n", "<leader>k", buffers, {})
+keymap.normal_map("<leader>tr", oldfiles, fmt("History", "[Telescope] Old files"))
+keymap.normal_map("<leader>tgc", git_commits, fmt("GitCommit", "[Telescope] Git commits"))
+keymap.normal_map("<leader>tgb", git_branches, fmt("GitBranch", "[Telescope] Git branch"))
+keymap.normal_map("<leader>tf", grep_string, fmt("Search", "[Telescope] Grep string"))
+keymap.normal_map("<leader>f", live_grep, fmt("Search", "[Telescope] Grep"))
+keymap.normal_map("<leader>j", git_files, fmt("Search", "[Telescope] Default file"))
+keymap.normal_map("<leader>k", buffers, fmt("Stack", "[Telescope] Buffers"))
 
-vim.keymap.set("n", "<leader>tcf", function()
+keymap.normal_map("<leader>tcf", function()
 	changed_files()
-end)
-vim.keymap.set("n", "<leader>th", function()
+end, fmt("GitDiff", "[Telescope] Changed files"))
+keymap.normal_map("<leader>th", function()
 	builtin.help_tags()
-end)
-vim.keymap.set("n", "<leader><leader>", function()
+end, fmt("Help", "[Telescope] Help tags"))
+keymap.normal_map("<leader><leader>", function()
 	builtin.resume()
-end)
-vim.keymap.set("n", "<leader>e", function()
+end, fmt("Dots", "[Telescope] Resume"))
+keymap.normal_map("<leader>e", function()
 	builtin.diagnostics()
-end)
--- vim.keymap.set("n", "<leader>tf", git_files_string, {})
+end, fmt("Error", "[Telescope] Diagnostics"))
+-- map("<leader>tf", git_files_string, {})
 -- vim.keymap.set("v", "<leader>tf", git_files_string_visual, {})
-vim.keymap.set("v", "<leader>tf", grep_string_visual, {})
-vim.keymap.set("n", "<leader>tgs", stash_filter, {})
-
-local function telescope_buffer_dir()
-	return vim.fn.expand("%:p:h")
-end
--- vim.keymap.set("n", '\\', function()
---   telescope.extensions.file_browser.file_browser({
---     path = "%:p:h",
---     cwd = telescope_buffer_dir(),
---     select_buffer=false,
---     respect_gitignore = false,
---     hidden = true,
---     grouped = true,
---     previewer = false,
---     initial_mode = "normal",
---     layout_config = { height = 40 }
---   })
--- end)
+keymap.visual_map("<leader>tf", grep_string_visual, fmt("Search", "[Telescope] Grep string"))
+keymap.normal_map("<leader>tgs", stash_filter, fmt("Stack", "[Telescope] Git stash filter"))

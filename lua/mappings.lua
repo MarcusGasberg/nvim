@@ -1,14 +1,16 @@
-vim.keymap.set("n", "<Leader>sv", ":source $MYVIMRC<CR>")
+local keymap = require("utils.keymap")
+local fmt = require("utils.icons").fmt
+keymap.normal_map("<leader>so", ":source $MYVIMRC<CR>", fmt("Restart", "Restart"))
 
 -- Splits
-vim.keymap.set("n", "<leader>ss", ":split<Return><C-w>w")
-vim.keymap.set("n", "<leader>sv", ":vsplit<Return><C-w>w")
-vim.keymap.set("n", "<leader>sh", "<C-w>h")
-vim.keymap.set("n", "<leader>sj", "<C-w>j")
-vim.keymap.set("n", "<leader>sk", "<C-w>k")
-vim.keymap.set("n", "<leader>sl", "<C-w>l")
-vim.keymap.set("n", "<leader>sq", "<C-w>q")
-vim.keymap.set("n", "<leader>sp", "<C-w><C-p>")
+keymap.normal_map("<leader>ss", ":split<Return><C-w>w", fmt("Window", "[Window] Hori[S]ontal [S]plit"))
+keymap.normal_map("<leader>sv", ":vsplit<Return><C-w>w", fmt("Window", "[Window] [V]ertical [S]plit"))
+keymap.normal_map("<leader>sh", "<C-w>h", fmt("Window", "[Window] left"))
+keymap.normal_map("<leader>sj", "<C-w>j", fmt("Window", "[Window] down"))
+keymap.normal_map("<leader>sk", "<C-w>k", fmt("Window", "[Window] up"))
+keymap.normal_map("<leader>sl", "<C-w>l", fmt("Window", "[Window] right"))
+keymap.normal_map("<leader>sq", "<C-w>q", fmt("Window", "[Window] [Q]uit"))
+keymap.normal_map("<leader>sp", "<C-w><C-p>", fmt("Window", "[Window] [P]revious"))
 
 -- no one is really happy until you have this shortcuts
 local function cabbrev(input, replace)
@@ -33,15 +35,23 @@ cabbrev("Qa!", "qa!")
 cabbrev("Qall", "qall")
 
 -- move through buffers
-vim.keymap.set("n", "<leader>[", ":bp!<CR>")
-vim.keymap.set("n", "<leader>]", ":bn!<CR>")
--- vim.keymap.set("n", "<leader>x", ":bd<CR>")
+keymap.normal_map("<leader>[", ":bp!<CR>", fmt("Stack", "Previous buffer"))
+keymap.normal_map("<leader>]", ":bn!<CR>", fmt("Stack", "Next buffer"))
+-- keymap.normal_map("<leader>x", ":bd<CR>")
 
 -- copy, cut and paste
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
-vim.keymap.set({ "n", "v" }, "<leader>c", '"+c')
-vim.keymap.set({ "n", "v" }, "<leader>d", '"+d')
-vim.keymap.set({ "n", "v" }, "<leader>p", '"+p')
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', {
+	desc = fmt("Copy", "Yank to clipboard"),
+})
+vim.keymap.set({ "n", "v" }, "<leader>c", '"+c', {
+	desc = fmt("Cut", "Cut to clipboard"),
+})
+vim.keymap.set({ "n", "v" }, "<leader>d", '"+d', {
+	desc = fmt("Delete", "Delete to clipboard"),
+})
+vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', {
+	desc = fmt("Paste", "Paste from clipboard"),
+})
 
 -- Allows numbered jumps to be saved to the jumplist, for use w/ C-o and C-i
 vim.api.nvim_exec2("nnoremap <expr> k (v:count > 1 ? \"m'\" . v:count : '') . 'k'", {})
@@ -52,10 +62,5 @@ vim.api.nvim_exec2("cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' :
 
 vim.keymap.set("i", "<C-p>", "<nop>")
 vim.keymap.set("i", "<C-n>", "<nop>")
-
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
 return {}

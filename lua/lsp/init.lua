@@ -1,3 +1,4 @@
+local fmt = require("utils.icons").fmt
 local cmp_nvim_lsp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 local mason_config_ok, mason_config = pcall(require, "mason-lspconfig")
 local mason_ok, mason = pcall(require, "mason")
@@ -36,27 +37,31 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 	callback = function(event)
 		local map = function(keys, func, desc)
-			vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+			vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
 		end
 
-		map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-		map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
-		map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-		map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-		map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-		map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-		map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-		map("<leader>a", vim.lsp.buf.code_action, "Code [A]ction")
-		map("K", vim.lsp.buf.hover, "Hover Documentation")
-		map("<C-k>", vim.lsp.buf.signature_help, "Signature [K]elp")
-		map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+		map("gd", require("telescope.builtin").lsp_definitions, fmt("Code", "[G]oto [D]efinition"))
+		map("gr", vim.lsp.buf.references, fmt("Code", "[G]oto [R]eferences"))
+		map("gI", require("telescope.builtin").lsp_implementations, fmt("Code", "[G]oto [I]mplementation"))
+		map("<leader>D", require("telescope.builtin").lsp_type_definitions, fmt("Code", "Type [D]efinition"))
+		map("<leader>ds", require("telescope.builtin").lsp_document_symbols, fmt("Symbol", "[D]ocument [S]ymbols"))
+		map(
+			"<leader>ws",
+			require("telescope.builtin").lsp_dynamic_workspace_symbols,
+			fmt("Symbol", "[W]orkspace [S]ymbols")
+		)
+		map("<leader>rn", vim.lsp.buf.rename, fmt("Fix", "[R]e[n]ame"))
+		map("<leader>a", vim.lsp.buf.code_action, fmt("Fix", "Code [A]ction"))
+		map("K", vim.lsp.buf.hover, fmt("Hint", "Hover Documentation"))
+		map("<C-k>", vim.lsp.buf.signature_help, fmt("Hint", "Signature [K]elp"))
+		map("gD", vim.lsp.buf.declaration, fmt("Code", "[G]oto [D]eclaration"))
 
-		vim.keymap.set("n", "<leader>=", function(args)
+		map("<leader>=", function(args)
 			require("conform").format({
 				lsp_fallback = true,
 				timeout = 2000,
 			})
-		end, {})
+		end, fmt("Format", "Format"))
 
 		-- The following two autocommands are used to highlight references of the
 		-- word under your cursor when your cursor rests there for a little while.

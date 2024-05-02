@@ -1,3 +1,5 @@
+local fmt = require("utils.icons").fmt
+
 -- Utility settings loader
 local setup = function(mod, remote)
 	return function()
@@ -232,7 +234,11 @@ lazy.setup({
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = {
+			search = {
+				mode = "search",
+			},
+		},
 		keys = {
 			{
 				"s",
@@ -289,17 +295,17 @@ lazy.setup({
 		},
 		cond = not vim.g.vscode,
 		opts = {
-			scope = "git", -- also try out "git_branch"
+			scope = "git",
 		},
 		event = { "BufReadPost", "BufNewFile" },
 		cmd = "Grapple",
 		keys = {
-			{ "<leader>h", "<cmd>Grapple toggle<cr>", desc = "Grapple toggle tag" },
-			{ "<leader>l", "<cmd>Grapple toggle_tags<cr>", desc = "Grapple open tags window" },
-			{ "<leader>1", "<cmd>Grapple select index=1<cr>", desc = "Select first tag" },
-			{ "<leader>2", "<cmd>Grapple select index=2<cr>", desc = "Select second tag" },
-			{ "<leader>3", "<cmd>Grapple select index=3<cr>", desc = "Select third tag" },
-			{ "<leader>4", "<cmd>Grapple select index=4<cr>", desc = "Select fourth tag" },
+			{ "<leader>h", "<cmd>Grapple toggle<cr>", desc = fmt("Hook", "Grapple toggle tag") },
+			{ "<leader>l", "<cmd>Grapple toggle_tags<cr>", desc = fmt("Hook", "Grapple open tags window") },
+			{ "<leader>1", "<cmd>Grapple select index=1<cr>", desc = fmt("Hook", "Select first tag") },
+			{ "<leader>2", "<cmd>Grapple select index=2<cr>", desc = fmt("Hook", "Select second tag") },
+			{ "<leader>3", "<cmd>Grapple select index=3<cr>", desc = fmt("Hook", "Select third tag") },
+			{ "<leader>4", "<cmd>Grapple select index=4<cr>", desc = fmt("Hook", "Select fourth tag") },
 		},
 	},
 	{
@@ -314,5 +320,33 @@ lazy.setup({
 			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
 		},
 		config = setup("plugins.sql"),
+	},
+	{
+		"luckasRanarison/clear-action.nvim",
+		event = "LspAttach",
+		opts = {
+			signs = {
+				enable = false,
+			},
+			popup = {
+				hide_cursor = true,
+			},
+			mappings = {
+				code_action = { "<leader>a", fmt("Fix", "Code action") },
+			},
+		},
+	},
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		init = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 600
+		end,
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
 	},
 })

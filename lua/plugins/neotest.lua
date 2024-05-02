@@ -1,3 +1,6 @@
+local fmt = require("utils.icons").fmt
+local keymap = require("utils.keymap")
+
 require("neotest").setup({
 	icons = {
 		expanded = "",
@@ -34,14 +37,42 @@ require("neotest").setup({
 	},
 })
 
-vim.keymap.set("n", "<leader>tt", "<cmd>w<CR><cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>")
-vim.keymap.set("n", "<leader>ta", "<cmd>w<CR><cmd>lua require('neotest').run.run({ suite = true })<CR>")
-vim.keymap.set("n", "<leader>tn", "<cmd>w<CR><cmd>lua require('neotest').run.run()<CR>")
-vim.keymap.set("n", "<leader>tl", "<cmd>w<CR><cmd>lua require('neotest').run.run_last()<CR>")
-vim.keymap.set("n", "<leader>to", "<cmd>w<CR><cmd>lua require('neotest').output.open()<CR>")
-vim.keymap.set("n", "<leader>tp", "<cmd>w<CR><cmd>lua require('neotest').output_panel.toggle()<CR>")
-vim.keymap.set("n", "<leader>ts", "<cmd>w<CR><cmd>lua require('neotest').summary.toggle()<CR>")
-vim.keymap.set("n", "<leader>td", function()
+keymap.normal_map(
+	"<leader>tt",
+	"<cmd>w<CR><cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
+	fmt("Test", "[NeoTest] Test file")
+)
+keymap.normal_map(
+	"<leader>ta",
+	"<cmd>w<CR><cmd>lua require('neotest').run.run({ suite = true })<CR>",
+	fmt("Test", "[NeoTest] Test suite")
+)
+keymap.normal_map(
+	"<leader>tn",
+	"<cmd>w<CR><cmd>lua require('neotest').run.run()<CR>",
+	fmt("Test", "[NeoTest] Test nearest")
+)
+keymap.normal_map(
+	"<leader>tl",
+	"<cmd>w<CR><cmd>lua require('neotest').run.run_last()<CR>",
+	fmt("Test", "[NeoTest] Test latest")
+)
+keymap.normal_map(
+	"<leader>to",
+	"<cmd>w<CR><cmd>lua require('neotest').output.open()<CR>",
+	fmt("Open", "[NeoTest] Open test output")
+)
+keymap.normal_map(
+	"<leader>tp",
+	"<cmd>w<CR><cmd>lua require('neotest').output_panel.toggle()<CR>",
+	fmt("Toggle", "[NeoTest] Toggle test output panel")
+)
+keymap.normal_map(
+	"<leader>ts",
+	"<cmd>w<CR><cmd>lua require('neotest').summary.toggle()<CR>",
+	fmt("Toggle", "[NeoTest] Toggle test summary")
+)
+keymap.normal_map("<leader>td", function()
 	vim.cmd("w")
 	require("neotest").run.run({ strategy = "dap" })
-end)
+end, fmt("Debugger", "[NeoTest] Debug test"))
