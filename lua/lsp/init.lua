@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			fmt("Symbol", "[W]orkspace [S]ymbols")
 		)
 		map("<leader>rn", vim.lsp.buf.rename, fmt("Fix", "[R]e[n]ame"))
-		map("<leader>a", vim.lsp.buf.code_action, fmt("Fix", "Code [A]ction"))
+		-- map("<leader>a", vim.lsp.buf.code_action, fmt("Fix", "Code [A]ction"))
 		map("K", vim.lsp.buf.hover, fmt("Hint", "Hover Documentation"))
 		map("<C-k>", vim.lsp.buf.signature_help, fmt("Hint", "Signature [K]elp"))
 		map("gD", vim.lsp.buf.declaration, fmt("Code", "[G]oto [D]eclaration"))
