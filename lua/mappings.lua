@@ -23,6 +23,7 @@ cabbrev("Q!", "q!")
 cabbrev("Qall!", "qall!")
 cabbrev("Wq", "wq")
 cabbrev("Wa", "wa")
+cabbrev("WA", "wa")
 cabbrev("wQ", "wq")
 cabbrev("WQ", "wq")
 cabbrev("Wqa", "wqa")
@@ -37,7 +38,6 @@ cabbrev("Qall", "qall")
 -- move through buffers
 keymap.normal_map("<leader>[", ":bp!<CR>", fmt("Stack", "Previous buffer"))
 keymap.normal_map("<leader>]", ":bn!<CR>", fmt("Stack", "Next buffer"))
--- keymap.normal_map("<leader>x", ":bd<CR>")
 
 -- copy, cut and paste
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', {

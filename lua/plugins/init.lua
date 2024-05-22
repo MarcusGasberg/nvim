@@ -119,6 +119,7 @@ lazy.setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-fzf-native.nvim",
+			"nvim-telescope/telescope-frecency.nvim",
 		},
 		config = setup("plugins.telescope", "telescope"),
 		cond = not vim.g.vscode,
@@ -333,6 +334,15 @@ lazy.setup({
 			},
 			mappings = {
 				code_action = { "<leader>a", fmt("Fix", "Code action") },
+				-- actions = {
+				-- 	["typescript-tools"] = {
+				-- 		["Add all missing imports"] = { "<leader>aa", fmt("Fix", "Add [A]ll missing imports") },
+				-- 		["Add missing import"] = { "<leader>ai", fmt("Fix", "Add missing [i]mport") },
+				-- 		["Update import from"] = { "<leader>au", fmt("Fix", "Update import") },
+				-- 		["Move to a new file"] = { "<leader>am", fmt("Fix", "[M]ove to a new file") },
+				-- 		["Remove unused imports"] = { "<leader>ar", fmt("Fix", "[R]emove unused imports") },
+				-- 	},
+				-- },
 			},
 		},
 	},
@@ -349,5 +359,9 @@ lazy.setup({
 				registers = false,
 			},
 		},
+	},
+	{
+		"folke/zen-mode.nvim",
+		opts = {},
 	},
 })

@@ -1,15 +1,5 @@
 local fmt = require("utils.icons").fmt
-local cmp_nvim_lsp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-local mason_config_ok, mason_config = pcall(require, "mason-lspconfig")
-local mason_ok, mason = pcall(require, "mason")
-local lsp_config_ok, lsp_config = pcall(require, "lspconfig")
 
-if not (lsp_config_ok and cmp_nvim_lsp_status_ok and mason_ok and mason_config_ok) then
-	print("LSPConfig, CMP_LSP, and/or Mason not installed!")
-	return
-end
-
--- Configure CMP
 require("lsp.cmp")
 
 vim.diagnostic.config({
@@ -44,7 +34,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("gr", vim.lsp.buf.references, fmt("Code", "[G]oto [R]eferences"))
 		map("gI", require("telescope.builtin").lsp_implementations, fmt("Code", "[G]oto [I]mplementation"))
 		map("<leader>D", require("telescope.builtin").lsp_type_definitions, fmt("Code", "Type [D]efinition"))
-		map("<leader>ds", require("telescope.builtin").lsp_document_symbols, fmt("Symbol", "[D]ocument [S]ymbols"))
+		map("<leader>sy", require("telescope.builtin").lsp_document_symbols, fmt("Symbol", "Document [S][y]mbols"))
 		map(
 			"<leader>ws",
 			require("telescope.builtin").lsp_dynamic_workspace_symbols,
@@ -59,7 +49,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("<leader>=", function(args)
 			require("conform").format({
 				lsp_fallback = true,
-				timeout = 2000,
+				timeout = 5000,
 			})
 		end, fmt("Format", "Format"))
 
@@ -98,7 +88,20 @@ normal_capabilities.textDocument.foldingRange = {
 	lineFoldingOnly = true,
 }
 
-local capabilities = cmp_nvim_lsp.default_capabilities(normal_capabilities)
+local capabilities = nil
+local cmp_nvim_lsp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+
+if cmp_nvim_lsp_status_ok then
+	cmp_nvim_lsp.default_capabilities(normal_capabilities)
+end
+
+local mason_config_ok, mason_config = pcall(require, "mason-lspconfig")
+local mason_ok, mason = pcall(require, "mason")
+
+if not (mason_ok and mason_config_ok) then
+	print("LSPConfig, and/or Mason not installed!")
+	return
+end
 
 mason.setup({
 	providers = {
@@ -107,8 +110,12 @@ mason.setup({
 	},
 })
 
+local servers = {
+	"lua_ls",
+}
+
 mason_config.setup({
-	ensure_installed = { "lua_ls", "kotlin_language_server", "angularls", "cssls", "html", "rust_analyzer", "eslint" },
+	ensure_installed = servers,
 })
 
 mason_config.setup_handlers({
@@ -116,8 +123,8 @@ mason_config.setup_handlers({
 	-- and will be called for each installed server that doesn't have
 	-- a dedicated handler.
 	function(server_name) -- default handler (optional)
-		local server = lsp_config[server_name]
-		local server_status_ok, server_config = pcall(require, "lsp.servers." .. server.name)
+		local server = require("lspconfig")[server_name]
+		local server_status_ok, server_config = pcall(require, "lsp.servers." .. server_name)
 		if not server_status_ok then
 			-- print("The LSP '" .. server.name .. "' does not have a config.")
 			server.setup({
@@ -127,12 +134,12 @@ mason_config.setup_handlers({
 			server_config.setup(capabilities, server)
 		end
 	end,
-	-- Next, you can provide targeted overrides for specific servers.
-	-- For example, a handler override for the `rust_analyzer`:
+	-- -- Next, you can provide targeted overrides for specific servers.
+	-- -- For example, a handler override for the `rust_analyzer`:
 	["rust_analyzer"] = function()
 		local rt_ok, rt = pcall(require, "rust-tools")
 
-		local server = lsp_config["rust_analyzer"]
+		local server = require("lspconfig")["rust_analyzer"]
 		server.setup({
 			capabilities = capabilities,
 		})
@@ -157,21 +164,12 @@ mason_config.setup_handlers({
 			},
 		})
 	end,
-	-- for some reason angularls cannot be found in the servers folder and i am to lazy to find out why
-	["angularls"] = function()
-		local server = lsp_config["angularls"]
-		server.setup({
-			filetypes = { "angular", "html", "typescript", "typescriptreact" },
-			root_dir = lsp_config.util.root_pattern("angular.json", "project.json"),
-			capabilities = capabilities,
-		})
-	end,
 	["jdtls"] = function()
 		local workspace_path = vim.fn.stdpath("data") .. "/lsp_servers/jdtls_workspace_"
 		local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 		local workspace_dir = workspace_path .. project_name
 
-		lsp_config.jdtls.setup({
+		require("lspconfig").jdtls.setup({
 			cmd = {
 				"java",
 				"-Declipse.application=org.eclipse.jdt.ls.core.id1",
@@ -197,11 +195,16 @@ mason_config.setup_handlers({
 		})
 	end,
 	["kotlin_language_server"] = function()
-		local server = lsp_config["kotlin_language_server"]
+		local server = require("lspconfig")["kotlin_language_server"]
 		server.setup({
 			on_attach = on_attach,
 			capabilities = capabilities,
-			root_dir = lsp_config.util.root_pattern("settings.kts", "build.gradle.kts", "build.gradle", "pom.xml"),
+			root_dir = require("lspconfig").util.root_pattern(
+				"settings.kts",
+				"build.gradle.kts",
+				"build.gradle",
+				"pom.xml"
+			),
 		})
 	end,
 })

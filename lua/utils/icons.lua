@@ -114,6 +114,7 @@ M.icons = {
 	Cut = "",
 	Delete = "",
 	Paste = "",
+	Scroll = "",
 }
 
 M.fmt = function(icon, text, space)

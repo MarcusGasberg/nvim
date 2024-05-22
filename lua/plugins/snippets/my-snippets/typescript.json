@@ -619,5 +619,43 @@
       "  return ${2:name}${5:.id};$0",
       "}"
     ]
+  },
+  "Elf Entity Repo": {
+    "prefix": "a-elf-entity-repo",
+    "description": "Elf Entity Repo",
+    "body": [
+      "import { Injectable } from '@angular/core';",
+      "import { createStore } from '@ngneat/elf';",
+      "import {",
+      "  selectActiveEntity,",
+      "  selectEntities,",
+      "  setActiveId,",
+      "  upsertEntities,",
+      "  withActiveId,",
+      "  withEntities,",
+      "} from '@ngneat/elf-entities';",
+      "",
+      "const store$ = createStore(",
+      "  {",
+      "    name: '',",
+      "  },",
+      "  withEntities<${0:Entity}>(),",
+      "  withActiveId()",
+      ");",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class ${0:Entity}Repository {",
+      "  entities$ = store$.pipe(selectEntities());",
+      "  activeEntity$ = store$.pipe(selectActiveEntity());",
+      "",
+      "  setActive(id: number) {",
+      "    store$.update(setActiveId(id));",
+      "  }",
+      "",
+      "  upsertEntities(entities: ${0:Entity}[]) {",
+      "    store$.update(upsertEntities(entities));",
+      "  }",
+      "}"
+    ]
   }
 }

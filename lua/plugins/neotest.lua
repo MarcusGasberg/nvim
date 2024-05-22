@@ -2,6 +2,9 @@ local fmt = require("utils.icons").fmt
 local keymap = require("utils.keymap")
 
 require("neotest").setup({
+	discovery = {
+		enabled = false,
+	},
 	icons = {
 		expanded = "",
 		child_prefix = "",

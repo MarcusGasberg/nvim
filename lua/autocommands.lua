@@ -25,14 +25,14 @@ vim.cmd([[
 -- ]])
 
 -- enable syntax highlighting for csharp files
-vim.cmd([[
-augroup Html
-    au!
-    au BufNewFile,BufRead *.aspx setl filetype=html
-    au BufNewFile,BufRead *.cshtml set filetype=html
-    au BufNewFile,BufRead *.ascx set filetype=html
-augroup END
-]])
+-- vim.cmd([[
+-- augroup Html
+--     au!
+--     au BufNewFile,BufRead *.aspx setl filetype=html
+--     au BufNewFile,BufRead *.cshtml set filetype=html
+--     au BufNewFile,BufRead *.ascx set filetype=html
+-- augroup END
+-- ]])
 
 vim.cmd([[
 augroup KeepCentered
@@ -49,12 +49,5 @@ endfunction
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 	callback = function()
 		require("lint").try_lint()
-	end,
-})
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufEnter" }, {
-	pattern = { "*.component.html" },
-	callback = function()
-		vim.bo.filetype = "angular"
 	end,
 })

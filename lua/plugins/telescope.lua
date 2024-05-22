@@ -41,6 +41,10 @@ local function git_branches()
 	builtin.git_branches()
 end
 
+local function frecency()
+	vim.cmd("Telescope frecency workspace=CWD theme=dropdown")
+end
+
 local function changed_files()
 	local list = vim.fn.systemlist("git diff --name-only")
 
@@ -63,9 +67,7 @@ local function changed_files()
 end
 
 local function grep_string()
-	local word = vim.fn.expand("<cword>")
 	builtin.grep_string()
-	vim.api.nvim_feedkeys(word, "i", false)
 end
 
 local function git_files_string()
@@ -324,7 +326,7 @@ local telescope = require("telescope")
 telescope.setup({
 	defaults = {
 		file_ignore_patterns = { "node_modules", "package%-lock.json" },
-		path_display = { "truncate" },
+		path_display = { "filename_first", "truncate" },
 		mappings = {
 			i = {
 				["<C-j>"] = actions.cycle_history_next,
@@ -397,6 +399,9 @@ telescope.setup({
 			override_file_sorter = true,
 			case_mode = "smart_case",
 		},
+		frecency = {
+			show_filter_column = false,
+		},
 		-- file_browser = {
 		--      theme = "dropdown",
 		--      -- disables netrw and use telescope-file-browser in its place
@@ -408,14 +413,16 @@ vim.g.fzf_history_dir = "~/.local/share/fzf-history"
 -- telescope.load_extension("file_browser")
 telescope.load_extension("fzf")
 telescope.load_extension("grapple")
+telescope.load_extension("frecency")
 
 keymap.normal_map("<leader>tr", oldfiles, fmt("History", "[Telescope] Old files"))
 keymap.normal_map("<leader>tgc", git_commits, fmt("GitCommit", "[Telescope] Git commits"))
 keymap.normal_map("<leader>tgb", git_branches, fmt("GitBranch", "[Telescope] Git branch"))
 keymap.normal_map("<leader>tf", grep_string, fmt("Search", "[Telescope] Grep string"))
+keymap.normal_map("<leader>k", buffers, fmt("Stack", "[Telescope] buffers"))
 keymap.normal_map("<leader>f", live_grep, fmt("Search", "[Telescope] Grep"))
 keymap.normal_map("<leader>j", git_files, fmt("Search", "[Telescope] Default file"))
-keymap.normal_map("<leader>k", buffers, fmt("Stack", "[Telescope] Buffers"))
+keymap.normal_map("<leader>tk", frecency, fmt("Stack", "[Telescope] frecency"))
 
 keymap.normal_map("<leader>tcf", function()
 	changed_files()
