@@ -393,12 +393,6 @@ telescope.setup({
 		},
 	},
 	extensions = {
-		fzf = {
-			fuzzy = true,
-			override_generic_sorter = true,
-			override_file_sorter = true,
-			case_mode = "smart_case",
-		},
 		frecency = {
 			show_filter_column = false,
 		},
@@ -409,9 +403,9 @@ telescope.setup({
 		--    },
 	},
 })
-vim.g.fzf_history_dir = "~/.local/share/fzf-history"
+-- vim.g.fzf_history_dir = "~/.local/share/fzf-history"
 -- telescope.load_extension("file_browser")
-telescope.load_extension("fzf")
+-- telescope.load_extension("fzf")
 telescope.load_extension("grapple")
 telescope.load_extension("frecency")
 

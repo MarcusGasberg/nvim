@@ -62,5 +62,3 @@ vim.api.nvim_exec2("cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' :
 
 vim.keymap.set("i", "<C-p>", "<nop>")
 vim.keymap.set("i", "<C-n>", "<nop>")
-
-return {}

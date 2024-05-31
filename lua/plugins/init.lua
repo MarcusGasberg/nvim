@@ -81,9 +81,6 @@ lazy.setup({
 		cond = not vim.g.vscode,
 	},
 	{ "neovim/nvim-lspconfig", cond = not vim.g.vscode },
-	{ "williamboman/mason.nvim", build = ":MasonUpdate", cond = not vim.g.vscode },
-	{ "williamboman/mason-lspconfig.nvim", cond = not vim.g.vscode },
-	{ "rshkarin/mason-nvim-lint", cond = not vim.g.vscode },
 	{ "onsails/lspkind-nvim", cond = not vim.g.vscode },
 	{ "nvim-lua/plenary.nvim", cond = not vim.g.vscode },
 	{ "rafamadriz/friendly-snippets", cond = not vim.g.vscode },
@@ -110,15 +107,14 @@ lazy.setup({
 		config = setup("plugins.oil", "oil"),
 		cond = not vim.g.vscode,
 	},
-	{
-		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-	},
+	-- {
+	-- 	"nvim-telescope/telescope-fzf-native.nvim",
+	-- 	build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+	-- },
 	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope-fzf-native.nvim",
 			"nvim-telescope/telescope-frecency.nvim",
 		},
 		config = setup("plugins.telescope", "telescope"),
@@ -363,5 +359,5 @@ lazy.setup({
 	{
 		"folke/zen-mode.nvim",
 		opts = {},
-	},
+	}
 })

@@ -1,11 +1,6 @@
-local cmp_status_ok, cmp = pcall(require, "cmp")
-local lspkind_status_ok, lspkind = pcall(require, "lspkind")
-local luasnip_ok, luasnip = pcall(require, "luasnip")
-
-if not (cmp_status_ok and luasnip_ok and lspkind_status_ok) then
-	print("CMP dependencies not yet installed!")
-	return
-end
+local cmp = require('cmp')
+local luasnip = require('luasnip')
+local lspkind = require('lspkind')
 
 local kind_icons = {
 	Text = "󰉿",
@@ -34,7 +29,7 @@ local kind_icons = {
 	Operator = "󰆕",
 	TypeParameter = "󰅲",
 }
-require("lspkind").init({
+lspkind.init({
 	mode = "symbol",
 
 	-- default symbol map

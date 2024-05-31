@@ -10,6 +10,7 @@ require("conform").setup({
 		html = { { "prettierd", "prettier" } },
 		scss = { { "prettierd", "prettier" } },
 		css = { { "prettierd", "prettier" } },
+		nix = { "nixfmt" }
 	},
 	format_on_save = {
 		timeout_ms = 1000,
