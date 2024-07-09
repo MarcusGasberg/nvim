@@ -161,7 +161,7 @@ lazy.setup({
 	{
 		"petertriho/nvim-scrollbar",
 		dependencies = { "kevinhwang91/nvim-hlslens" },
-		config = {},
+		opts = {},
 		cond = not vim.g.vscode,
 	},
 	{
@@ -170,7 +170,14 @@ lazy.setup({
 	},
 	{ "lambdalisue/glyph-palette.vim", cond = not vim.g.vscode },
 	{ "simrat39/rust-tools.nvim", cond = not vim.g.vscode },
-	{ "windwp/nvim-ts-autotag", cond = not vim.g.vscode },
+	{
+		"windwp/nvim-ts-autotag",
+		cond = not vim.g.vscode,
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
+	},
 	{
 		"kevinhwang91/nvim-bqf",
 		ft = "qf",
@@ -192,7 +199,13 @@ lazy.setup({
 		config = setup("plugins.neotest"),
 		cond = not vim.g.vscode,
 	},
-	{ "github/copilot.vim", cond = not vim.g.vscode, config = setup("plugins.copilot") },
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		cond = not vim.g.vscode,
+		config = setup("plugins.copilot"),
+	},
 	{
 		"jackMort/ChatGPT.nvim",
 		event = "VeryLazy",
@@ -204,11 +217,6 @@ lazy.setup({
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope.nvim",
 		},
-		cond = not vim.g.vscode,
-	},
-	{
-		"mfussenegger/nvim-lint",
-		config = setup("plugins.lint", "lint"),
 		cond = not vim.g.vscode,
 	},
 	{
@@ -363,5 +371,17 @@ lazy.setup({
 	{
 		"folke/zen-mode.nvim",
 		opts = {},
+	},
+	{
+		"mfussenegger/nvim-lint",
+		config = setup("plugins.lint", "lint"),
+	},
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		config = setup("plugins.noice"),
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+		},
 	},
 })

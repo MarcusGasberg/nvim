@@ -1,1 +1,5 @@
-require("rose-pine").setup({})
+require("rose-pine").setup({
+	styles = {
+		italics = false,
+	},
+})

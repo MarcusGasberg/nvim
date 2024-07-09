@@ -38,9 +38,6 @@ require("gitsigns").setup({
 		row = 0,
 		col = 1,
 	},
-	yadm = {
-		enable = false,
-	},
 	on_attach = function(bufnr)
 		local gs = package.loaded.gitsigns
 
@@ -72,5 +69,4 @@ require("gitsigns").setup({
 			return "<Ignore>"
 		end, fmt("Git", "[GitSigns] Next hunk"))
 	end,
-	current_line_blame_formatter_opts = { relative_time = false },
 })

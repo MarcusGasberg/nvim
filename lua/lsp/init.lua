@@ -17,10 +17,10 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { 
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 
 vim.keymap.set("n", "]d", function()
-	vim.diagnostic.goto_next()
+	vim.lsp.diagnostic.goto_next()
 end)
 vim.keymap.set("n", "[d", function()
-	vim.diagnostic.goto_prev()
+	vim.lsp.diagnostic.goto_prev()
 end)
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -58,20 +58,20 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		--    See `:help CursorHold` for information about when this is executed
 		--
 		-- When you move your cursor, the highlights will be cleared (the second autocommand).
-		local client = vim.lsp.get_client_by_id(event.data.client_id)
-		if client and client.server_capabilities.documentHighlightProvider then
-			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-				buffer = event.buf,
-				group = "lsp-attach",
-				callback = vim.lsp.buf.document_highlight,
-			})
-
-			vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-				buffer = event.buf,
-				group = "lsp-attach",
-				callback = vim.lsp.buf.clear_references,
-			})
-		end
+		-- local client = vim.lsp.get_client_by_id(event.data.client_id)
+		-- if client and client.server_capabilities.documentHighlightProvider then
+		-- 	vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+		-- 		buffer = event.buf,
+		-- 		group = "lsp-attach",
+		-- 		callback = vim.lsp.buf.document_highlight,
+		-- 	})
+		--
+		-- 	vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+		-- 		buffer = event.buf,
+		-- 		group = "lsp-attach",
+		-- 		callback = vim.lsp.buf.clear_references,
+		-- 	})
+		-- end
 	end,
 })
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
@@ -83,17 +83,25 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 end
 
 local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
-normal_capabilities.textDocument.foldingRange = {
-	dynamicRegistration = false,
-	lineFoldingOnly = true,
-}
-
-local capabilities = nil
 local cmp_nvim_lsp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 
 if cmp_nvim_lsp_status_ok then
 	cmp_nvim_lsp.default_capabilities(normal_capabilities)
 end
+
+local capabilities = vim.tbl_deep_extend("force", normal_capabilities, {
+	textDocument = {
+		foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true,
+		},
+	},
+	workspace = {
+		didChangeWatchedFiles = {
+			dynamicRegistration = false,
+		},
+	},
+})
 
 local mason_config_ok, mason_config = pcall(require, "mason-lspconfig")
 local mason_ok, mason = pcall(require, "mason")
@@ -112,6 +120,7 @@ mason.setup({
 
 local servers = {
 	"lua_ls",
+	"angularls",
 }
 
 mason_config.setup({
@@ -197,7 +206,6 @@ mason_config.setup_handlers({
 	["kotlin_language_server"] = function()
 		local server = require("lspconfig")["kotlin_language_server"]
 		server.setup({
-			on_attach = on_attach,
 			capabilities = capabilities,
 			root_dir = require("lspconfig").util.root_pattern(
 				"settings.kts",
@@ -214,20 +222,22 @@ vim.diagnostic.config({
 	virtual_text = false,
 	severity_sort = true,
 	update_in_insert = false,
+	signs = {
+		active = true,
+		values = {
+			{ name = "Error", text = "✘" },
+			{ name = "Warning", text = "" },
+			{ name = "Hint", text = "" },
+			{ name = "Information", text = "" },
+		},
+	},
 	float = {
 		header = "",
-		source = "always",
+		source = true,
 		border = "rounded",
 		focusable = true,
 	},
 })
-
--- Change Error Signs in Gutter
-local signs = { Error = "✘", Warn = " ", Hint = "", Info = " " }
-for type, icon in pairs(signs) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
 
 vim.o.foldcolumn = "0" -- '0' is not bad
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value

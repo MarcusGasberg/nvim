@@ -19,6 +19,7 @@ M.icons = {
 	GitDiff = "",
 	GitBranch = "",
 	GitCommit = "",
+	Copilot = "",
 	Add = "󰐕",
 	Modified = "󰜥",
 	Removed = "󰍴",

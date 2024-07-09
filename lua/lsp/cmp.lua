@@ -46,21 +46,49 @@ require("lspkind").init({
 	symbol_map = kind_icons,
 })
 
+local cmp_ui = {
+	icons = true,
+	lspkind_text = true,
+	style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
+	border_color = "grey_fg", -- only applicable for "default" style, use color names from base30 variables
+	selected_item_bg = "simple", -- colored / simple
+}
+local cmp_style = cmp_ui.style
+
+local function border(hl_name)
+	return {
+		{ "╭", hl_name },
+		{ "─", hl_name },
+		{ "╮", hl_name },
+		{ "│", hl_name },
+		{ "╯", hl_name },
+		{ "─", hl_name },
+		{ "╰", hl_name },
+		{ "│", hl_name },
+	}
+end
+
 -- Setup completion engine
 cmp.setup({
 	snippet = {
 		expand = function(args)
-			luasnip.lsp_expand(args.body)
+			require("luasnip").lsp_expand(args.body)
 		end,
 	},
 	window = {
 		completion = {
-			winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-			col_offset = -3,
-			side_padding = 0,
+			side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
+			winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:None",
+			scrollbar = false,
+			documentation = {
+				border = border("CmpDocBorder"),
+				winhighlight = "Normal:CmpDoc",
+			},
+			border = border("CmpBorder"),
 		},
 	},
 	formatting = {
+		expandable_indicator = false,
 		fields = { "kind", "abbr", "menu" },
 		format = function(entry, vim_item)
 			local kind = lspkind.cmp_format({ maxwidth = 50 })(entry, vim_item)
@@ -75,7 +103,7 @@ cmp.setup({
 		["<C-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c", "n" }),
 		["<C-y>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
 		["<C-e>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-		["<C-n>"] = cmp.mapping(function(fallback)
+		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
 			elseif luasnip.expand_or_jumpable() then
@@ -84,7 +112,7 @@ cmp.setup({
 				fallback()
 			end
 		end, { "i", "s", "c" }),
-		["<C-p>"] = cmp.mapping(function(fallback)
+		["<S-Tab>"] = cmp.mapping(function(fallback)
 			print("hello")
 			if cmp.visible() then
 				cmp.select_prev_item()

@@ -10,6 +10,7 @@ require("conform").setup({
 		html = { { "prettierd", "prettier" } },
 		scss = { { "prettierd", "prettier" } },
 		css = { { "prettierd", "prettier" } },
+		graphql = { { "prettierd", "prettier" } },
 	},
 	format_on_save = {
 		timeout_ms = 1000,

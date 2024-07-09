@@ -108,27 +108,4 @@ require("nvim-treesitter.configs").setup({
 	indent = {
 		enable = true,
 	},
-	autotag = {
-		enable = true,
-		filetypes = {
-			"html",
-			"angular",
-			"javascript",
-			"typescript",
-			"javascriptreact",
-			"typescriptreact",
-			"svelte",
-			"vue",
-			"tsx",
-			"jsx",
-			"rescript",
-			"xml",
-			"php",
-			"markdown",
-			"astro",
-			"glimmer",
-			"handlebars",
-			"hbs",
-		},
-	},
 })
