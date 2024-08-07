@@ -13,14 +13,14 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +16 ~/.config/nvim/lua/lsp/init.lua
-badd +383 lua/plugins/init.lua
-badd +125 ~/.config/nvim/lua/utils/icons.lua
+badd +20 ~/.config/nvim/lua/lsp/init.lua
+badd +316 lua/plugins/init.lua
+badd +121 lua/utils/icons.lua
 badd +427 ~/.config/nvim/lua/plugins/telescope.lua
 badd +14 lua/plugins/neotest.lua
 badd +3 ~/.config/nvim/lua/utils/keymap.lua
 badd +57 lua/plugins/gitsigns.lua
-badd +2 lua/mappings.lua
+badd +3 lua/mappings.lua
 badd +31 lua/plugins/trouble.lua
 badd +75 lua/plugins/dap-ui.lua
 badd +152 lua/plugins/snippets/my-snippets/angular.json
@@ -42,21 +42,19 @@ badd +1 lua/plugins/lint.lua
 badd +1 lua/autocommands.lua
 badd +1 lua/plugins/conform.lua
 badd +17 ~/.config/nvim/lua/lsp/servers/tsserver.lua
-badd +53 lua/plugins/copilot.lua
+badd +19 lua/plugins/copilot.lua
 badd +1 ~/.config/nvim/lua/lsp/servers/omnisharp.lua
-badd +1 ~/.config/nvim/lua/plugins/typescript-tools.lua
-badd +23 ~/.config/nvim/lua/plugins/noice.lua
+badd +52 ~/.config/nvim/lua/plugins/typescript-tools.lua
+badd +27 ~/.config/nvim/lua/plugins/noice.lua
 badd +36 lua/plugins/mini.lua
 badd +382 health://
 argglobal
 %argdel
-edit ~/.config/nvim/lua/plugins/noice.lua
+edit ~/.config/nvim/lua/lsp/init.lua
 argglobal
-balt ~/.config/nvim/lua/lsp/init.lua
+balt lua/plugins/init.lua
 let s:cpo_save=&cpo
 set cpo&vim
-nnoremap <buffer> <silent>  rÞ <Nop>
-nnoremap <buffer> <silent>  wÞ <Nop>
 xnoremap <buffer> <silent> af <Cmd>lua require'nvim-treesitter.textobjects.select'.select_textobject('@function.outer','textobjects','x')
 onoremap <buffer> <silent> af <Cmd>lua require'nvim-treesitter.textobjects.select'.select_textobject('@function.outer','textobjects','o')
 xnoremap <buffer> <silent> if <Cmd>lua require'nvim-treesitter.textobjects.select'.select_textobject('@function.inner','textobjects','x')
@@ -165,7 +163,7 @@ setlocal spellfile=
 setlocal spelllang=en
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=
-setlocal statusline=%#lualine_transitional_lualine_a_normal_to_StatusLine#%#lualine_a_normal#\ NORMAL\ %#lualine_b_normal#\ noice.lua\ |%#lualine_b_normal#\ \ master\ %#lualine_transitional_lualine_b_normal_to_lualine_c_normal#%<%#lualine_c_normal#%=%#lualine_transitional_lualine_y_filetype_DevIconLua_normal_to_lualine_c_normal#%#lualine_y_filetype_DevIconLua_normal#\ \ %#lualine_b_normal#lua\ %#lualine_b_normal#|%#lualine_b_normal#\ 51%%\ %#lualine_a_normal#\ \ 23:14\ %#lualine_transitional_lualine_a_normal_to_StatusLine#
+setlocal statusline=%#lualine_transitional_lualine_a_normal_to_StatusLine#%#lualine_a_normal#\ NORMAL\ %#lualine_b_normal#\ init.lua\ |%#lualine_b_normal#\ \ master\ %#lualine_transitional_lualine_b_normal_to_lualine_c_normal#%<%#lualine_c_normal#\ 󰛢\ \ 1\ \ %#lualine_c_normal#%=%#lualine_transitional_lualine_y_filetype_DevIconLua_normal_to_lualine_c_normal#%#lualine_y_filetype_DevIconLua_normal#\ \ %#lualine_b_normal#lua\ %#lualine_b_normal#|%#lualine_b_normal#\ \ 8%%\ %#lualine_a_normal#\ \ 20:6\ \ %#lualine_transitional_lualine_a_normal_to_StatusLine#
 setlocal suffixesadd=.lua
 setlocal noswapfile
 setlocal synmaxcol=3000
@@ -194,12 +192,12 @@ setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 23 - ((22 * winheight(0) + 22) / 45)
+let s:l = 20 - ((19 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
-normal! 016|
+keepjumps 20
+normal! 06|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

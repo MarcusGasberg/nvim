@@ -320,7 +320,39 @@ lazy.setup({
 	{
 		"folke/trouble.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = setup("plugins.trouble", "trouble"),
+		keys = {
+			{
+				"<leader>xx",
+				"<cmd>Trouble diagnostics toggle<cr>",
+				desc = fmt("Fix", "[Trouble] Diagnostics"),
+			},
+			{
+				"<leader>xX",
+				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+				desc = fmt("Fix", "[Trouble] Buffer Diagnostics"),
+			},
+			{
+				"<leader>cs",
+				"<cmd>Trouble symbols toggle focus=false<cr>",
+				desc = fmt("Fix", "[Trouble] Symbols"),
+			},
+			{
+				"<leader>cl",
+				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+				desc = fmt("Fix", "[Trouble] LSP Definitions / references / ..."),
+			},
+			{
+				"<leader>xL",
+				"<cmd>Trouble loclist toggle<cr>",
+				desc = fmt("Fix", "[Trouble] Location List"),
+			},
+			{
+				"<leader>xQ",
+				"<cmd>Trouble qflist toggle<cr>",
+				desc = fmt("Fix", "[Trouble] Quickfix List"),
+			},
+		},
+		opts = {},
 	},
 	{
 		"kristijanhusak/vim-dadbod-ui",
@@ -354,20 +386,26 @@ lazy.setup({
 			},
 		},
 	},
-	{
-		"folke/which-key.nvim",
-		event = "VeryLazy",
-		init = function()
-			vim.o.timeout = true
-			vim.o.timeoutlen = 600
-		end,
-		opts = {
-			plugins = {
-				marks = false,
-				registers = false,
-			},
-		},
-	},
+	-- {
+	-- 	"folke/which-key.nvim",
+	-- 	branch = "v3",
+	-- 	event = "VeryLazy",
+	-- 	opts = {
+	-- 		plugins = {
+	-- 			marks = false,
+	-- 			registers = false,
+	-- 		},
+	-- 	},
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>?",
+	-- 			function()
+	-- 				require("which-key").show({ global = false })
+	-- 			end,
+	-- 			desc = fmt("Info", "[which-key] Buffer Local Keymaps"),
+	-- 		},
+	-- 	},
+	-- },
 	{
 		"folke/zen-mode.nvim",
 		opts = {},
