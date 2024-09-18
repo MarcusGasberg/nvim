@@ -70,6 +70,13 @@ lazy.setup({
 		"hrsh7th/nvim-cmp",
 		-- these dependencies will only be loaded when cmp loads
 		-- dependencies are always lazy-loaded unless specified otherwise
+		opts = function(_, opts)
+			opts.sources = opts.sources or {}
+			table.insert(opts.sources, {
+				name = "lazydev",
+				group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+			})
+		end,
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
@@ -99,12 +106,6 @@ lazy.setup({
 	},
 	{ "saadparwaiz1/cmp_luasnip", cond = not vim.g.vscode },
 	{
-		"pmizio/typescript-tools.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		config = setup("plugins.typescript-tools", "typescript-tools"),
-		cond = not vim.g.vscode,
-	},
-	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = setup("plugins.oil", "oil"),
@@ -119,7 +120,6 @@ lazy.setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-fzf-native.nvim",
-			"nvim-telescope/telescope-frecency.nvim",
 		},
 		config = setup("plugins.telescope", "telescope"),
 		cond = not vim.g.vscode,
@@ -184,7 +184,7 @@ lazy.setup({
 		config = true,
 		cond = not vim.g.vscode,
 	},
-	{ "folke/neodev.nvim", opts = {}, cond = not vim.g.vscode },
+	{ "folke/lazydev.nvim", opts = {}, cond = not vim.g.vscode },
 	{ "norcalli/nvim-colorizer.lua", config = true, cond = not vim.g.vscode },
 	{
 		"nvim-neotest/neotest",
@@ -374,15 +374,6 @@ lazy.setup({
 			},
 			mappings = {
 				code_action = { "<leader>a", fmt("Fix", "Code action") },
-				-- actions = {
-				-- 	["typescript-tools"] = {
-				-- 		["Add all missing imports"] = { "<leader>aa", fmt("Fix", "Add [A]ll missing imports") },
-				-- 		["Add missing import"] = { "<leader>ai", fmt("Fix", "Add missing [i]mport") },
-				-- 		["Update import from"] = { "<leader>au", fmt("Fix", "Update import") },
-				-- 		["Move to a new file"] = { "<leader>am", fmt("Fix", "[M]ove to a new file") },
-				-- 		["Remove unused imports"] = { "<leader>ar", fmt("Fix", "[R]emove unused imports") },
-				-- 	},
-				-- },
 			},
 		},
 	},
@@ -420,6 +411,49 @@ lazy.setup({
 		config = setup("plugins.noice"),
 		dependencies = {
 			"MunifTanjim/nui.nvim",
+		},
+	},
+	{
+		"yetone/avante.nvim",
+		event = "VeryLazy",
+		lazy = false,
+		opts = {
+			provider = "copilot", -- Recommend using copilot
+			auto_suggestions_provider = "copilot",
+		},
+		build = "make",
+		dependencies = {
+			"stevearc/dressing.nvim",
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			--- The below dependencies are optional,
+			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+			"zbirenbaum/copilot.lua", -- for providers='copilot'
+			{
+				-- support for image pasting
+				"HakonHarnes/img-clip.nvim",
+				event = "VeryLazy",
+				opts = {
+					-- recommended settings
+					default = {
+						embed_image_as_base64 = false,
+						prompt_for_file_name = false,
+						drag_and_drop = {
+							insert_mode = true,
+						},
+						-- required for Windows users
+						use_absolute_path = true,
+					},
+				},
+			},
+			{
+				-- Make sure to set this up properly if you have lazy=true
+				"MeanderingProgrammer/render-markdown.nvim",
+				opts = {
+					file_types = { "markdown", "Avante" },
+				},
+				ft = { "markdown", "Avante" },
+			},
 		},
 	},
 })
