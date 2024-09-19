@@ -6,6 +6,6 @@ if not vim.g.vscode then
 	require("lsp")
 	require("colors")
 else
-	require("vscode")
+	require("vscode-mappings")
 end
 require("autocommands")

@@ -13,8 +13,8 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +70 ~/.config/nvim/lua/lsp/init.lua
-badd +431 lua/plugins/init.lua
+badd +2 ~/.config/nvim/lua/lsp/init.lua
+badd +279 lua/plugins/init.lua
 badd +121 lua/utils/icons.lua
 badd +44 ~/.config/nvim/lua/plugins/telescope.lua
 badd +25 lua/plugins/neotest.lua
@@ -41,18 +41,20 @@ badd +1 ~/.config/nvim/lua/plugins/sql.lua
 badd +1 lua/plugins/lint.lua
 badd +52 lua/autocommands.lua
 badd +16 lua/plugins/conform.lua
-badd +17 ~/.config/nvim/lua/lsp/servers/tsserver.lua
 badd +19 lua/plugins/copilot.lua
 badd +1 ~/.config/nvim/lua/lsp/servers/omnisharp.lua
 badd +52 ~/.config/nvim/lua/plugins/typescript-tools.lua
-badd +44 ~/.config/nvim/lua/plugins/noice.lua
+badd +26 ~/.config/nvim/lua/plugins/noice.lua
 badd +36 lua/plugins/mini.lua
 badd +1 health://
-badd +1 ~/.local/state/nvim/noice.log
+badd +16 ~/.config/nvim/lua/lsp/servers/ts_ls.lua
+badd +7 ~/.config/nvim/lua/vscode-mappings.lua
+badd +9 ~/.config/nvim/init.lua
 argglobal
 %argdel
-edit lua/plugins/init.lua
+edit ~/.config/nvim/lua/vscode-mappings.lua
 argglobal
+balt ~/.config/nvim/init.lua
 let s:cpo_save=&cpo
 set cpo&vim
 xnoremap <buffer> <silent> af <Cmd>lua require'nvim-treesitter.textobjects.select'.select_textobject('@function.outer','textobjects','x')
@@ -150,7 +152,7 @@ setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
 setlocal scrolloff=-1
-setlocal shiftwidth=0
+setlocal shiftwidth=2
 setlocal showbreak=
 setlocal sidescrolloff=-1
 setlocal signcolumn=yes
@@ -163,14 +165,14 @@ setlocal spellfile=
 setlocal spelllang=en
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=
-setlocal statusline=%#lualine_transitional_lualine_a_normal_to_StatusLine#%#lualine_a_normal#\ NORMAL\ %#lualine_b_normal#\ init.lua\ |%#lualine_b_normal#\ \ master\ %#lualine_transitional_lualine_b_normal_to_lualine_c_normal#%<%#lualine_c_normal#\ 󰛢\ \ 1\ \ %#lualine_c_normal#%=%#lualine_x_7_normal#\ --\ INSERT\ --\ %#lualine_transitional_lualine_y_filetype_DevIconLua_normal_to_lualine_x_7_normal#%#lualine_y_filetype_DevIconLua_normal#\ \ %#lualine_b_normal#lua\ %#lualine_b_normal#|%#lualine_b_normal#\ Bot\ %#lualine_a_normal#\ 432:0\ \ %#lualine_transitional_lualine_a_normal_to_StatusLine#
+setlocal statusline=%#lualine_transitional_lualine_a_normal_to_StatusLine#%#lualine_a_normal#\ NORMAL\ %#lualine_b_normal#\ vscode-mappings.lua\ |%#lualine_b_normal#\ \ master\ %#lualine_transitional_lualine_b_normal_to_lualine_c_normal#%<%#lualine_c_normal#\ 󰛢\ \ 1\ \ %#lualine_c_normal#%=%#lualine_transitional_lualine_y_filetype_DevIconLua_normal_to_lualine_c_normal#%#lualine_y_filetype_DevIconLua_normal#\ \ %#lualine_b_normal#lua\ %#lualine_b_normal#|%#lualine_b_normal#\ Bot\ %#lualine_a_normal#\ \ \ 7:87\ %#lualine_transitional_lualine_a_normal_to_StatusLine#
 setlocal suffixesadd=.lua
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=8
 setlocal tagcase=
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal tags=
@@ -192,12 +194,12 @@ setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 432 - ((25 * winheight(0) + 25) / 51)
+let s:l = 7 - ((6 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 432
-normal! 0
+keepjumps 7
+normal! 087|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

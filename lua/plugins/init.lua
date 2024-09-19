@@ -320,6 +320,7 @@ lazy.setup({
 	{
 		"folke/trouble.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+		cond = not vim.g.vscode,
 		keys = {
 			{
 				"<leader>xx",
@@ -364,6 +365,7 @@ lazy.setup({
 	},
 	{
 		"luckasRanarison/clear-action.nvim",
+		cond = not vim.g.vscode,
 		event = "LspAttach",
 		opts = {
 			signs = {
@@ -399,14 +401,17 @@ lazy.setup({
 	-- },
 	{
 		"folke/zen-mode.nvim",
+		cond = not vim.g.vscode,
 		opts = {},
 	},
 	{
 		"mfussenegger/nvim-lint",
+		cond = not vim.g.vscode,
 		config = setup("plugins.lint", "lint"),
 	},
 	{
 		"folke/noice.nvim",
+		cond = not vim.g.vscode,
 		event = "VeryLazy",
 		config = setup("plugins.noice"),
 		dependencies = {
@@ -416,6 +421,7 @@ lazy.setup({
 	{
 		"yetone/avante.nvim",
 		event = "VeryLazy",
+		cond = not vim.g.vscode,
 		lazy = false,
 		opts = {
 			provider = "copilot", -- Recommend using copilot
@@ -449,6 +455,7 @@ lazy.setup({
 			{
 				-- Make sure to set this up properly if you have lazy=true
 				"MeanderingProgrammer/render-markdown.nvim",
+				cond = not vim.g.vscode,
 				opts = {
 					file_types = { "markdown", "Avante" },
 				},
