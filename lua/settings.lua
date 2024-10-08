@@ -75,8 +75,6 @@ vim.g.gui_font_face = "Fira Code Retina"
 vim.g.t_Co = 256
 vim.g.t_ut = nil
 
-vim.opt.colorcolumn = "80"
-
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 

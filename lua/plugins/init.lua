@@ -67,6 +67,16 @@ lazy.setup({
 		end,
 	},
 	{
+		"zenbones-theme/zenbones.nvim",
+		dependencies = "rktjmp/lush.nvim",
+		lazy = false,
+		priority = 1002,
+		cond = not vim.g.vscode,
+		config = function()
+			require("plugins.color-schemes.zenbones")
+		end,
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		-- these dependencies will only be loaded when cmp loads
 		-- dependencies are always lazy-loaded unless specified otherwise
@@ -133,7 +143,6 @@ lazy.setup({
 		cond = not vim.g.vscode,
 	},
 	{ "akinsho/toggleterm.nvim", config = setup("plugins.toggleterm"), cond = not vim.g.vscode },
-	{ "romainl/vim-cool" },
 	{ "vim-scripts/BufOnly.vim", event = "VeryLazy", cond = not vim.g.vscode },
 	{
 		"nvim-lualine/lualine.nvim",
@@ -185,7 +194,6 @@ lazy.setup({
 		cond = not vim.g.vscode,
 	},
 	{ "folke/lazydev.nvim", opts = {}, cond = not vim.g.vscode },
-	{ "norcalli/nvim-colorizer.lua", config = true, cond = not vim.g.vscode },
 	{
 		"nvim-neotest/neotest",
 		dependencies = {
@@ -364,18 +372,16 @@ lazy.setup({
 		config = setup("plugins.sql"),
 	},
 	{
-		"luckasRanarison/clear-action.nvim",
+		"Chaitanyabsprip/fastaction.nvim",
 		cond = not vim.g.vscode,
-		event = "LspAttach",
 		opts = {
 			signs = {
 				enable = false,
 			},
+			dismiss_keys = { "j", "k", "<esc>", "q" },
 			popup = {
 				hide_cursor = true,
-			},
-			mappings = {
-				code_action = { "<leader>a", fmt("Fix", "Code action") },
+				border = "rounded",
 			},
 		},
 	},
@@ -462,5 +468,10 @@ lazy.setup({
 				ft = { "markdown", "Avante" },
 			},
 		},
+	},
+	{
+		"mvllow/modes.nvim",
+		tag = "v0.2.0",
+		config = setup("plugins.modes"),
 	},
 })

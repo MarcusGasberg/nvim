@@ -34,6 +34,7 @@ local kind_icons = {
 	Operator = "󰆕",
 	TypeParameter = "󰅲",
 }
+
 require("lspkind").init({
 	mode = "symbol",
 

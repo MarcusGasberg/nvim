@@ -1,17 +1,7 @@
 local fmt = require("utils.icons").fmt
+local icons = require("utils.icons").icons
 
 require("lsp.cmp")
-
-vim.diagnostic.config({
-	virtual_text = {
-		severity = { min = vim.diagnostic.severity.WARN },
-		prefix = "●",
-	},
-	float = {
-		border = "rounded",
-	},
-	severity_sort = true,
-})
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
@@ -27,27 +17,38 @@ end, { desc = fmt("Fix", "Previous [d]iagnostics") })
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 	callback = function(event)
-		local map = function(keys, func, desc)
+		local nmap = function(keys, func, desc)
 			vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
 		end
 
-		map("gd", require("telescope.builtin").lsp_definitions, fmt("Code", "[G]oto [D]efinition"))
-		map("gr", vim.lsp.buf.references, fmt("Code", "[G]oto [R]eferences"))
-		map("gI", require("telescope.builtin").lsp_implementations, fmt("Code", "[G]oto [I]mplementation"))
-		map("<leader>D", require("telescope.builtin").lsp_type_definitions, fmt("Code", "Type [D]efinition"))
-		map("<leader>sy", require("telescope.builtin").lsp_document_symbols, fmt("Symbol", "Document [S][y]mbols"))
-		map(
+		local nimap = function(keys, func, desc)
+			vim.keymap.set({ "n", "i" }, keys, func, { buffer = event.buf, desc = desc })
+		end
+
+		nmap("gd", require("telescope.builtin").lsp_definitions, fmt("Code", "[G]oto [D]efinition"))
+		nmap("gr", vim.lsp.buf.references, fmt("Code", "[G]oto [R]eferences"))
+		nmap("gI", require("telescope.builtin").lsp_implementations, fmt("Code", "[G]oto [I]mplementation"))
+		nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, fmt("Code", "Type [D]efinition"))
+		nmap("<leader>sy", require("telescope.builtin").lsp_document_symbols, fmt("Symbol", "Document [S][y]mbols"))
+		nmap(
 			"<leader>ws",
 			require("telescope.builtin").lsp_dynamic_workspace_symbols,
 			fmt("Symbol", "[W]orkspace [S]ymbols")
 		)
-		map("<leader>rn", vim.lsp.buf.rename, fmt("Fix", "[R]e[n]ame"))
+		nmap("<leader>rn", vim.lsp.buf.rename, fmt("Fix", "[R]e[n]ame"))
 		-- map("<leader>a", vim.lsp.buf.code_action, fmt("Fix", "Code [A]ction"))
-		map("K", vim.lsp.buf.hover, fmt("Hint", "Hover Documentation"))
-		map("<C-k>", vim.lsp.buf.signature_help, fmt("Hint", "Signature [K]elp"))
-		map("gD", vim.lsp.buf.declaration, fmt("Code", "[G]oto [D]eclaration"))
+		nmap("K", vim.lsp.buf.hover, fmt("Hint", "Hover Documentation"))
+		nimap("<C-k>", vim.lsp.buf.signature_help, fmt("Hint", "Signature [K]elp"))
+		nmap("gD", vim.lsp.buf.declaration, fmt("Code", "[G]oto [D]eclaration"))
+		vim.keymap.set("n", "<leader>a", '<cmd>lua require("fastaction").code_action()<CR>', { buffer = event.buf })
+		vim.keymap.set(
+			"v",
+			"<leader>a",
+			"<esc><cmd>lua require('fastaction').range_code_action()<CR>",
+			{ buffer = event.buf }
+		)
 
-		map("<leader>=", function(args)
+		nmap("<leader>=", function(args)
 			require("conform").format({
 				lsp_format = "fallback",
 				timeout = 5000,
@@ -84,13 +85,9 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 end
 
 local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
-local cmp_nvim_lsp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+local cmp_capabillities = require("cmp_nvim_lsp").default_capabilities(normal_capabilities)
 
-if cmp_nvim_lsp_status_ok then
-	cmp_nvim_lsp.default_capabilities(normal_capabilities)
-end
-
-local capabilities = vim.tbl_deep_extend("force", normal_capabilities, {
+local capabilities = vim.tbl_deep_extend("force", cmp_capabillities, {
 	textDocument = {
 		foldingRange = {
 			dynamicRegistration = false,
@@ -220,16 +217,15 @@ mason_config.setup_handlers({
 
 -- Global diagnostic settings
 vim.diagnostic.config({
-	virtual_text = false,
 	severity_sort = true,
 	update_in_insert = false,
 	signs = {
 		active = true,
-		values = {
-			{ name = "Error", text = "✘" },
-			{ name = "Warning", text = "" },
-			{ name = "Hint", text = "" },
-			{ name = "Information", text = "" },
+		text = {
+			[vim.diagnostic.severity.ERROR] = icons.Error,
+			[vim.diagnostic.severity.WARN] = icons.Warn,
+			[vim.diagnostic.severity.HINT] = icons.Hint,
+			[vim.diagnostic.severity.INFO] = icons.Info,
 		},
 	},
 	float = {
