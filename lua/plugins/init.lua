@@ -301,8 +301,8 @@ lazy.setup({
 	},
 	{ "echasnovski/mini.nvim", version = "*", config = setup("plugins.mini") },
 	{
-		"norcalli/nvim-colorizer.lua",
-		config = setup("plugins.colorizer"),
+		"brenoprata10/nvim-highlight-colors",
+		config = setup("plugins.highlight-colors"),
 		cond = not vim.g.vscode,
 	},
 	{
@@ -385,26 +385,6 @@ lazy.setup({
 			},
 		},
 	},
-	-- {
-	-- 	"folke/which-key.nvim",
-	-- 	branch = "v3",
-	-- 	event = "VeryLazy",
-	-- 	opts = {
-	-- 		plugins = {
-	-- 			marks = false,
-	-- 			registers = false,
-	-- 		},
-	-- 	},
-	-- 	keys = {
-	-- 		{
-	-- 			"<leader>?",
-	-- 			function()
-	-- 				require("which-key").show({ global = false })
-	-- 			end,
-	-- 			desc = fmt("Info", "[which-key] Buffer Local Keymaps"),
-	-- 		},
-	-- 	},
-	-- },
 	{
 		"folke/zen-mode.nvim",
 		cond = not vim.g.vscode,
@@ -414,15 +394,6 @@ lazy.setup({
 		"mfussenegger/nvim-lint",
 		cond = not vim.g.vscode,
 		config = setup("plugins.lint", "lint"),
-	},
-	{
-		"folke/noice.nvim",
-		cond = not vim.g.vscode,
-		event = "VeryLazy",
-		config = setup("plugins.noice"),
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-		},
 	},
 	{
 		"yetone/avante.nvim",
