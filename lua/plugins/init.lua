@@ -108,6 +108,7 @@ lazy.setup({
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-repeat" },
 	{ "tpope/vim-dispatch" },
+	{ "romainl/vim-cool" },
 	{
 		"L3MON4D3/LuaSnip",
 		dependencies = { "rafamadriz/friendly-snippets" },

@@ -1,1 +1,3 @@
-require("modes").setup({})
+require("modes").setup({
+	set_cursor = false,
+})
