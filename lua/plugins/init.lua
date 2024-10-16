@@ -97,13 +97,13 @@ lazy.setup({
 		},
 		cond = not vim.g.vscode,
 	},
-	{ "neovim/nvim-lspconfig", cond = not vim.g.vscode },
-	{ "williamboman/mason.nvim", build = ":MasonUpdate", cond = not vim.g.vscode },
+	{ "neovim/nvim-lspconfig",             cond = not vim.g.vscode },
+	{ "williamboman/mason.nvim",           build = ":MasonUpdate", cond = not vim.g.vscode },
 	{ "williamboman/mason-lspconfig.nvim", cond = not vim.g.vscode },
-	{ "rshkarin/mason-nvim-lint", cond = not vim.g.vscode },
-	{ "onsails/lspkind-nvim", cond = not vim.g.vscode },
-	{ "nvim-lua/plenary.nvim", cond = not vim.g.vscode },
-	{ "rafamadriz/friendly-snippets", cond = not vim.g.vscode },
+	{ "rshkarin/mason-nvim-lint",          cond = not vim.g.vscode },
+	{ "onsails/lspkind-nvim",              cond = not vim.g.vscode },
+	{ "nvim-lua/plenary.nvim",             cond = not vim.g.vscode },
+	{ "rafamadriz/friendly-snippets",      cond = not vim.g.vscode },
 	{ "tpope/vim-abolish" },
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-repeat" },
@@ -124,7 +124,8 @@ lazy.setup({
 	},
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+		build =
+		"cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 	},
 	{
 		"nvim-telescope/telescope.nvim",
@@ -135,8 +136,8 @@ lazy.setup({
 		config = setup("plugins.telescope", "telescope"),
 		cond = not vim.g.vscode,
 	},
-	{ "junegunn/fzf", cond = not vim.g.vscode },
-	{ "mfussenegger/nvim-dap", config = setup("plugins.nvim-dap"), cond = not vim.g.vscode },
+	{ "junegunn/fzf",             cond = not vim.g.vscode },
+	{ "mfussenegger/nvim-dap",    config = setup("plugins.nvim-dap"), cond = not vim.g.vscode },
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap" },
@@ -144,7 +145,7 @@ lazy.setup({
 		cond = not vim.g.vscode,
 	},
 	{ "akinsho/toggleterm.nvim", config = setup("plugins.toggleterm"), cond = not vim.g.vscode },
-	{ "vim-scripts/BufOnly.vim", event = "VeryLazy", cond = not vim.g.vscode },
+	{ "vim-scripts/BufOnly.vim", event = "VeryLazy",                   cond = not vim.g.vscode },
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -167,7 +168,7 @@ lazy.setup({
 		config = setup("plugins.diffview", "diffview"),
 		cond = not vim.g.vscode,
 	},
-	{ "kevinhwang91/nvim-hlslens", config = true },
+	{ "kevinhwang91/nvim-hlslens",                   config = true },
 	{
 		"petertriho/nvim-scrollbar",
 		dependencies = { "kevinhwang91/nvim-hlslens" },
@@ -179,7 +180,13 @@ lazy.setup({
 		config = setup("plugins.treesitter", "nvim-treesitter"),
 	},
 	{ "lambdalisue/glyph-palette.vim", cond = not vim.g.vscode },
-	{ "simrat39/rust-tools.nvim", cond = not vim.g.vscode },
+	{
+		'mrcjkb/rustaceanvim',
+		version = '^5', -- Recommended
+		lazy = false, -- This plugin is already lazy
+		config = setup("plugins.rust", "rust"),
+		cond = not vim.g.vscode
+	},
 	{
 		"windwp/nvim-ts-autotag",
 		cond = not vim.g.vscode,
@@ -194,7 +201,7 @@ lazy.setup({
 		config = true,
 		cond = not vim.g.vscode,
 	},
-	{ "folke/lazydev.nvim", opts = {}, cond = not vim.g.vscode },
+	{ "folke/lazydev.nvim",            opts = {},              cond = not vim.g.vscode },
 	{
 		"nvim-neotest/neotest",
 		dependencies = {
@@ -318,8 +325,8 @@ lazy.setup({
 		event = { "BufReadPost", "BufNewFile" },
 		cmd = "Grapple",
 		keys = {
-			{ "<leader>h", "<cmd>Grapple toggle<cr>", desc = fmt("Hook", "Grapple toggle tag") },
-			{ "<leader>l", "<cmd>Grapple toggle_tags<cr>", desc = fmt("Hook", "Grapple open tags window") },
+			{ "<leader>h", "<cmd>Grapple toggle<cr>",         desc = fmt("Hook", "Grapple toggle tag") },
+			{ "<leader>l", "<cmd>Grapple toggle_tags<cr>",    desc = fmt("Hook", "Grapple open tags window") },
 			{ "<leader>1", "<cmd>Grapple select index=1<cr>", desc = fmt("Hook", "Select first tag") },
 			{ "<leader>2", "<cmd>Grapple select index=2<cr>", desc = fmt("Hook", "Select second tag") },
 			{ "<leader>3", "<cmd>Grapple select index=3<cr>", desc = fmt("Hook", "Select third tag") },
@@ -367,7 +374,7 @@ lazy.setup({
 	{
 		"kristijanhusak/vim-dadbod-ui",
 		dependencies = {
-			{ "tpope/vim-dadbod", lazy = true },
+			{ "tpope/vim-dadbod",                     lazy = true },
 			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
 		},
 		config = setup("plugins.sql"),
@@ -405,14 +412,14 @@ lazy.setup({
 			provider = "copilot", -- Recommend using copilot
 			auto_suggestions_provider = "copilot",
 		},
-		build = "make",
+		build = "make BUILD_FROM_SOURCE=true",
 		dependencies = {
 			"stevearc/dressing.nvim",
 			"nvim-lua/plenary.nvim",
 			"MunifTanjim/nui.nvim",
 			--- The below dependencies are optional,
 			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-			"zbirenbaum/copilot.lua", -- for providers='copilot'
+			"zbirenbaum/copilot.lua",   -- for providers='copilot'
 			{
 				-- support for image pasting
 				"HakonHarnes/img-clip.nvim",

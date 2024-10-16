@@ -11,6 +11,7 @@ require("conform").setup({
 		scss = { "prettierd", "prettier", stop_after_first = true },
 		css = { "prettierd", "prettier", stop_after_first = true },
 		graphql = { "prettierd", "prettier", stop_after_first = true },
+		rust = { "rustfmt" },
 	},
 	default_format_opts = {
 		lsp_format = "fallback",

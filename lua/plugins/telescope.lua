@@ -19,7 +19,7 @@ local function live_grep()
 end
 
 local function git_files()
-	local ok = pcall(builtin.git_files)
+	local ok = pcall(builtin.find_files)
 	if not ok then
 		require("telescope.builtin").find_files()
 	end

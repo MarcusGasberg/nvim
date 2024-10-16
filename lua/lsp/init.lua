@@ -141,35 +141,8 @@ mason_config.setup_handlers({
 			server_config.setup(capabilities, server)
 		end
 	end,
-	-- -- Next, you can provide targeted overrides for specific servers.
-	-- -- For example, a handler override for the `rust_analyzer`:
 	["rust_analyzer"] = function()
-		local rt_ok, rt = pcall(require, "rust-tools")
 
-		local server = require("lspconfig")["rust_analyzer"]
-		server.setup({
-			capabilities = capabilities,
-		})
-		return rt.setup({
-			capabilities = capabilities,
-			server = {
-				on_attach = function(client, bufnr)
-					-- Hover actions
-					vim.keymap.set("n", "<C-K>", rt.hover_actions.hover_actions, { buffer = bufnr })
-					-- Code action groups
-					vim.keymap.set("n", "<leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-				end,
-			},
-			procMacro = {
-				ignored = {
-					leptos_macro = {
-						-- optional: --
-						-- "component",
-						"server",
-					},
-				},
-			},
-		})
 	end,
 	["jdtls"] = function()
 		local workspace_path = vim.fn.stdpath("data") .. "/lsp_servers/jdtls_workspace_"
@@ -237,6 +210,6 @@ vim.diagnostic.config({
 })
 
 vim.o.foldcolumn = "0" -- '0' is not bad
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
