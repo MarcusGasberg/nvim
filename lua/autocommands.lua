@@ -49,7 +49,7 @@ endfunction
 vim.api.nvim_create_autocmd({ "BufRead", "BufEnter" }, {
 	pattern = { "*.component.html" },
 	callback = function()
-		vim.bo.filetype = "angular"
+		vim.bo.filetype = "htmlangular"
 	end,
 })
 

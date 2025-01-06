@@ -129,6 +129,7 @@ lazy.setup({
 	},
 	{
 		"nvim-telescope/telescope.nvim",
+		tag = '0.1.8',
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-fzf-native.nvim",
@@ -373,6 +374,7 @@ lazy.setup({
 	},
 	{
 		"kristijanhusak/vim-dadbod-ui",
+		cond = not vim.g.vscode,
 		dependencies = {
 			{ "tpope/vim-dadbod",                     lazy = true },
 			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
@@ -409,8 +411,43 @@ lazy.setup({
 		cond = not vim.g.vscode,
 		lazy = false,
 		opts = {
-			provider = "copilot", -- Recommend using copilot
+			provider = "copilot",
 			auto_suggestions_provider = "copilot",
+			copilot = {
+				model = "claude-3.5-sonnet"
+			},
+			mappings = {
+				--- @class AvanteConflictMappings
+				diff = {
+					ours = "<leader>co",
+					theirs = "<leader>ct",
+					all_theirs = "<leader>ca",
+					both = "<leader>cb",
+					cursor = "<leader>cc",
+					next = "]x",
+					prev = "[x",
+				},
+				suggestion = {
+					accept = "<M-l>",
+					next = "<M-]>",
+					prev = "<M-[>",
+					dismiss = "<C-]>",
+				},
+				jump = {
+					next = "]]",
+					prev = "[[",
+				},
+				submit = {
+					normal = "<CR>",
+					insert = "<C-s>",
+				},
+				sidebar = {
+					apply_all = "A",
+					apply_cursor = "a",
+					switch_windows = "<Tab>",
+					reverse_switch_windows = "<S-Tab>",
+				},
+			},
 		},
 		build = "make BUILD_FROM_SOURCE=true",
 		dependencies = {
@@ -452,5 +489,6 @@ lazy.setup({
 		"mvllow/modes.nvim",
 		tag = "v0.2.0",
 		config = setup("plugins.modes"),
+		cond = not vim.g.vscode,
 	},
 })

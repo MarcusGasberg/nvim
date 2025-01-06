@@ -39,6 +39,11 @@ cabbrev("Qall", "qall")
 keymap.normal_map("<leader>[", ":bp!<CR>", fmt("Stack", "Previous buffer"))
 keymap.normal_map("<leader>]", ":bn!<CR>", fmt("Stack", "Next buffer"))
 
+-- move yank register to clipboard
+keymap.normal_map("yc", function()
+	vim.fn.setreg("+", vim.fn.getreg('"'))
+end)
+
 -- copy, cut and paste
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', {
 	desc = fmt("Copy", "Yank to clipboard"),

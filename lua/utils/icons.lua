@@ -119,7 +119,7 @@ M.icons = {
 }
 
 M.fmt = function(icon, text, space)
-	return M.icons[icon] .. string.rep(" ", space or 1) .. text
+	return M.icons[icon] .. string.rep(" ", space or 1) .. (text or '')
 end
 
 return M

@@ -100,6 +100,7 @@ local capabilities = vim.tbl_deep_extend("force", cmp_capabillities, {
 		},
 	},
 })
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local mason_config_ok, mason_config = pcall(require, "mason-lspconfig")
 local mason_ok, mason = pcall(require, "mason")

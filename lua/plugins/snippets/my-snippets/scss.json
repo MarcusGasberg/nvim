@@ -1,0 +1,19 @@
+{
+  "containerAndHeader": {
+    "prefix": "container-header",
+    "body": [
+      ".container {",
+      "  display: grid;",
+      "  gap: 1rem;",
+      "}",
+      "",
+      ".header {",
+      "  display: flex;",
+      "  gap: 1rem;",
+      "  align-items: center;",
+      "  justify-content: space-between;",
+      "}"
+    ],
+    "description": "Container and header"
+  }
+}

@@ -72,6 +72,8 @@ vim.g.gui_font_default_size = 12
 vim.g.gui_font_size = vim.g.gui_font_default_size
 vim.g.gui_font_face = "Fira Code Retina"
 
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
+
 vim.g.t_Co = 256
 vim.g.t_ut = nil
 

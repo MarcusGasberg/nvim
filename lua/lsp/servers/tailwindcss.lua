@@ -8,6 +8,7 @@ return {
 				"aspnetcorerazor",
 				"astro",
 				"astro-markdown",
+				"angular",
 				"blade",
 				"django-html",
 				"edge",
@@ -82,7 +83,7 @@ return {
 			),
 			settings = {
 				tailwindCSS = {
-					classAttributes = { "class", "className", "classList", "ngClass" },
+					classAttributes = { "class", "className", "classList", "ngClass", "styleClass" },
 					lint = {
 						cssConflict = "warning",
 						invalidApply = "error",
@@ -93,6 +94,12 @@ return {
 						recommendedVariantOrder = "warning",
 					},
 					validate = true,
+					experimental = {
+						classRegex = {
+							{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+							{ "cx\\(([^)]*)\\)",  "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+						}
+					}
 				},
 			},
 		})

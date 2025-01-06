@@ -1,4 +1,3 @@
-
 {
   "name": "Angular2",
   "publisher": "johnpapa",
@@ -57,12 +56,16 @@
         "path": "./my-snippets/jsonc.json"
       },
       {
-        "language": "html",
-        "path": "./my-snippets/html.json"
+        "language": "htmlangular",
+        "path": "./my-snippets/htmlangular.json"
       },
       {
         "language": "dockerfile",
         "path": "./my-snippets/dockerfile.json"
+      },
+      {
+        "language": "scss",
+        "path": "./my-snippets/scss.json"
       }
     ]
   },
@@ -73,4 +76,3 @@
     "vscode": "*"
   }
 }
-
