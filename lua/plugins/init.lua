@@ -181,13 +181,13 @@ lazy.setup({
 		config = setup("plugins.treesitter", "nvim-treesitter"),
 	},
 	{ "lambdalisue/glyph-palette.vim", cond = not vim.g.vscode },
-	{
-		'mrcjkb/rustaceanvim',
-		version = '^5', -- Recommended
-		lazy = false, -- This plugin is already lazy
-		config = setup("plugins.rust", "rust"),
-		cond = not vim.g.vscode
-	},
+	-- {
+	-- 	'mrcjkb/rustaceanvim',
+	-- 	version = '^5', -- Recommended
+	-- 	lazy = false, -- This plugin is already lazy
+	-- 	config = setup("plugins.rust", "rust"),
+	-- 	cond = not vim.g.vscode
+	-- },
 	{
 		"windwp/nvim-ts-autotag",
 		cond = not vim.g.vscode,
@@ -202,7 +202,11 @@ lazy.setup({
 		config = true,
 		cond = not vim.g.vscode,
 	},
-	{ "folke/lazydev.nvim",            opts = {},              cond = not vim.g.vscode },
+	{
+		"folke/lazydev.nvim",
+		opts = {},
+		cond = not vim.g.vscode
+	},
 	{
 		"nvim-neotest/neotest",
 		dependencies = {
@@ -308,7 +312,7 @@ lazy.setup({
 			},
 		},
 	},
-	{ "echasnovski/mini.nvim", version = "*", config = setup("plugins.mini") },
+	{ "echasnovski/mini.nvim",         version = "*",          config = setup("plugins.mini") },
 	{
 		"brenoprata10/nvim-highlight-colors",
 		config = setup("plugins.highlight-colors"),
@@ -411,11 +415,6 @@ lazy.setup({
 		cond = not vim.g.vscode,
 		lazy = false,
 		opts = {
-			provider = "copilot",
-			auto_suggestions_provider = "copilot",
-			copilot = {
-				model = "claude-3.5-sonnet"
-			},
 			mappings = {
 				--- @class AvanteConflictMappings
 				diff = {
