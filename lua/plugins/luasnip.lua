@@ -1,7 +1,8 @@
-local luasnip_ok, luasnip = pcall(require, "luasnip")
-if not luasnip_ok then
-	print("Luasnip is not installed")
-	return
-end
-
-require("luasnip.loaders.from_vscode").lazy_load({paths = "~/snippets"})
+return {
+	"L3MON4D3/LuaSnip",
+	dependencies = { "rafamadriz/friendly-snippets" },
+	cond = not vim.g.vscode,
+	config = function()
+		require("luasnip.loaders.from_vscode").lazy_load({ paths = "~/snippets" })
+	end
+}
