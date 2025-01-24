@@ -1,3 +1,6 @@
+local icons = require("utils.icons").icons
+local fmt = require("utils.icons").fmt
+
 return {
   {
     'saghen/blink.cmp',
@@ -46,7 +49,14 @@ return {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
       completion = {
-        list = { selection = { auto_insert = true } },
+        list = {
+          selection = {
+            auto_insert = true,
+            preselect = function(ctx)
+              return ctx.mode ~= 'cmdline' and not require('blink.cmp').snippet_active({ direction = 1 })
+            end
+          }
+        },
       }
     }
   },
@@ -58,6 +68,47 @@ return {
       "williamboman/mason-lspconfig.nvim",
     },
     config = function()
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help,
+        { border = "rounded" })
+      vim.keymap.set("n", "]d", function()
+        vim.diagnostic.jump({ count = 1, float = true })
+      end, {
+        desc = fmt("Fix", "Next [d]iagnostics"),
+      })
+      vim.keymap.set("n", "[d", function()
+        vim.diagnostic.jump({ count = -1, float = true })
+      end, { desc = fmt("Fix", "Previous [d]iagnostics") })
+
+      local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+        opts = opts or {}
+        opts.border = opts.border or "rounded"
+        opts.max_width = opts.max_width or 80
+        return orig_util_open_floating_preview(contents, syntax, opts, ...)
+      end
+
+      -- Global diagnostic settings
+      vim.diagnostic.config({
+        severity_sort = true,
+        update_in_insert = false,
+        signs = {
+          active = true,
+          text = {
+            [vim.diagnostic.severity.ERROR] = icons.Error,
+            [vim.diagnostic.severity.WARN] = icons.Warn,
+            [vim.diagnostic.severity.HINT] = icons.Hint,
+            [vim.diagnostic.severity.INFO] = icons.Info,
+          },
+        },
+        float = {
+          header = "",
+          source = true,
+          border = "rounded",
+          focusable = true,
+        },
+      })
+
       vim.api.nvim_create_autocmd("LspAttach", {
         desc = "LSP actions",
         callback = function(event)
@@ -78,13 +129,23 @@ return {
           )
           vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", buffer_opts)
           vim.keymap.set("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", buffer_opts)
+
+          vim.keymap.set("n", "<leader>=", "<cmd>lua require('conform').format()<cr>", buffer_opts)
         end,
       })
 
-      require("mason").setup()
-
       local servers = {
         lua_ls = {},
+        angularls = {
+          root_dir = require("lspconfig").util.root_pattern(
+            ".git",
+            "pnpm-workspace.yaml",
+            "pnpm-lock.yaml",
+            "yarn.lock",
+            "package-lock.json",
+            "bun.lockb"
+          ),
+        },
         vtsls = {
           root_dir = require("lspconfig").util.root_pattern(
             ".git",
@@ -104,8 +165,27 @@ return {
               entriesLimit = 3,
             },
           },
+          capabilities = vim.tbl_deep_extend("force", require('blink.cmp').get_lsp_capabilities(), {
+            textDocument = {
+              rename = nil,
+            },
+          }),
         }
       }
+      local server_names = {}
+      local n = 0
+
+      for k, v in pairs(servers) do
+        n = n + 1
+        server_names[n] = k
+      end
+
+      require("mason").setup()
+      require("mason-lspconfig").setup({
+        ensure_installed = server_names,
+        automatic_installation = true
+      })
+
 
       local lspconfig = require('lspconfig')
       for server, config in pairs(servers) do

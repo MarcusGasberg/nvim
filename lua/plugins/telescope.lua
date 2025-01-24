@@ -39,7 +39,7 @@ return {
         },
       },
       defaults = {
-        file_ignore_patterns = { "node_modules", "package%-lock.json" },
+        file_ignore_patterns = { "node_modules", "package%-lock.json", ".git" },
         path_display = { "filename_first", "truncate" },
       },
       extensions = {
@@ -52,8 +52,10 @@ return {
     require("telescope").load_extension("fzf")
   end,
   keys = {
-    { "<C-p>",      "<cmd>Telescope git_files<cr>",  desc = "Find files" },
-    { "<leader>fa", "<cmd>Telescope find_files<cr>", desc = "Find all files" },
-    { "<leader>fi", "<cmd>Telescope live_grep<cr>",  desc = "Find in files" },
+    { "<C-p>",            "<cmd>Telescope git_files<cr>",   desc = "Find files" },
+    { "<leader>fa",       "<cmd>Telescope find_files<cr>",  desc = "Find all files" },
+    { "<leader>ff",       "<cmd>Telescope live_grep<cr>",   desc = "Find in files" },
+    { "<leader>fw",       "<cmd>Telescope grep_string<cr>", desc = "Find word in files" },
+    { "<leader><leader>", "<cmd>Telescope resume<cr>",      desc = "Resume" },
   },
 }

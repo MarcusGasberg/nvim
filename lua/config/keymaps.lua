@@ -14,48 +14,44 @@ keymap.normal_map("<leader>sp", "<C-w><C-p>", fmt("Window", "[Window] [P]revious
 
 -- no one is really happy until you have this shortcuts
 local function cabbrev(input, replace)
-	local cmd = "cnoreabbrev %s %s"
-
-	vim.cmd(cmd:format(input, replace))
+  local cmd = string.format("cnoreabbrev %s %s", input, replace)
+  vim.api.nvim_command(cmd)
 end
-cabbrev("W!", "w!")
-cabbrev("Q!", "q!")
-cabbrev("Qall!", "qall!")
-cabbrev("Wq", "wq")
-cabbrev("Wa", "wa")
-cabbrev("WA", "wa")
-cabbrev("wQ", "wq")
-cabbrev("WQ", "wq")
-cabbrev("Wqa", "wqa")
-cabbrev("WQA", "wqa")
-cabbrev("WQa", "wqa")
-cabbrev("W", "w")
-cabbrev("Q", "q")
-cabbrev("Qa", "qa")
-cabbrev("Qa!", "qa!")
-cabbrev("Qall", "qall")
+vim.api.nvim_set_keymap("c", "W!", "w!", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Q!", "q!", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Qall!", "qall!", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Wq", "wq", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Wa", "wa", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "WA", "wa", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "wQ", "wq", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "WQ", "wq", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Wqa", "wqa", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "WQA", "wqa", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "WQa", "wqa", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Qa", "qa", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Qa!", "qa!", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Qall", "qall", { noremap = true, silent = true })
 
--- move through buffers
-keymap.normal_map("<leader>[", ":bp!<CR>", fmt("Stack", "Previous buffer"))
-keymap.normal_map("<leader>]", ":bn!<CR>", fmt("Stack", "Next buffer"))
+vim.api.nvim_set_keymap("c", "W", "w", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "Q", "q", { noremap = true, silent = true })
 
 -- move yank register to clipboard
 keymap.normal_map("yc", function()
-	vim.fn.setreg("+", vim.fn.getreg('"'))
+  vim.fn.setreg("+", vim.fn.getreg('"'))
 end)
 
 -- copy, cut and paste
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', {
-	desc = fmt("Copy", "Yank to clipboard"),
+  desc = fmt("Copy", "Yank to clipboard"),
 })
 vim.keymap.set({ "n", "v" }, "<leader>c", '"+c', {
-	desc = fmt("Cut", "Cut to clipboard"),
+  desc = fmt("Cut", "Cut to clipboard"),
 })
 vim.keymap.set({ "n", "v" }, "<leader>d", '"+d', {
-	desc = fmt("Delete", "Delete to clipboard"),
+  desc = fmt("Delete", "Delete to clipboard"),
 })
 vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', {
-	desc = fmt("Paste", "Paste from clipboard"),
+  desc = fmt("Paste", "Paste from clipboard"),
 })
 
 -- Allows numbered jumps to be saved to the jumplist, for use w/ C-o and C-i
