@@ -191,6 +191,7 @@ return {
             vim.fn.stdpath("data") .. "/lsp_servers/jdtls_workspace_" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
           },
         }
+        jsonls = {}
       }
       local server_names = {}
       local n = 0
