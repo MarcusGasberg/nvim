@@ -133,6 +133,8 @@ return {
 
       local servers = {
         lua_ls = {},
+        eslint = {},
+        tailwindcss = {},
         angularls = {
           root_dir = require("lspconfig").util.root_pattern(
             ".git",
@@ -190,7 +192,7 @@ return {
             "-data",
             vim.fn.stdpath("data") .. "/lsp_servers/jdtls_workspace_" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
           },
-        }
+        },
         jsonls = {}
       }
       local server_names = {}
