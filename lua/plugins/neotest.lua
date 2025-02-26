@@ -12,8 +12,8 @@ return {
     "nvim-neotest/nvim-nio",
   },
   cond = not vim.g.vscode,
-  opts = function()
-    return {
+  config = function()
+    require("neotest").setup({
       discovery = {
         enabled = false,
       },
@@ -50,9 +50,8 @@ return {
         }),
         require("neotest-vim-test")({ ignore_filetypes = { "typescript" } }),
       },
-    }
-  end,
-  config = function()
+    })
+
     keymap.normal_map(
       "<leader>tt",
       "<cmd>w<CR><cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",

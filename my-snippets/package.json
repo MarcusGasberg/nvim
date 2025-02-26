@@ -1,0 +1,43 @@
+{
+  "name": "my-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": [
+          "all"
+        ],
+        "path": "./all.json"
+      },
+      {
+        "language": [
+          "typescript"
+        ],
+        "path": "./typescript.json"
+      },
+      {
+        "language": [
+          "javascript"
+        ],
+        "path": "./javascript.json"
+      },
+      {
+        "language": [
+          "htmlangular"
+        ],
+        "path": "./htmlangular.json"
+      },
+      {
+        "language": [
+          "scss"
+        ],
+        "path": "./scss.json"
+      },
+      {
+        "language": [
+          "docker"
+        ],
+        "path": "./docker.json"
+      }
+    ]
+  }
+}

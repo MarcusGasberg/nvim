@@ -2,7 +2,7 @@ local keymap = require("utils.keymap")
 local fmt = require("utils.icons").fmt
 
 return {
-	"sindrets/diffview.nvim",
+	"lewis6991/gitsigns.nvim",
 	dependencies = { "nvim-lua/plenary.nvim" },
 	cond = not vim.g.vscode,
 	opts = {

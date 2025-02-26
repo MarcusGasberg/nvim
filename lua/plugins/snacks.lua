@@ -2,6 +2,7 @@ return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
+  cond = not vim.g.vscode,
   ---@type snacks.Config
   opts = {
     -- your configuration comes here
@@ -21,7 +22,7 @@ return {
     },
     indent = { enabled = true },
     input = { enabled = true },
-    notifier = { enabled = true },
+    -- notifier = { enabled = true },
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
@@ -37,8 +38,8 @@ return {
     { "<leader>,",       function() Snacks.picker.buffers() end,                                 desc = "Buffers" },
     { "<leader>/",       function() Snacks.picker.grep() end,                                    desc = "Grep" },
     { "<leader>:",       function() Snacks.picker.command_history() end,                         desc = "Command History" },
-    { "<leader><space>", function() Snacks.picker.files() end,                                   desc = "Files" },
-    { "<leader>;",       function() Snacks.picker.resume() end,                                  desc = "Resume" },
+    { "<leader><space>", function() Snacks.picker.resume() end,                                  desc = "Files" },
+    { "<leader>;",       function() Snacks.picker.files() end,                                   desc = "Resume" },
     -- find
     { "<leader>fb",      function() Snacks.picker.buffers() end,                                 desc = "Buffers" },
     { "<leader>fc",      function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
@@ -76,5 +77,5 @@ return {
     { "gi",              function() Snacks.picker.lsp_implementations() end,                     desc = "Goto Implementation" },
     { "gy",              function() Snacks.picker.lsp_type_definitions() end,                    desc = "Goto T[y]pe Definition" },
     { "<leader>ss",      function() Snacks.picker.lsp_symbols() end,                             desc = "LSP Symbols" },
-  }
+  },
 }

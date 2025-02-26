@@ -4,8 +4,15 @@ local fmt = require("utils.icons").fmt
 return {
   {
     'saghen/blink.cmp',
-    -- optional: provides snippets for the snippet source
-    dependencies = { 'rafamadriz/friendly-snippets' },
+    dependencies = {
+      'L3MON4D3/LuaSnip',
+      version = 'v2.*',
+      dependencies = { "rafamadriz/friendly-snippets" },
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+        require("luasnip.loaders.from_vscode").lazy_load({ paths = "./my-snippets" })
+      end
+    },
 
     -- use a release tag to download pre-built binaries
     -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
@@ -44,6 +51,7 @@ return {
         nerd_font_variant = 'mono'
       },
 
+      snippets = { preset = "luasnip" },
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
@@ -52,7 +60,9 @@ return {
       completion = {
         list = {
           selection = {
-            auto_insert = true,
+            auto_insert = function(ctx)
+              return ctx.mode ~= 'cmdline'
+            end,
             preselect = function(ctx)
               return ctx.mode ~= 'cmdline' and not require('blink.cmp').snippet_active({ direction = 1 })
             end
@@ -128,13 +138,113 @@ return {
           vim.keymap.set("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", buffer_opts)
 
           vim.keymap.set("n", "<leader>=", "<cmd>lua require('conform').format()<cr>", buffer_opts)
+
+
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client == nil then
+            return
+          end
+          if client.server_capabilities.documentHighlightProvider then
+            client.server_capabilities.documentHighlightProvider = false
+          end
         end,
       })
 
       local servers = {
         lua_ls = {},
         eslint = {},
-        tailwindcss = {},
+        tailwindcss = {
+          {
+            cmd = { "tailwindcss-language-server", "--stdio" },
+            filetypes = {
+              "aspnetcorerazor",
+              "astro",
+              "astro-markdown",
+              "angular",
+              "blade",
+              "django-html",
+              "edge",
+              "eelixir",
+              "elixir",
+              "heex",
+              "ejs",
+              "erb",
+              "eruby",
+              "gohtml",
+              "haml",
+              "handlebars",
+              "hbs",
+              "html",
+              "html-eex",
+              "heex",
+              "jade",
+              "leaf",
+              "liquid",
+              "markdown",
+              "mdx",
+              "mustache",
+              "njk",
+              "nunjucks",
+              "php",
+              "razor",
+              "slim",
+              "twig",
+              "css",
+              "less",
+              "postcss",
+              "sass",
+              "scss",
+              "stylus",
+              "sugarss",
+              "javascript",
+              "javascriptreact",
+              "reason",
+              "rescript",
+              "typescript",
+              "typescriptreact",
+              "vue",
+              "svelte",
+            },
+            init_options = {
+              userLanguages = {
+                eelixir = "html-eex",
+                elixir = "html-eex",
+                eruby = "erb",
+              },
+            },
+            on_new_config = function(new_config)
+              if not new_config.settings then
+                new_config.settings = {}
+              end
+              if not new_config.settings.editor then
+                new_config.settings.editor = {}
+              end
+              if not new_config.settings.editor.tabSize then
+                -- set tab size for hover
+                new_config.settings.editor.tabSize = vim.lsp.util.get_effective_tabstop()
+              end
+            end,
+            root_dir = require("lspconfig").util.root_pattern(
+              "tailwind.config.js",
+              "tailwind.config.ts",
+              "postcss.config.js",
+              "postcss.config.ts",
+              "package.json",
+              "node_modules",
+              ".git"
+            ),
+            settings = {
+              tailwindCSS = {
+                experimental = {
+                  classRegex = {
+                    { "cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+                    { "cx\\(((?:[^()]|\\([^()]*\\))*)\\)",  "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+                  },
+                },
+              },
+            },
+          }
+        },
         angularls = {
           root_dir = require("lspconfig").util.root_pattern(
             ".git",
