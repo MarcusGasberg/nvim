@@ -7,7 +7,7 @@ return {
   event = "InsertEnter",
   cond = not vim.g.vscode,
   config = function()
-    require("copilot").setup({
+    require('copilot').setup({
       panel = {
         enabled = true,
         auto_refresh = false,
@@ -16,11 +16,11 @@ return {
           jump_next = "]]",
           accept = "<CR>",
           refresh = "gr",
-          open = "<M-CR>",
+          open = "<M-CR>"
         },
         layout = {
-          position = "bottom", -- | top | left | right
-          ratio = 0.4,
+          position = "bottom", -- | top | left | right | horizontal | vertical
+          ratio = 0.4
         },
       },
       suggestion = {
@@ -28,6 +28,7 @@ return {
         auto_trigger = false,
         hide_during_completion = true,
         debounce = 75,
+        trigger_on_accept = true,
         keymap = {
           accept = "<M-l>",
           accept_word = false,
@@ -48,7 +49,17 @@ return {
         cvs = false,
         ["."] = false,
       },
-      copilot_node_command = "node", -- Node.js version must be > 18.x
+      auth_provider_url = nil,       -- URL to authentication provider, if not "https://github.com/"
+      copilot_node_command = 'node', -- Node.js version must be > 20
+      workspace_folders = {},
+      copilot_model = "",            -- Current LSP default is gpt-35-turbo, supports gpt-4o-copilot
+      root_dir = function()
+        return vim.fs.dirname(vim.fs.find(".git", { upward = true })[1])
+      end,
+      server = {
+        type = "nodejs", -- "nodejs" | "binary"
+        custom_server_filepath = nil,
+      },
       server_opts_overrides = {},
     })
 

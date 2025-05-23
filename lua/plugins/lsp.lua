@@ -14,20 +14,12 @@ return {
       end
     },
 
-    -- use a release tag to download pre-built binaries
-    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
     build        = 'cargo build --release',
     cond         = not vim.g.vscode,
-    -- If you use nix, you can build from source using latest nightly rust with:
-    -- build = 'nix run .#build-plugin',
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts         = {
-      -- 'default' for mappings similar to built-in completion
-      -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
-      -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-      -- See the full "keymap" documentation for information on defining your own keymap.
       keymap = {
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
         ['<C-e>'] = { 'hide' },
@@ -42,18 +34,11 @@ return {
       },
 
       appearance = {
-        -- Sets the fallback highlight groups to nvim-cmp's highlight groups
-        -- Useful for when your theme doesn't support blink.cmp
-        -- Will be removed in a future release
         use_nvim_cmp_as_default = true,
-        -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- Adjusts spacing to ensure icons are aligned
         nerd_font_variant = 'mono'
       },
 
       snippets = { preset = "luasnip" },
-      -- Default list of enabled providers defined so that you can extend it
-      -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
@@ -75,8 +60,9 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       'saghen/blink.cmp',
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "mason-org/mason.nvim",
+      "mason-org/mason-lspconfig.nvim",
+      "neovim/nvim-lspconfig",
     },
     cond = not vim.g.vscode,
     config = function()
@@ -126,6 +112,7 @@ return {
         callback = function(event)
           local buffer_opts = { buffer = event.buf }
           vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", buffer_opts)
+          vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", buffer_opts)
           vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", buffer_opts)
           vim.keymap.set({ "n", "i" }, "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", buffer_opts)
           vim.keymap.set(
@@ -154,96 +141,94 @@ return {
         lua_ls = {},
         eslint = {},
         tailwindcss = {
-          {
-            cmd = { "tailwindcss-language-server", "--stdio" },
-            filetypes = {
-              "aspnetcorerazor",
-              "astro",
-              "astro-markdown",
-              "angular",
-              "blade",
-              "django-html",
-              "edge",
-              "eelixir",
-              "elixir",
-              "heex",
-              "ejs",
-              "erb",
-              "eruby",
-              "gohtml",
-              "haml",
-              "handlebars",
-              "hbs",
-              "html",
-              "html-eex",
-              "heex",
-              "jade",
-              "leaf",
-              "liquid",
-              "markdown",
-              "mdx",
-              "mustache",
-              "njk",
-              "nunjucks",
-              "php",
-              "razor",
-              "slim",
-              "twig",
-              "css",
-              "less",
-              "postcss",
-              "sass",
-              "scss",
-              "stylus",
-              "sugarss",
-              "javascript",
-              "javascriptreact",
-              "reason",
-              "rescript",
-              "typescript",
-              "typescriptreact",
-              "vue",
-              "svelte",
+          cmd = { "tailwindcss-language-server", "--stdio" },
+          filetypes = {
+            "aspnetcorerazor",
+            "astro",
+            "astro-markdown",
+            "angular",
+            "blade",
+            "django-html",
+            "edge",
+            "eelixir",
+            "elixir",
+            "heex",
+            "ejs",
+            "erb",
+            "eruby",
+            "gohtml",
+            "haml",
+            "handlebars",
+            "hbs",
+            "html",
+            "html-eex",
+            "heex",
+            "jade",
+            "leaf",
+            "liquid",
+            "markdown",
+            "mdx",
+            "mustache",
+            "njk",
+            "nunjucks",
+            "php",
+            "razor",
+            "slim",
+            "twig",
+            "css",
+            "less",
+            "postcss",
+            "sass",
+            "scss",
+            "stylus",
+            "sugarss",
+            "javascript",
+            "javascriptreact",
+            "reason",
+            "rescript",
+            "typescript",
+            "typescriptreact",
+            "vue",
+            "svelte",
+          },
+          init_options = {
+            userLanguages = {
+              eelixir = "html-eex",
+              elixir = "html-eex",
+              eruby = "erb",
             },
-            init_options = {
-              userLanguages = {
-                eelixir = "html-eex",
-                elixir = "html-eex",
-                eruby = "erb",
-              },
-            },
-            on_new_config = function(new_config)
-              if not new_config.settings then
-                new_config.settings = {}
-              end
-              if not new_config.settings.editor then
-                new_config.settings.editor = {}
-              end
-              if not new_config.settings.editor.tabSize then
-                -- set tab size for hover
-                new_config.settings.editor.tabSize = vim.lsp.util.get_effective_tabstop()
-              end
-            end,
-            root_dir = require("lspconfig").util.root_pattern(
-              "tailwind.config.js",
-              "tailwind.config.ts",
-              "postcss.config.js",
-              "postcss.config.ts",
-              "package.json",
-              "node_modules",
-              ".git"
-            ),
-            settings = {
-              tailwindCSS = {
-                experimental = {
-                  classRegex = {
-                    { "cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-                    { "cx\\(((?:[^()]|\\([^()]*\\))*)\\)",  "(?:'|\"|`)([^']*)(?:'|\"|`)" }
-                  },
+          },
+          on_new_config = function(new_config)
+            if not new_config.settings then
+              new_config.settings = {}
+            end
+            if not new_config.settings.editor then
+              new_config.settings.editor = {}
+            end
+            if not new_config.settings.editor.tabSize then
+              -- set tab size for hover
+              new_config.settings.editor.tabSize = vim.lsp.util.get_effective_tabstop()
+            end
+          end,
+          root_dir = require("lspconfig").util.root_pattern(
+            "tailwind.config.js",
+            "tailwind.config.ts",
+            "postcss.config.js",
+            "postcss.config.ts",
+            "package.json",
+            "node_modules",
+            ".git"
+          ),
+          settings = {
+            tailwindCSS = {
+              experimental = {
+                classRegex = {
+                  { "cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+                  { "cx\\(((?:[^()]|\\([^()]*\\))*)\\)",  "(?:'|\"|`)([^']*)(?:'|\"|`)" }
                 },
               },
             },
-          }
+          },
         },
         angularls = {
           root_dir = require("lspconfig").util.root_pattern(
@@ -255,7 +240,7 @@ return {
             "bun.lockb"
           ),
         },
-        vtsls = {
+        ts_ls = {
           root_dir = require("lspconfig").util.root_pattern(
             ".git",
             "pnpm-workspace.yaml",
@@ -279,6 +264,12 @@ return {
               rename = nil,
             },
           }),
+          -- Add single-instance flag to prevent multiple instances
+          single_file_support = false,
+          flags = {
+            debounce_text_changes = 150,
+            allow_incremental_sync = true,
+          },
         },
         jdtls = {
           cmd = {
@@ -303,7 +294,9 @@ return {
             vim.fn.stdpath("data") .. "/lsp_servers/jdtls_workspace_" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
           },
         },
-        jsonls = {}
+        jsonls = {},
+        ['cucumber_language_server'] = {},
+        cssls = {}
       }
       local server_names = {}
       local n = 0
@@ -315,17 +308,19 @@ return {
 
       require("mason").setup()
       require("mason-lspconfig").setup({
+        automatic_enable = true,
         ensure_installed = server_names,
-        automatic_installation = true
       })
 
-
-      local lspconfig = require('lspconfig')
+      local server_mappings = require("mason-lspconfig").get_mappings().lspconfig_to_package
       for server, config in pairs(servers) do
-        -- passing config.capabilities to blink.cmp merges with the capabilities in your
-        -- `opts[server].capabilities, if you've defined it
-        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(config)
+        local lsp_name = server_mappings[server]
+        if lsp_name == nil then
+          print("Server " .. server .. " not found in mason-lspconfig mappings")
+          lsp_name = server
+        end
+
+        vim.lsp.config(lsp_name, config)
       end
     end,
   }

@@ -34,7 +34,7 @@ return {
 
       adapters = {
         require("neotest-jest")({
-          jestCommand = "jest",
+          jestCommand = require('neotest-jest.jest-util').getJestCommand(vim.fn.expand '%:p:h'),
           jestConfigFile = function()
             local file = vim.fn.expand("%:p")
             if string.find(file, "/libs|apps/") then
