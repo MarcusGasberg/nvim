@@ -5,8 +5,10 @@ return {
   lazy = false,
   opts = {
     provider = "copilot",
-    copilot = {
-      model = "claude-3.7-sonnet"
+    providers = {
+      copilot = {
+        model = "claude-sonnet-4"
+      }
     },
     default_file = ".github/copilot-instructions.md",
     always_use_default = true,
@@ -74,7 +76,8 @@ return {
           drag_and_drop = {
             insert_mode = true,
           },
-          -- required for Windows users
+          process_cmd = "clip.exe",
+          -- -- required for Windows users
           use_absolute_path = true,
         },
       },

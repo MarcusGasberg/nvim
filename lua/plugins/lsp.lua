@@ -41,6 +41,23 @@ return {
       snippets = { preset = "luasnip" },
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
+        providers = {
+          lsp = {
+            score_offset = 4,
+          },
+          snippets = {
+            min_keyword_length = 2,
+            score_offset = 3,
+          },
+          path = {
+            min_keyword_length = 3,
+            score_offset = 2,
+          },
+          buffer = {
+            min_keyword_length = 5,
+            score_offset = 1,
+          },
+        },
       },
       completion = {
         list = {
@@ -136,6 +153,9 @@ return {
           end
         end,
       })
+
+      local mason_settings = require("mason.settings")
+      local install_location = mason_settings.current.install_root_dir
 
       local servers = {
         lua_ls = {},
@@ -285,11 +305,11 @@ return {
             "java.base/java.util=ALL-UNNAMED",
             "--add-opens",
             "java.base/java.lang=ALL-UNNAMED",
-            "-javaagent:" .. vim.fn.expand("$MASON/share/jdtls/lombok.jar"),
+            "-javaagent:" .. install_location .. "/share/jdtls/lombok.jar",
             "-jar",
-            vim.fn.expand("$MASON/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"),
+            install_location .. "/share/jdtls/plugins/org.eclipse.equinox.launcher.jar",
             "-configuration",
-            vim.fn.expand("$MASON/share/jdtls/config"),
+            install_location .. "/share/jdtls/config",
             "-data",
             vim.fn.stdpath("data") .. "/lsp_servers/jdtls_workspace_" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
           },
