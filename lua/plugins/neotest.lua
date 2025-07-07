@@ -12,6 +12,7 @@ return {
     "nvim-neotest/nvim-nio",
   },
   cond = not vim.g.vscode,
+  ft = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
   config = function()
     require("neotest").setup({
       discovery = {
@@ -48,7 +49,6 @@ return {
             return vim.fn.getcwd()
           end,
         }),
-        require("neotest-vim-test")({ ignore_filetypes = { "typescript" } }),
       },
     })
 
