@@ -25,5 +25,8 @@ return {
     end, fmt("Copilot", "Add buffer to Claude"))
     keymap.normal_map("<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", fmt("Copilot", "Accept Claude diff"))
     keymap.normal_map("<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", fmt("Copilot", "Deny Claude diff"))
+    keymap.normal_map("<leader>af", function()
+      require("utils.claude_diagnostic").send_current_line()
+    end, fmt("Copilot", "Fix diagnostic with Claude"))
   end,
 }
