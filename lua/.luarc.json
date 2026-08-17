@@ -26,7 +26,7 @@
         "/home/maga/.local/share/nvim/lazy/LuaSnip/lua",
         "/home/maga/.local/share/nvim/lazy/nvim-cmp/lua",
         "/home/maga/.local/share/nvim/lazy/neoscroll.nvim/lua",
-        "/home/maga/.local/share/nvim/lazy/diffview.nvim/lua",
+        "/home/maga/.local/share/nvim/lazy/codediff.nvim/lua",
         "/home/maga/.local/share/nvim/lazy/cmp-cmdline/lua",
         "/home/maga/.local/share/nvim/lazy/leap.nvim/lua",
         "/home/maga/.local/share/nvim/lazy/mason-null-ls.nvim/lua",

@@ -6,6 +6,8 @@ return {
   {
     "mfussenegger/nvim-dap",
     cond = not vim.g.vscode,
+    keys = { { "<leader>d", desc = "Debugger" } },
+    cmd = { "DapContinue", "DapToggleBreakpoint", "DapStepOver", "DapStepInto", "DapStepOut" },
     dependencies = {
       {
         "microsoft/vscode-js-debug",
@@ -195,7 +197,9 @@ return {
   },
   {
     "rcarriga/nvim-dap-ui",
-    dependencies = { "mfussenegger/nvim-dap" },
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    keys = { { "<leader>d", desc = "Debugger" } },
+    cmd = { "DapContinue", "DapToggleBreakpoint" },
     config = function()
       local dap, dapui = require("dap"), require("dapui")
 

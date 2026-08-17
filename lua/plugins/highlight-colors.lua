@@ -1,7 +1,7 @@
 return {
-  "brenoprata10/nvim-highlight-colors",
-  enabled = not vim.g.vscode,
-  setup = function()
-    require('nvim-highlight-colors').setup({})
-  end
+	"brenoprata10/nvim-highlight-colors",
+	enabled = not vim.g.vscode,
+	config = function()
+		require("nvim-highlight-colors").setup({})
+	end,
 }
