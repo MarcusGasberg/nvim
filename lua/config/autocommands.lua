@@ -29,3 +29,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
   end,
 })
+
+-- Re-apply the generated colorscheme when `retheme` signals us, so an open
+-- editor repaints on a wallpaper change without a restart.
+-- vim.schedule matters: signal handlers run in a restricted context and
+-- :colorscheme triggers a full redraw.
+vim.api.nvim_create_autocmd("Signal", {
+  pattern = "SIGUSR1",
+  group = vim.api.nvim_create_augroup("DynTheme", { clear = true }),
+  callback = function()
+    vim.schedule(function() pcall(vim.cmd.colorscheme, "dyn") end)
+  end,
+})
