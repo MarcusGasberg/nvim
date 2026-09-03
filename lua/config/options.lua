@@ -10,7 +10,7 @@ vim.g.maplocalleader = ","
 vim.g.wildmenu = true
 -- vim.cmd[[ set wildmode=list:longest,full ]]
 -- vim.g.wildmode = 'list:longest'
-vim.g.wildignore = "**/node_modules/**"
+vim.g.wildignore = "**/node_modules/**,**/repos/**"
 -- update time for plugins (speed when they act)
 vim.opt.updatetime = 100
 --Mouse support active. Alt click

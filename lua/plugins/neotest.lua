@@ -6,6 +6,7 @@ return {
   dependencies = {
     "haydenmeade/neotest-jest",
     "nvim-neotest/neotest-vim-test",
+    "marilari88/neotest-vitest",
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
     "antoinemadec/FixCursorHold.nvim",
@@ -49,6 +50,7 @@ return {
             return vim.fn.getcwd()
           end,
         }),
+        require("neotest-vitest"),
       },
     })
 

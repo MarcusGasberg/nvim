@@ -26,10 +26,19 @@ return {
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
-    picker = { enabled = true }
+    picker = {
+      enabled = true,
+      -- Equivalent to VS Code's search.exclude / files.watcherExclude: keep vendored
+      -- reference repos out of the file finder, live grep, and explorer sources.
+      sources = {
+        files = { exclude = { "repos/**" } },
+        grep = { exclude = { "repos/**" } },
+        explorer = { exclude = { "repos/**" } },
+      },
+    }
   },
   keys = {
-    { "<C-x>",           function() Snacks.bufdelete() end,                                      desc = "Buf Delete" },
+    -- { "<C-x>",           function() Snacks.bufdelete() end,                                      desc = "Buf Delete" },
     { "<C-g>",           function() Snacks.lazygit() end,                                        desc = "Lazygit" },
     { "<C-t>",           function() Snacks.terminal() end,                                       desc = "Toggle Terminal" },
     { "<leader>gf",      function() Snacks.lazygit.log_file() end,                               desc = "Lazygit Current File History" },

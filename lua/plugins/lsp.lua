@@ -5,16 +5,19 @@ return {
   {
     'saghen/blink.cmp',
     dependencies = {
-      'L3MON4D3/LuaSnip',
-      version = 'v2.*',
-      dependencies = { "rafamadriz/friendly-snippets" },
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-        require("luasnip.loaders.from_vscode").lazy_load({ paths = "./my-snippets" })
-      end
+      {
+        'L3MON4D3/LuaSnip',
+        version = 'v2.*',
+        dependencies = { "rafamadriz/friendly-snippets" },
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+          require("luasnip.loaders.from_vscode").lazy_load({ paths = "./my-snippets" })
+        end
+      },
+      { 'saghen/blink.lib' }
     },
 
-    build        = 'cargo build --release',
+    build        = function() require('blink.cmp').build():wait(60000) end,
     cond         = not vim.g.vscode,
 
     ---@module 'blink.cmp'
@@ -24,7 +27,7 @@ return {
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
         ['<C-e>'] = { 'hide' },
 
-        ['<CR>'] = { 'accept', 'fallback' },
+        ['<CR>'] = { 'select_and_accept', 'fallback' },
 
         ['<S-Tab>'] = { 'select_prev', 'fallback' },
         ['<Tab>'] = { 'select_next', 'fallback' },
@@ -50,7 +53,6 @@ return {
             score_offset = 3,
           },
           path = {
-            min_keyword_length = 3,
             score_offset = 2,
           },
           buffer = {
@@ -61,6 +63,8 @@ return {
       },
       completion = {
         list = {
+          -- Maximum number of items to display
+          max_items = 100,
           selection = {
             auto_insert = function(ctx)
               return ctx.mode ~= 'cmdline'
@@ -147,6 +151,9 @@ return {
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client == nil then
             return
+          end
+          if client.supports_method("textDocument/inlayHint") then
+            vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
           end
           if client.server_capabilities.documentHighlightProvider then
             client.server_capabilities.documentHighlightProvider = false
@@ -251,6 +258,7 @@ return {
           },
         },
         angularls = {
+          enabled = false,
           root_dir = require("lspconfig").util.root_pattern(
             ".git",
             "pnpm-workspace.yaml",
@@ -269,14 +277,20 @@ return {
             "package-lock.json",
             "bun.lockb"
           ),
+          init_options = {
+            preferences = {
+              includeCompletionsForModuleExports = true,
+              includeCompletionsForImportStatements = true,
+              includeCompletionsWithInsertText = true,
+              importModuleSpecifierPreference = "shortest",
+              -- Equivalent to VS Code's typescript/javascript.preferences.autoImportFileExcludePatterns:
+              -- keep vendored reference repos (e.g. repos/effect) out of auto-import suggestions.
+              autoImportFileExcludePatterns = { "repos/**" },
+            },
+          },
           typescript = {
             tsserver = {
               maxTsServerMemory = 12288,
-            },
-          },
-          experimental = {
-            completion = {
-              entriesLimit = 3,
             },
           },
           capabilities = vim.tbl_deep_extend("force", require('blink.cmp').get_lsp_capabilities(), {
@@ -316,7 +330,9 @@ return {
         },
         jsonls = {},
         ['cucumber_language_server'] = {},
-        cssls = {}
+        astro = {},
+        svelte = {},
+        pyright = {}
       }
       local server_names = {}
       local n = 0
